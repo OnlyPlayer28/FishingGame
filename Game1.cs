@@ -67,10 +67,11 @@ namespace Fishing
 
 
 
+
             if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
             {
 
-                cameraManager.GetCurrentCamera().SetShaking(true, .09f, 4); 
+                cameraManager.GetCurrentCamera().SetShaking(true, .1f, 4); 
             }
             cameraManager.Update(gameTime);
             stateManager.Update(gameTime);
