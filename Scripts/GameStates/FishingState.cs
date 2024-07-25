@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Components;
-using Core.GameStateManagement;
+using Core.SceneManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Fishing.Scripts.GameStates
 {
-    internal class FishingState : GameState
+    internal class FishingState : Scene
     {
 
         public  Sprite backgroundSprite { get; set; }

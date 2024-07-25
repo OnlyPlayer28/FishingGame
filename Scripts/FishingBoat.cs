@@ -13,32 +13,37 @@ using TopDownShooter.Core;
 
 namespace Fishing.Scripts
 {
+    public enum FishingState
+    {
+        BoatIsMoving,
+        Default,
+        Descending,
+        WaitingForFish,
+        FishingMinigame,
+        Ascending
+    }
     internal class FishingBoat:IComponent,ITaggable
     {
         public  Sprite boat { get; set; }
         public string name { get; set; } = "fishingBoat";
 
-        private Line Rect { get; set; }
-
         public Vector2 positionToMoveTo { get; private set; }
 
         public float moveSpeed { get; private set; } = 13.5f;
-        public bool isInDesiredFishingSpot { get;private set; }
 
         public Line bobber { get; set; }
         private Vector2 bobberRestingPosition { get; set; } = Vector2.Zero;
 
-        private float maxDepth { get; set; } = 90;
+        private float maxDepth { get; set; } = 120;
+        public FishingState fishingState { get; set; } = FishingState.BoatIsMoving;
 
-        private bool isBobberdescending { get; set; }
-        private bool isFishing { get; set; }    
-        private bool isMousebuttonPressed { get; set; } 
+        private float bobberDescendingSpeed { get; set; } = 15f;
+        private float bobberAscendingSpeed { get; set; } = 25f;
 
         public FishingBoat(Vector2 spawnPosition,Vector2 positionToMoveTo)
         {
             boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat");
             this.positionToMoveTo = positionToMoveTo;
-            Rect = new Line(spawnPosition, new Vector2(25, 8), Color.Red);
             bobber = new Line(Vector2.One,Vector2.One,Color.Red);
         }
 
@@ -51,57 +56,64 @@ namespace Fishing.Scripts
         {
             
             boat.position = Helper.MoveToward(boat.position,positionToMoveTo,moveSpeed*(float)gameTime.ElapsedGameTime.TotalSeconds);
-            if(boat.position== positionToMoveTo&&!isInDesiredFishingSpot){ isInDesiredFishingSpot = true;bobber.position = bobberRestingPosition; }
-
-
+            if(boat.position== positionToMoveTo&&fishingState==FishingState.BoatIsMoving){ fishingState = FishingState.Default; }
 
             boat.Update(gameTime);
-            Rect.position = boat.position;
             bobberRestingPosition = boat.position + new Vector2(boat.size.X + 3, -boat.size.Y);
 
-
-            if (isMousebuttonPressed)
+            if(InputManager.IsMouseButtonPressed(0))
             {
-                if (isBobberdescending&&!isFishing)
+                switch (fishingState)
                 {
-                    bobber.position += new Vector2(0, (float)gameTime.ElapsedGameTime.TotalSeconds);
-                }
-                if (!isBobberdescending&&!isFishing)
-                {
-                    bobber.position -= new Vector2(0, (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    case FishingState.Default:
+                        fishingState = FishingState.Descending;
+                        break;
+                    case FishingState.Descending:
+                        fishingState = FishingState.WaitingForFish;
+                        break;
+                    case FishingState.WaitingForFish:
+                        fishingState = FishingState.Ascending;
+                        break;
+                    case FishingState.FishingMinigame:
+                        break;
+                    case FishingState.Ascending:
+                        fishingState = FishingState.WaitingForFish;
+                        break;
+                    default:
+                        break;
                 }
             }
-            if (InputManager.IsMouseButtonPressed(0)&&isInDesiredFishingSpot)
+
+            switch (fishingState)
             {
-                Console.WriteLine("ok");
-                if (isBobberdescending)
-                {
-                    isFishing = true;
-
-                    isBobberdescending = false;
-                    return;
-                }
-                if (isFishing)
-                {
-                    isFishing = false;
-                    isBobberdescending = false;
-                    //isMousebuttonPressed = false;
-                    return;
-                }
-                if (!isBobberdescending && !isFishing)
-                {
-                    isBobberdescending = true;
-                    isMousebuttonPressed=true;
-                }
-
+                case FishingState.Default:
+                    if(bobber.position!= bobberRestingPosition) { bobber.position = bobberRestingPosition; }
+                    break;
+                case FishingState.Descending:
+                    bobber.position += new Vector2(0, bobberDescendingSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    break;
+                case FishingState.WaitingForFish:
+                case FishingState.FishingMinigame:
+                    break;
+                case FishingState.Ascending:
+                    bobber.position -= new Vector2(0, bobberAscendingSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    break;
+                default:
+                    break;
             }
+            if((bobber.position.Y< bobberRestingPosition.Y||bobber.position.Y > maxDepth)&&fishingState!=FishingState.BoatIsMoving) 
+            { 
+                bobber.position = new Vector2(bobberRestingPosition.X, Math.Clamp(bobber.position.Y, bobberRestingPosition.Y, maxDepth)); 
+                if(bobber.position.Y == maxDepth) { fishingState = FishingState.WaitingForFish; }
+                else { fishingState = FishingState.Default; }
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-           //Rect.Draw(spriteBatch);
             boat.Draw(spriteBatch);
-            if (isInDesiredFishingSpot)
+            if (fishingState != FishingState.BoatIsMoving)
             {
                 bobber.Draw(spriteBatch);
             }

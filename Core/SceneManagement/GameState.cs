@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.GameStateManagement
+namespace Core.SceneManagement
 {
-    internal abstract class GameState : IComponent
+    internal abstract class Scene : IComponent
     {
         public string name { get; }
         public bool isActive { get; protected set; }
@@ -18,14 +18,14 @@ namespace Core.GameStateManagement
 
         public List<IComponent> components { get; set; } = new List<IComponent>();
 
-        public GameState(string name, bool isActive = false, bool isDrawing = false)
+        public Scene(string name, bool isActive = false, bool isDrawing = false)
         {
             this.name = name;
             this.isActive = isActive;
             this.isDrawing = isDrawing;
         }
 
-        public GameState SetActive(bool active)
+        public Scene SetActive(bool active)
         {
             isActive = active;
             return this;

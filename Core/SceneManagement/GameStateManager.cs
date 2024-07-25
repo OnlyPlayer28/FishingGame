@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Components;
-using Core.GameStateManagement;
+using Core.SceneManagement;
 
-namespace Core.GameStateManagement
+namespace Core.SceneManagement
 {
      internal class GameStateManager : IComponent
     {
-        public List<GameState> gameStates { get; private set; }
+        public List<Scene> gameStates { get; private set; }
 
-        public GameStateManager(params GameState[] gameStates)
+        public GameStateManager(params Scene[] gameStates)
         {
             this.gameStates = gameStates.ToList();
 
@@ -32,17 +32,17 @@ namespace Core.GameStateManagement
             return this;
         }
 
-        public GameState GetGameState(string name)
+        public Scene GetGameState(string name)
         {
             return gameStates.Where(p=>p.name ==  name).FirstOrDefault();
         }
 
-        public GameState GetGameState<T>(T gameState)
+        public Scene GetGameState<T>(T gameState)
         {
             return gameStates.Where(p=>p.GetType()== typeof(T)).FirstOrDefault();
         }
 
-        public GameState GetActiveGameState()
+        public Scene GetActiveGameState()
         {
             return gameStates.Where(p=>p.isActive).FirstOrDefault();
         }

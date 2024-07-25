@@ -40,3 +40,13 @@
 #begin Art/test.txt
 /copy:Art/test.txt
 
+#begin Fonts/Font_Pixel.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Font_Pixel.spritefont
+
+#begin Fonts/PixelFJVerdana12pt.ttf
+/copy:Fonts/PixelFJVerdana12pt.ttf
+

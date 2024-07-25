@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Core.GameStateManagement;
+using Core.SceneManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Fishing.Scripts.GameStates
 {
-    internal class MainMenuState : GameState
+    internal class MainMenuState : Scene
     {
         public MainMenuState(string name, bool isActive = false, bool isDrawing = false) 
             : base(name, isActive, isDrawing)

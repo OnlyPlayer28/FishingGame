@@ -58,9 +58,8 @@ namespace Core.Cameras
         }
         public void Update(GameTime gameTime)
         {
-  
-
-            if(isShaking)
+            transformMatrix = Matrix.CreateScale(zoom, zoom, 1);
+            if (isShaking)
             {
                 shakeDuration-=(float)gameTime.ElapsedGameTime.TotalSeconds;
                 offset = Vector2.Zero;
@@ -73,10 +72,13 @@ namespace Core.Cameras
             }
 
             transformMatrix *=Matrix.CreateTranslation(offset.X+position.X, offset.Y+position.Y, 0);
+            transformMatrix = Matrix.CreateScale(1, 1, 1);
 
-            transformMatrixNoScaling =  Matrix.CreateTranslation(zoom, zoom, 0);
+            transformMatrixNoScaling = Matrix.CreateTranslation(zoom, zoom, 0);
+            transformMatrixNoScaling *= transformMatrix;
 
             transformMatrix = Matrix.CreateScale(zoom, zoom, 1);
+
         }
 
 

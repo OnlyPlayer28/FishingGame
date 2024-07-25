@@ -1,5 +1,5 @@
 ﻿using Core.Cameras;
-using Core.GameStateManagement;
+using Core.SceneManagement;
 using Fishing.Scripts.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using Core;
 using Core.Debug;
+using System.Globalization;
 
 namespace Fishing
 {
@@ -26,6 +27,10 @@ namespace Fishing
 
         internal static CameraManager cameraManager;
         internal static Vector2 resolution = new Vector2(128*5, 128*5);
+
+        static SpriteFont spriteFont;
+
+        public static float FPS { get; private set; }
 
         public Game1()
         {
@@ -62,6 +67,8 @@ namespace Fishing
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             stateManager.LoadContent(contentManager);
             cameraManager.LoadContent(contentManager);
+
+            spriteFont = Content.Load<SpriteFont>("Fonts/Font_Pixel");
             // TODO: use this.Content to load your game content here
         }
 
@@ -70,7 +77,7 @@ namespace Fishing
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-
+            FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
             if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
@@ -95,6 +102,7 @@ namespace Fishing
 
 
             _spriteBatch.Begin(transformMatrix:cameraManager.GetCurrentCamera().transformMatrixNoScaling);
+            _spriteBatch.DrawString(spriteFont, "fps:"+FPS.ToString("F2",CultureInfo.InvariantCulture), new Vector2(2, 2), Color.White);
 
             _spriteBatch.End();
             // TODO: Add your drawing code here
