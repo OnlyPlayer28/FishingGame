@@ -35,11 +35,11 @@ namespace Core
             switch ((int)mouseButton)
             {
                 case 0:
-                    if(currentMouseState.LeftButton == ButtonState.Pressed&&previousMouseState.LeftButton == ButtonState.Released) 
+                    if(Mouse.GetState().LeftButton == ButtonState.Pressed&&previousMouseState.LeftButton == ButtonState.Released) 
                     { return true; }
                     break;
                 case 1:
-                    if (currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released)
+                    if (Mouse.GetState().RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released)
                     { return true; }
                     break;
                 default:

@@ -90,5 +90,12 @@ namespace TopDownShooter.Core
             // Return the rotated vector
             return new Vector2(newX, newY);
         }*/
+
+        public static Vector2 MoveToward(Vector2 position, Vector2 positionToMoveTowards,float speed) 
+        {
+            Vector2 direction = positionToMoveTowards - position;
+            direction.Normalize();
+            return (float)(position - positionToMoveTowards).Length() <.2f? positionToMoveTowards:position+ (direction)*speed;
+        }
     }
 }

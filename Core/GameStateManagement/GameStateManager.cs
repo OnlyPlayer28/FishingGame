@@ -46,6 +46,10 @@ namespace Core.GameStateManagement
         {
             return gameStates.Where(p=>p.isActive).FirstOrDefault();
         }
+        public T GetActiveGameState<T>()
+        {
+            return gameStates.Where(p => p.isActive).FirstOrDefault() is T obj? obj:default;
+        }
         public  void Draw(SpriteBatch spriteBatch)
         {
             foreach (var item in gameStates)

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
 using Core;
+using Core.Debug;
 
 namespace Fishing
 {
@@ -28,6 +29,7 @@ namespace Fishing
 
         public Game1()
         {
+
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = (int)resolution.X; _graphics.PreferredBackBufferHeight =(int)resolution.Y;
             Content.RootDirectory = "Content";
@@ -44,12 +46,15 @@ namespace Fishing
 
         protected override void Initialize()
         {
+            LineTool.Initialize(GraphicsDevice);
             fishingState = new FishingState("fishingState");
             mainMenuState = new MainMenuState("mainMenuState");
             // TODO: Add your initialization logic here
             stateManager = new GameStateManager(mainMenuState, fishingState).SetActive(true,"fishingState");
             
             base.Initialize();
+
+
         }
 
         protected override void LoadContent()
@@ -85,6 +90,12 @@ namespace Fishing
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointClamp,transformMatrix: cameraManager.GetCurrentMatrix());
             stateManager.Draw(_spriteBatch);
+            LineTool.Draw(_spriteBatch);
+            _spriteBatch.End();
+
+
+            _spriteBatch.Begin(transformMatrix:cameraManager.GetCurrentCamera().transformMatrixNoScaling);
+
             _spriteBatch.End();
             // TODO: Add your drawing code here
 

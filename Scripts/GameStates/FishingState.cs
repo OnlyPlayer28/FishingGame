@@ -14,13 +14,13 @@ namespace Fishing.Scripts.GameStates
     internal class FishingState : GameState
     {
 
-        public static Sprite backgroundSprite { get; set; }
-        public static Sprite boat { get; set; }
+        public  Sprite backgroundSprite { get; set; }
+        public  FishingBoat boat { get; set; }
         public FishingState(string name, bool isActive = false, bool isDrawing = false) 
             : base(name, isActive, isDrawing)
         {
             backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean","oceanBackground");
-            boat = new Sprite(new Vector2(50, 45), new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat");
+            boat = new FishingBoat(new Vector2(-2, 45),new Vector2(50,45));
             components.Add(backgroundSprite);
             components.Add(boat);
         }

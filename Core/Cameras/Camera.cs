@@ -21,6 +21,7 @@ namespace Core.Cameras
         public bool isCentered { get; private set; }
 
         public Matrix transformMatrix { get; private set; }
+        public Matrix transformMatrixNoScaling { get; private set; }
 
         private bool isShaking { get; set; } = false;
         private float shakeDuration { get; set; } = 0;
@@ -58,7 +59,7 @@ namespace Core.Cameras
         public void Update(GameTime gameTime)
         {
   
-            transformMatrix = Matrix.CreateScale(zoom, zoom, 1);
+
             if(isShaking)
             {
                 shakeDuration-=(float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -68,14 +69,14 @@ namespace Core.Cameras
             if(shakeDuration <= 0){ isShaking=false;offset = Vector2.Zero; }
             if (objectToFollow != null)
             {
-                transformMatrix *= Matrix.CreateTranslation(-objectToFollow.position.X + position.X, -objectToFollow.position.Y + position.Y, 0);
-            }
-            else
-            {
-                transformMatrix *= Matrix.CreateTranslation(position.X,  position.Y, 0);
+                transformMatrix *= Matrix.CreateTranslation(-objectToFollow.position.X, -objectToFollow.position.Y, 0);
             }
 
-            transformMatrix*=Matrix.CreateTranslation(offset.X, offset.Y, 0);
+            transformMatrix *=Matrix.CreateTranslation(offset.X+position.X, offset.Y+position.Y, 0);
+
+            transformMatrixNoScaling =  Matrix.CreateTranslation(zoom, zoom, 0);
+
+            transformMatrix = Matrix.CreateScale(zoom, zoom, 1);
         }
 
 
