@@ -50,3 +50,35 @@
 #begin Fonts/PixelFJVerdana12pt.ttf
 /copy:Fonts/PixelFJVerdana12pt.ttf
 
+#begin Fonts/Verdana_10px.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/Verdana_10px.png
+
+#begin Fonts/Verdana_12px.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/Verdana_12px.png
+
+#begin Fonts/Verdana_15.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/Verdana_15.png
+
+#begin Fonts/Verdana_20.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:Fonts/Verdana_20.png
+

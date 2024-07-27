@@ -11,11 +11,11 @@ using Core.SceneManagement;
 
 namespace Core.SceneManagement
 {
-     internal class GameStateManager : IComponent
+     internal class SceneManagement : IComponent
     {
-        public List<Scene> gameStates { get; private set; }
+        public List<IScene> gameStates { get; private set; }
 
-        public GameStateManager(params Scene[] gameStates)
+        public SceneManagement(params IScene[] gameStates)
         {
             this.gameStates = gameStates.ToList();
 
@@ -25,24 +25,24 @@ namespace Core.SceneManagement
 
             gameStates.ForEach(p=>p.LoadContent(contentManager));
         }
-        public GameStateManager SetActive(bool active,string sceneToSet)
+        public SceneManagement SetActive(bool active,string sceneToSet)
         {
             gameStates.ForEach(p => p.SetActive(false));
             gameStates.First(p=>p.name == sceneToSet).SetActive(active);
             return this;
         }
 
-        public Scene GetGameState(string name)
+        public IScene GetGameState(string name)
         {
             return gameStates.Where(p=>p.name ==  name).FirstOrDefault();
         }
 
-        public Scene GetGameState<T>(T gameState)
+        public IScene GetGameState<T>(T gameState)
         {
             return gameStates.Where(p=>p.GetType()== typeof(T)).FirstOrDefault();
         }
 
-        public Scene GetActiveGameState()
+        public IScene GetActiveGameState()
         {
             return gameStates.Where(p=>p.isActive).FirstOrDefault();
         }
@@ -63,6 +63,14 @@ namespace Core.SceneManagement
             foreach (var item in gameStates)
             {
                 if ((item.isActive || item.isDrawing)) { (item).DrawUI(spriteBatch); }
+            }
+        }
+
+        public void DrawText(SpriteBatch spriteBatch)
+        {
+            foreach (var item in gameStates)
+            {
+                if ((item.isActive || item.isDrawing)) { (item).DrawText(spriteBatch); }
             }
         }
 

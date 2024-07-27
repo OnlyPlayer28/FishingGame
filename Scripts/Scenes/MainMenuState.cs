@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Fishing.Scripts.GameStates
+namespace Fishing.Scripts.Scenes
 {
-    internal class MainMenuState : Scene
+    internal class MainMenuState : IScene
     {
         public MainMenuState(string name, bool isActive = false, bool isDrawing = false) 
             : base(name, isActive, isDrawing)
@@ -21,6 +21,10 @@ namespace Fishing.Scripts.GameStates
         public override void Draw(SpriteBatch spriteBatch)
         {
 
+        }
+
+        public override void DrawText(SpriteBatch spriteBatch)
+        {
         }
 
         public override void DrawUI(SpriteBatch spriteBatch)

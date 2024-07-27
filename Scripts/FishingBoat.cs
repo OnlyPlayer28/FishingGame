@@ -19,6 +19,7 @@ namespace Fishing.Scripts
         Default,
         Descending,
         WaitingForFish,
+        HookingFish,
         FishingMinigame,
         Ascending
     }
@@ -40,26 +41,52 @@ namespace Fishing.Scripts
         private float bobberDescendingSpeed { get; set; } = 15f;
         private float bobberAscendingSpeed { get; set; } = 25f;
 
+
+        private Vector2 minAndMaxWaitingTimeForFish { get; set; } = new Vector2(2, 6);
+        private float waitingTime { get; set; } = 0f;
+        public EventHandler FishHookEvent { get; set; }
+
+        private float currentTimeToCatchFish;
+
+        Line line;
         public FishingBoat(Vector2 spawnPosition,Vector2 positionToMoveTo)
         {
-            boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat");
+            boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.005f).SetOrigin(new Vector2(14,-7));
             this.positionToMoveTo = positionToMoveTo;
             bobber = new Line(Vector2.One,Vector2.One,Color.Red);
+
+            line = new Line(Vector2.Zero, boat.size, Color.Green);
+
+            boat.position = this.positionToMoveTo;
         }
 
         public void LoadContent(ContentManager contentManager)
         {
             boat.LoadContent(Game1.contentManager);
         }
-
+        int direction = 1;
         public void Update(GameTime gameTime)
         {
-            
-            boat.position = Helper.MoveToward(boat.position,positionToMoveTo,moveSpeed*(float)gameTime.ElapsedGameTime.TotalSeconds);
-            if(boat.position== positionToMoveTo&&fishingState==FishingState.BoatIsMoving){ fishingState = FishingState.Default; }
+            //Boat rotation 
+            /*float rotationSpeed = 2f;
+            boat.rotation += MathHelper.ToRadians(1 * rotationSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds * direction;
+            if (MathHelper.ToDegrees(boat.rotation) > 4)
+            {
+                Console.WriteLine("changed direction to -1");
+                direction = -1;
+            }
+            if (MathHelper.ToDegrees(boat.rotation) < -4)
+            {
+                Console.WriteLine("changed direction to 1");
+                direction = 1;
+            }*/
 
             boat.Update(gameTime);
-            bobberRestingPosition = boat.position + new Vector2(boat.size.X + 3, -boat.size.Y);
+
+            boat.position= Helper.MoveToward(boat.position,positionToMoveTo,moveSpeed*(float)gameTime.ElapsedGameTime.TotalSeconds);
+            if(boat.position== positionToMoveTo&&fishingState==FishingState.BoatIsMoving){ fishingState = FishingState.Default; }
+
+            bobberRestingPosition = boat.position + new Vector2(boat.size.X +5, -(boat.size.Y/2));
 
             if(InputManager.IsMouseButtonPressed(0))
             {
@@ -69,6 +96,7 @@ namespace Fishing.Scripts
                         fishingState = FishingState.Descending;
                         break;
                     case FishingState.Descending:
+                        currentTimeToCatchFish = Game1.player.CalculateCurrentFishCatchTime(minAndMaxWaitingTimeForFish);
                         fishingState = FishingState.WaitingForFish;
                         break;
                     case FishingState.WaitingForFish:
@@ -78,6 +106,10 @@ namespace Fishing.Scripts
                         break;
                     case FishingState.Ascending:
                         fishingState = FishingState.WaitingForFish;
+                        break;
+                    case FishingState.HookingFish:
+                        Console.WriteLine("hooked fish in: {0}!" + waitingTime);
+                        fishingState = FishingState.FishingMinigame;
                         break;
                     default:
                         break;
@@ -93,10 +125,28 @@ namespace Fishing.Scripts
                     bobber.position += new Vector2(0, bobberDescendingSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case FishingState.WaitingForFish:
+                    waitingTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if(waitingTime>= currentTimeToCatchFish)
+                    {
+                        Console.WriteLine("a fish has appeared!");
+                        waitingTime = Game1.player.fishHookReactionTime;
+                        fishingState = FishingState.HookingFish;
+
+                    }
+                    break;
                 case FishingState.FishingMinigame:
                     break;
                 case FishingState.Ascending:
                     bobber.position -= new Vector2(0, bobberAscendingSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    break;
+                case FishingState.HookingFish:
+                    waitingTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if(waitingTime < -0)
+                    {
+                        Console.WriteLine("failed to hook fish :(");
+                        waitingTime = 0;
+                        fishingState = FishingState.WaitingForFish;
+                    }
                     break;
                 default:
                     break;
@@ -112,6 +162,8 @@ namespace Fishing.Scripts
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            /*line.position = boat.position;
+            line.Draw(spriteBatch);*/
             boat.Draw(spriteBatch);
             if (fishingState != FishingState.BoatIsMoving)
             {

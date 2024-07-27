@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.SceneManagement
 {
-    internal abstract class Scene : IComponent
+    internal abstract class IScene : IComponent
     {
         public string name { get; }
         public bool isActive { get; protected set; }
@@ -18,14 +18,14 @@ namespace Core.SceneManagement
 
         public List<IComponent> components { get; set; } = new List<IComponent>();
 
-        public Scene(string name, bool isActive = false, bool isDrawing = false)
+        public IScene(string name, bool isActive = false, bool isDrawing = false)
         {
             this.name = name;
             this.isActive = isActive;
             this.isDrawing = isDrawing;
         }
 
-        public Scene SetActive(bool active)
+        public IScene SetActive(bool active)
         {
             isActive = active;
             return this;
@@ -35,5 +35,6 @@ namespace Core.SceneManagement
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void DrawUI(SpriteBatch spriteBatch);
+        public abstract void DrawText(SpriteBatch spriteBatch);
     }
 }
