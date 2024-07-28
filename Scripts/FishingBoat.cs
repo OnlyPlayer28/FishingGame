@@ -1,6 +1,7 @@
 ﻿using Core;
 using Core.Components;
 using Core.Debug;
+using Fishing.Scripts.Minigames;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,10 @@ using TopDownShooter.Core;
 
 namespace Fishing.Scripts
 {
+    public class FishHookEventArgs : EventArgs
+    {
+        public FishingMinigame fishingMinigame;
+    }
     public enum FishingState
     {
         BoatIsMoving,
@@ -44,42 +49,37 @@ namespace Fishing.Scripts
 
         private Vector2 minAndMaxWaitingTimeForFish { get; set; } = new Vector2(2, 6);
         private float waitingTime { get; set; } = 0f;
-        public EventHandler FishHookEvent { get; set; }
+        public EventHandler<FishHookEventArgs> OnFishHookEvent { get; set; }
 
         private float currentTimeToCatchFish;
+
+        public FishingMinigame minigame { get;private set; }
 
         Line line;
         public FishingBoat(Vector2 spawnPosition,Vector2 positionToMoveTo)
         {
-            boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.005f).SetOrigin(new Vector2(14,-7));
+            boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.5f).SetOrigin(new Vector2(14,-7));
             this.positionToMoveTo = positionToMoveTo;
             bobber = new Line(Vector2.One,Vector2.One,Color.Red);
 
             line = new Line(Vector2.Zero, boat.size, Color.Green);
 
             boat.position = this.positionToMoveTo;
+
+            if (Game1.player != null)
+            {
+                OnFishHookEvent += Game1.player.OnFishHook;
+            }
         }
 
         public void LoadContent(ContentManager contentManager)
         {
             boat.LoadContent(Game1.contentManager);
         }
-        int direction = 1;
+
         public void Update(GameTime gameTime)
         {
             //Boat rotation 
-            /*float rotationSpeed = 2f;
-            boat.rotation += MathHelper.ToRadians(1 * rotationSpeed) * (float)gameTime.ElapsedGameTime.TotalSeconds * direction;
-            if (MathHelper.ToDegrees(boat.rotation) > 4)
-            {
-                Console.WriteLine("changed direction to -1");
-                direction = -1;
-            }
-            if (MathHelper.ToDegrees(boat.rotation) < -4)
-            {
-                Console.WriteLine("changed direction to 1");
-                direction = 1;
-            }*/
 
             boat.Update(gameTime);
 
@@ -88,7 +88,12 @@ namespace Fishing.Scripts
 
             bobberRestingPosition = boat.position + new Vector2(boat.size.X +5, -(boat.size.Y/2));
 
-            if(InputManager.IsMouseButtonPressed(0))
+            if (fishingState == FishingState.FishingMinigame)
+            {
+                minigame.Update(gameTime);
+            }
+
+            if (InputManager.IsMouseButtonPressed(0,Game1.isFocused))
             {
                 switch (fishingState)
                 {
@@ -108,7 +113,9 @@ namespace Fishing.Scripts
                         fishingState = FishingState.WaitingForFish;
                         break;
                     case FishingState.HookingFish:
-                        Console.WriteLine("hooked fish in: {0}!" + waitingTime);
+                        Console.WriteLine("hooked fish in: {0} seconds!" + waitingTime);
+                        minigame = new FishingMinigame(0, new Vector2(70, 40), 0);
+                        OnFishHookEvent?.Invoke(this, new FishHookEventArgs { fishingMinigame = minigame });
                         fishingState = FishingState.FishingMinigame;
                         break;
                     default:
@@ -168,6 +175,10 @@ namespace Fishing.Scripts
             if (fishingState != FishingState.BoatIsMoving)
             {
                 bobber.Draw(spriteBatch);
+            }
+            if(fishingState == FishingState.FishingMinigame)
+            {
+                minigame.Draw(spriteBatch);
             }
         }
     }

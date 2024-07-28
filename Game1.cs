@@ -38,6 +38,10 @@ namespace Fishing
 
         public static SpriteFont Font_10;
 
+        public static Color gold = new Color(192, 139, 59);
+
+        public static bool isFocused { get; private set; }
+
         public Game1()
         {
 
@@ -58,11 +62,11 @@ namespace Fishing
         protected override void Initialize()
         {
             LineTool.Initialize(GraphicsDevice);
-            fishingState = new FishingScene("fishingState");
-            mainMenuState = new MainMenuState("mainMenuState");
+            fishingState = new FishingScene("fishingScene");
+            mainMenuState = new MainMenuState("mainMenuScene");
             player= new Player();
             // TODO: Add your initialization logic here
-            stateManager = new SceneManagement(mainMenuState, fishingState).SetActive(true,"fishingState");
+            stateManager = new SceneManagement(mainMenuState, fishingState).SetActive(true,"fishingScene");
             
             base.Initialize();
 
@@ -85,11 +89,13 @@ namespace Fishing
 
         protected override void Update(GameTime gameTime)
         {
+            isFocused = this.IsActive;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            
 
             if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
             {

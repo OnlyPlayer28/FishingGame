@@ -30,8 +30,9 @@ namespace Core
             currentKeyobardState = Keyboard.GetState();
         }
 
-        public static bool IsMouseButtonPressed(MouseButton mouseButton)
+        public static bool IsMouseButtonPressed(MouseButton mouseButton,bool isFocused = true)
         {
+            if (!isFocused) { return false; }
             switch ((int)mouseButton)
             {
                 case 0:
