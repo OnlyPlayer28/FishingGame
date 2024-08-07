@@ -4,6 +4,7 @@ using Fishing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Core.UI
     internal class Canvas:ITaggable,IComponent,IActive
     {
         public List<IUIElement> elements { get; set; }
+        public List<ICLickable> clickableUI { get; set; }
         public List<Text> textElements { get; set; }
         public string name { get; set; }
         public bool isActive { get; set ; }
@@ -28,7 +30,19 @@ namespace Core.UI
             this.isActive = isActive;
         }
 
-
+        public void OnMouseClick(Object sender,MouseInputEventArgs e)
+        {
+            if (InputManager.inputState == GameInputState.Gameplay) { return; }
+            foreach (var item in clickableUI)
+            {
+                if(e.mouseRect.Intersects(new Rectangle((int)item.position.X, (int)item.position.Y, (int)item.size.X, (int)item.size.Y)))
+                {
+                    item.OnMouseClick();
+                    return;
+                }
+            }
+            
+        }
         public void LoadContent(ContentManager contentManager)
         {
             elements.ForEach(p=>p.LoadContent(Game1.contentManager));
@@ -41,12 +55,23 @@ namespace Core.UI
         public void AddUIELement(IUIElement uIElement)
         {
             elements.Add(uIElement);
+            elements.OrderBy(p => p.layer);
+        }
+        public void AddClickableElement (ICLickable clickable)
+        {
+            clickableUI.Add(clickable);
+            clickableUI.OrderBy(p => p.layer);
         }
         public void Update(GameTime gameTime)
         {
             if(isActive)
             {
-                elements.ForEach(p=>p.Update(gameTime));
+                //Add checking for mouseHover so that gameInput state can be set to semi UI.Also IClickable should register only if the input state is semiUI or UI.
+                //So that should be implemented
+                foreach (var item in elements)
+                {
+                    item.Update(gameTime);
+                }
             }
         }
         public void DrawText(SpriteBatch spriteBatch)

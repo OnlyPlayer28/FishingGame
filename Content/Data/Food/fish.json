@@ -1,0 +1,28 @@
+[
+  {
+    "ID": 0,
+    "name": "bluefin tuna",
+    "sprite": {
+      "name": "",
+      "spriteRect": {
+        "X": 0,
+        "Y": 0,
+        "Width": 0,
+        "Height": 0
+      },
+      "position": "0, 0",
+      "origin": "0, 0",
+      "size": "16, 11",
+      "color": {
+        "B": 255,
+        "G": 255,
+        "R": 255,
+        "A": 255
+      },
+      "rotation": 0.0,
+      "layer": 0.0
+    },
+    "price": 15,
+    "species": 1
+  }
+]

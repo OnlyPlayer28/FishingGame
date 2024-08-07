@@ -8,7 +8,23 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-
+    public class KeyboardInputEventArgs : EventArgs
+    {
+        public GameInputState inputState;
+        public Keys[] keys;
+    }
+    public class MouseInputEventArgs : EventArgs
+    {
+        public GameInputState inputState;
+        public Rectangle mouseRect;
+        public MouseButton mouseButton;
+    }
+    public enum GameInputState
+    {
+        Gameplay,
+        UI,
+        SemiUI
+    }
     public enum MouseButton
     {
         Left = 0, 
@@ -22,17 +38,34 @@ namespace Core
         private static KeyboardState previousKeyobardState;
         public static KeyboardState currentKeyobardState;
 
+        public static EventHandler<KeyboardInputEventArgs> OnKeyboardPressEvent;
+        public static EventHandler<MouseInputEventArgs> OnMouseClickEvent;
+        public static EventHandler<MouseInputEventArgs> OnMouseDownEvent;
+
+        public static GameInputState inputState { get;private set; }
+
         public static void Update(GameTime gameTime)
         {
+            if(IsMouseButtonPressed(0)||IsMouseButtonPressed(MouseButton.Right))
+            {
+                MouseButton button = IsMouseButtonPressed(0)?MouseButton.Left : MouseButton.Right;
+
+                OnMouseClickEvent?.Invoke(null, new MouseInputEventArgs { inputState = inputState ,mouseRect = new Rectangle(Mouse.GetState().Position.X,Mouse.GetState().Position.Y,1,1),mouseButton=button});
+            }
+            if(Keyboard.GetState().GetPressedKeyCount() > 0)
+            {
+                OnKeyboardPressEvent?.Invoke(null, new KeyboardInputEventArgs { inputState = inputState, keys = Keyboard.GetState().GetPressedKeys() });
+            }
             previousMouseState = Mouse.GetState();
             previousKeyobardState = Keyboard.GetState();
-            currentMouseState = Mouse.GetState();
-            currentKeyobardState = Keyboard.GetState();
         }
 
-        public static bool IsMouseButtonPressed(MouseButton mouseButton,bool isFocused = true)
+        /// <summary>
+        /// Don't use for checking input!Subscribe to the events instead.
+        /// </summary>
+        public static bool IsMouseButtonPressed(MouseButton mouseButton)
         {
-            if (!isFocused) { return false; }
+
             switch ((int)mouseButton)
             {
                 case 0:
@@ -53,18 +86,9 @@ namespace Core
         {
             return new Vector2(Mouse.GetState().X,Mouse.GetState().Y);
         }
-       /* public static Rectangle GetMouseRectWorld()
-        {
-            Matrix inverseMatrix = Matrix.Invert(Game1.WorldMatrix);
-            Vector2 position =  Vector2.Transform(new Vector2(Mouse.GetState().Position.X, Mouse.GetState().Position.Y),inverseMatrix);
-            return new Rectangle((int)position.X, (int)position.Y, 1, 1);
-        }
-        public static Rectangle GetMouseRectUI()
-        {
-            return new Rectangle(
-                (int)(Mouse.GetState().Position.X / Game1.UIScaleFactor), (int)(Mouse.GetState().Position.Y / Game1.UIScaleFactor), 1, 1);
-        }*/
-
+        /// <summary>
+        /// Don't use for checking input!Subscribe to the events instead.
+        /// </summary>
         public static bool AreKeysBeingPressedDown(bool allHaveToBePressed = false, params Keys[] keys)
         {
             
@@ -87,7 +111,9 @@ namespace Core
             }
             return true;
         }
-
+        /// <summary>
+        /// Don't use for checking input!Subscribe to the events instead.
+        /// </summary>
         public static bool AreKeysBeingHeldDown(Keys[] keys)
         {
 

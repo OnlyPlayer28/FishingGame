@@ -9,15 +9,19 @@ using System.Text;
 
 namespace Core.Components
 {
-    public  class Sprite :IComponent,IPosition
+    public class Sprite : IComponent, IPosition,ILayerable
     {
         public string name { get; set; }
         public Rectangle spriteRect { get; set; }
+
+        [JsonIgnore]
         private Rectangle tilemapLocationRect;
         public Vector2 position { get; set; }
 
         public Vector2 origin { get;private set; } = Vector2.Zero;
         public Vector2 size { get;  }
+
+        [JsonIgnore]
         private Texture2D texture;
         public Color color { get; private set; } = Color.White;
 
@@ -25,11 +29,11 @@ namespace Core.Components
         private float transparancy=1f;
         public float rotation { get;  set ; }
         private float scale=1f;
-        public float layer = 1f;
+        public float layer{get;set; }
 
 
         [JsonConstructor]
-        public Sprite(  Vector2 position, Vector2 size,Vector2 tilemapPosition,string texturePath,string name= "",float layer = 1f)
+        public Sprite(  Vector2 position, Vector2 size,Vector2 tilemapPosition,string texturePath,string name= "",float layer = 0f)
         {
             this.name = name;
             this.position = position;

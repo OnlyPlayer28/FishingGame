@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:Art/Backdrops/Ocean.png
 
+#begin Art/Food/fish.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Food/fish.png
+
 #begin Art/Props/Boat.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -51,6 +63,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Art/UI/UI.png
+
+#begin Data/Food/fish.json
+/copy:Data/Food/fish.json
 
 #begin Fonts/Font_Pixel.spritefont
 /importer:FontDescriptionImporter

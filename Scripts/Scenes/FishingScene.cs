@@ -9,6 +9,7 @@ using Core.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using TopDownShooter.Core;
 
 namespace Fishing.Scripts.Scenes
 {
@@ -23,13 +24,13 @@ namespace Fishing.Scripts.Scenes
         public FishingScene(string name, bool isActive = false, bool isDrawing = false) 
             : base(name, isActive, isDrawing)
         {
-            backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean","oceanBackground");
+            backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean","oceanBackground",layer:1);
             boat = new FishingBoat(new Vector2(0, 43),new Vector2(50,43));
             uiCanvas = new Canvas("fishingSceneCanvas", true);
             components.Add(backgroundSprite);
             components.Add(boat);
 
-            uiCanvas.AddTextElement(new Text(new Vector2(50,50),"heheheh, it works :)",Color.Red,Game1.Font_10));
+            uiCanvas.AddTextElement(new Text(new Vector2(50,50),$"{Helper.HexToInt("FF")}",Color.Red,Game1.Font_10));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

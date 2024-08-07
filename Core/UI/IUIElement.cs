@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.UI
 {
-    internal interface IUIElement : IComponent, IActive, ITaggable
+    internal interface IUIElement : IComponent, IActive, ITaggable,ILayerable
     {
 
     }

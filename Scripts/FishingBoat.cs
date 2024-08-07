@@ -55,12 +55,15 @@ namespace Fishing.Scripts
 
         public FishingMinigame minigame { get;private set; }
 
+        private int waterLevel { get; set; } = 51;
+        private bool stopBobberAfterReachingWaterlevel { get; set; } = false;
+
         Line line;
         public FishingBoat(Vector2 spawnPosition,Vector2 positionToMoveTo)
         {
             boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.5f).SetOrigin(new Vector2(14,-7));
             this.positionToMoveTo = positionToMoveTo;
-            bobber = new Line(Vector2.One,Vector2.One,Color.Red);
+            bobber = new Line(Vector2.One,Vector2.One,Color.Red,.5f);
 
             line = new Line(Vector2.Zero, boat.size, Color.Green);
 
@@ -76,7 +79,10 @@ namespace Fishing.Scripts
         {
             boat.LoadContent(Game1.contentManager);
         }
-
+        public void ResetFishCatchTime()
+        {
+            currentTimeToCatchFish = Game1.player.CalculateCurrentFishCatchTime(minAndMaxWaitingTimeForFish);
+        }
         public void Update(GameTime gameTime)
         {
             //Boat rotation 
@@ -92,8 +98,9 @@ namespace Fishing.Scripts
             {
                 minigame.Update(gameTime);
             }
+            //implement depth checking
 
-            if (InputManager.IsMouseButtonPressed(0,Game1.isFocused))
+            if (InputManager.IsMouseButtonPressed(0))
             {
                 switch (fishingState)
                 {
@@ -101,8 +108,15 @@ namespace Fishing.Scripts
                         fishingState = FishingState.Descending;
                         break;
                     case FishingState.Descending:
-                        currentTimeToCatchFish = Game1.player.CalculateCurrentFishCatchTime(minAndMaxWaitingTimeForFish);
-                        fishingState = FishingState.WaitingForFish;
+                        if (bobber.position.Y >= waterLevel)
+                        {
+                            ResetFishCatchTime();
+                            fishingState = FishingState.WaitingForFish;
+                        }else
+                        {
+
+                            stopBobberAfterReachingWaterlevel = true;
+                        }
                         break;
                     case FishingState.WaitingForFish:
                         fishingState = FishingState.Ascending;
@@ -157,6 +171,13 @@ namespace Fishing.Scripts
                     break;
                 default:
                     break;
+            }
+
+            if(stopBobberAfterReachingWaterlevel&&bobber.position.Y > waterLevel)
+            {
+                ResetFishCatchTime();
+                fishingState = FishingState.WaitingForFish;
+                stopBobberAfterReachingWaterlevel = false;
             }
             if((bobber.position.Y< bobberRestingPosition.Y||bobber.position.Y > maxDepth)&&fishingState!=FishingState.BoatIsMoving) 
             { 

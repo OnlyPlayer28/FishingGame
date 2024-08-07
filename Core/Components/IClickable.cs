@@ -6,27 +6,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fishing.Core.Components
+namespace Core.Components
 {
-    internal abstract class ICLickable : IActive
+    public abstract class ICLickable : IActive,ILayerable
     {
-        private Vector2 _position { get; set; }
-        private Vector2 _size { get; set; }
+        public Vector2 position { get; set; }
+        public Vector2 size { get; set; }
 
         private Rectangle _bounds { get; set; }
-
+        public  bool isActive { get; set; }
+        public  float layer { get; set; }
         public ICLickable(Vector2 position, Vector2 size, bool isActive)
         {
-            _position = position;
-            _size = size;
+            this.position = position;
+            this.size = size;
             this.isActive = isActive;
         }
 
-        public void ReceiveMouseClick()
-        {
+        public abstract void OnMouseClick();
 
-        }
-        public abstract bool isActive { get ; set; }
+
         public Rectangle GetClickableBound()
         {
             return _bounds;

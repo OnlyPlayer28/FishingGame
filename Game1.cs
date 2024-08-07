@@ -12,6 +12,12 @@ using Core.Debug;
 using System.Globalization;
 using Fishing.Scripts;
 using Core.Components;
+using TopDownShooter.Core;
+using System.Collections.Generic;
+using Fishing.Core;
+using System.Linq;
+using Core.InventoryManagement;
+using Fishing.Scripts.Food;
 
 namespace Fishing
 {
@@ -42,10 +48,16 @@ namespace Fishing
 
         public static bool isFocused { get; private set; }
 
+        public RenderTarget2D depthBuffer;
+
+        public static List<IAddableToInventory> itemRegistry;
+
         public Game1()
         {
+            itemRegistry = new List<IAddableToInventory>();
 
             _graphics = new GraphicsDeviceManager(this);
+            //depthBuffer = new RenderTarget2D(_graphics, (int)resolution.X, (int)resolution.Y);
             _graphics.PreferredBackBufferWidth = (int)resolution.X; _graphics.PreferredBackBufferHeight =(int)resolution.Y;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -56,18 +68,23 @@ namespace Fishing
             string textFile = File.ReadAllText(contentManager.RootDirectory + "/Art/test.txt");
             Console.WriteLine(textFile);
             Console.WriteLine(contentManager.RootDirectory);
+            Helper.HexToRgb("#943989");
 
+            /*itemRegistry.Add(new Fish(0, "bluefin tuna", new Sprite(Vector2.Zero, new Vector2(16, 11), Vector2.Zero, "Art/Food/fish"), 15, FishSpecies.Tuna));
+            FileWriter.WriteJson(itemRegistry, "C:/Users/bruno/OneDrive/Počítač/fish.json");*/
+            
         }
 
         protected override void Initialize()
         {
+
             LineTool.Initialize(GraphicsDevice);
             fishingState = new FishingScene("fishingScene");
             mainMenuState = new MainMenuState("mainMenuScene");
             player= new Player();
             // TODO: Add your initialization logic here
             stateManager = new SceneManagement(mainMenuState, fishingState).SetActive(true,"fishingScene");
-            
+
             base.Initialize();
 
 
@@ -116,6 +133,7 @@ namespace Fishing
             _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointClamp,transformMatrix: cameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.Default);
             stateManager.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
+
             _spriteBatch.End();
 
 
@@ -129,6 +147,8 @@ namespace Fishing
 
             stateManager.DrawUI(_spriteBatch);
             _spriteBatch.End();
+
+           // GraphicsDevice.SetRenderTarget(depthBuffer);
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

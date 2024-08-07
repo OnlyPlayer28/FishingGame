@@ -12,6 +12,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TopDownShooter.Core
 {
+
+    public enum HexValues
+    {
+        A=10,
+        B=11, 
+        C=12, 
+        D=13, 
+        E=14, 
+        F=15
+    }
     public static class Helper
     {
         /*public static Vector2 GetAnchorPosition(AnchorPoint anchorPoint)
@@ -54,48 +64,86 @@ namespace TopDownShooter.Core
             return positon/Game1.UIScaleFactor;
         }*/
 
-       /* public static float RotateTowards(Vector2 positionToRotateTowards,Vector2 objectToRotate)
-        {
+        /* public static float RotateTowards(Vector2 positionToRotateTowards,Vector2 objectToRotate)
+         {
 
-           Vector2 direction = positionToRotateTowards - objectToRotate;
-            return (float)Math.Atan2(direction.Y,direction.X);
+            Vector2 direction = positionToRotateTowards - objectToRotate;
+             return (float)Math.Atan2(direction.Y,direction.X);
 
-        }
+         }
 
-        public static Vector2 ScreenToWorldSpace(in Vector2 vectorToConvert)
-        {
-            Matrix inverseMatrix = Matrix.Invert(Game1.WorldMatrix);
-            return Vector2.Transform(vectorToConvert, inverseMatrix);
-        }
-        public static Vector2 WorldToScreenSpace(in Vector2 vectorToConvert)
-        {
-            Matrix inverseMatrix = Matrix.Invert(Game1.WorldMatrix);
-            Vector2 cameraSpacePosition = Vector2.Transform(vectorToConvert,inverseMatrix);
-            Viewport viewport = new Viewport(0,0,(int)Game1.defaultResolution.X,(int)Game1.defaultResolution.Y);
-            return new Vector2((cameraSpacePosition.X + 1) * viewport.Width / 2, (cameraSpacePosition.Y + 1) * viewport.Height / 2);
-        }
-        public static Vector2 RotateVector(Vector2 direction, float degrees)
-        {
-            // Convert degrees to radians
-            float radians = MathHelper.ToRadians(degrees);
+         public static Vector2 ScreenToWorldSpace(in Vector2 vectorToConvert)
+         {
+             Matrix inverseMatrix = Matrix.Invert(Game1.WorldMatrix);
+             return Vector2.Transform(vectorToConvert, inverseMatrix);
+         }
+         public static Vector2 WorldToScreenSpace(in Vector2 vectorToConvert)
+         {
+             Matrix inverseMatrix = Matrix.Invert(Game1.WorldMatrix);
+             Vector2 cameraSpacePosition = Vector2.Transform(vectorToConvert,inverseMatrix);
+             Viewport viewport = new Viewport(0,0,(int)Game1.defaultResolution.X,(int)Game1.defaultResolution.Y);
+             return new Vector2((cameraSpacePosition.X + 1) * viewport.Width / 2, (cameraSpacePosition.Y + 1) * viewport.Height / 2);
+         }
+         public static Vector2 RotateVector(Vector2 direction, float degrees)
+         {
+             // Convert degrees to radians
+             float radians = MathHelper.ToRadians(degrees);
 
-            // Calculate sine and cosine of the angle
-            float cosTheta = (float)Math.Cos(radians);
-            float sinTheta = (float)Math.Sin(radians);
+             // Calculate sine and cosine of the angle
+             float cosTheta = (float)Math.Cos(radians);
+             float sinTheta = (float)Math.Sin(radians);
 
-            // Perform rotation
-            float newX = direction.X * cosTheta - direction.Y * sinTheta;
-            float newY = direction.X * sinTheta + direction.Y * cosTheta;
+             // Perform rotation
+             float newX = direction.X * cosTheta - direction.Y * sinTheta;
+             float newY = direction.X * sinTheta + direction.Y * cosTheta;
 
-            // Return the rotated vector
-            return new Vector2(newX, newY);
-        }*/
+             // Return the rotated vector
+             return new Vector2(newX, newY);
+         }*/
 
         public static Vector2 MoveToward(Vector2 position, Vector2 positionToMoveTowards,float speed) 
         {
             Vector2 direction = positionToMoveTowards - position;
             direction.Normalize();
             return (float)(position - positionToMoveTowards).Length() <.2f? positionToMoveTowards:position+ (direction)*speed;
+        }
+
+        public static int HexToInt(string hex)
+        {
+            List<char> letters = hex.ToList();
+            letters.Reverse();
+            int total = 0;
+            for (int i = 0; i < letters.Count; i++)
+            {
+                int number =0;
+                if (Int16.TryParse(letters[i].ToString(), out short n))
+                {
+                    number = n;
+                }
+                else 
+                {
+                    number = (int)Enum.Parse(typeof(HexValues), letters[i].ToString().ToUpper());
+                }
+                number *= (int)Math.Pow(16, i);
+                total += number;
+            }
+            return total;
+        }
+
+        public static Color HexToRgb(string hex)
+        {
+
+            if (hex.Contains('#'))
+            {
+                hex = hex.Replace('#',' ').Trim();
+            }
+            char[] hexSplit = hex.ToCharArray();
+
+            int red = HexToInt(hexSplit[0].ToString() + hexSplit[1].ToString());
+            int green = HexToInt(hexSplit[2].ToString() + hexSplit[3].ToString());
+            int blue = HexToInt(hexSplit[4].ToString() + hexSplit[5].ToString());
+
+            return new Color(red, green, blue);
         }
     }
 }
