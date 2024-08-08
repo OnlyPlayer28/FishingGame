@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Core.Cameras;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Core
         public static EventHandler<MouseInputEventArgs> OnMouseClickEvent;
         public static EventHandler<MouseInputEventArgs> OnMouseDownEvent;
 
-        public static GameInputState inputState { get;private set; }
+        public static GameInputState inputState { get; set; }
 
         public static void Update(GameTime gameTime)
         {
@@ -85,6 +86,12 @@ namespace Core
         public static Vector2 GetMousePosition()
         {
             return new Vector2(Mouse.GetState().X,Mouse.GetState().Y);
+        }
+
+        public static Rectangle GetMouseRect()
+        {
+
+            return new Rectangle((int)(Mouse.GetState().Position.X/CameraManager.GetCurrentCamera().zoom), (int)(Mouse.GetState().Position.Y/ CameraManager.GetCurrentCamera().zoom), 1, 1);
         }
         /// <summary>
         /// Don't use for checking input!Subscribe to the events instead.

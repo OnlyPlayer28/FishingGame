@@ -8,10 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fishing;
+using Core.Cameras;
 
 namespace Core.UI
 {
-    internal class Text : IComponent, ITaggable
+    public class Text : IComponent, ITaggable
     {
         public string name { get; set; }
 
@@ -26,7 +27,7 @@ namespace Core.UI
 
         public Text(Vector2 position,string text,Color color, SpriteFont font ,string name="defaultText",float layer = .1f)
         {
-            this.position = position;   
+            this.position = position*CameraManager.GetCurrentCamera().zoom;   
             this.text = text;
             this.color = color;
             this.name = name;
@@ -37,7 +38,7 @@ namespace Core.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, text, position, color);
+            spriteBatch.DrawString(font, text, position, color,0,Vector2.Zero,1,SpriteEffects.None,layer);
         }
 
         public void LoadContent(ContentManager contentManager)

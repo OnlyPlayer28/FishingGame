@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Debug;
-using TopDownShooter.Core;
 using Core;
 using Fishing.Scripts.Scenes;
 

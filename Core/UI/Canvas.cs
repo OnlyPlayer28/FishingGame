@@ -1,5 +1,6 @@
 ﻿using Core.Components;
 using Core.UI;
+using Core.UI.Elements;
 using Fishing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -24,24 +25,28 @@ namespace Core.UI
 
         public Canvas( string name, bool isActive)
         {
+            InputManager.OnMouseClickEvent += OnMouseClick;
             this.elements = new List<IUIElement>();
             textElements = new List<Text>();
+            clickableUI = new List<ICLickable>();
             this.name = name;
             this.isActive = isActive;
         }
 
         public void OnMouseClick(Object sender,MouseInputEventArgs e)
         {
+
             if (InputManager.inputState == GameInputState.Gameplay) { return; }
             foreach (var item in clickableUI)
             {
-                if(e.mouseRect.Intersects(new Rectangle((int)item.position.X, (int)item.position.Y, (int)item.size.X, (int)item.size.Y)))
+                if(InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position,item.size)))
                 {
                     item.OnMouseClick();
-                    return;
+                    InputManager.inputState = GameInputState.UI;
+                    break;
                 }
             }
-            
+
         }
         public void LoadContent(ContentManager contentManager)
         {
@@ -55,12 +60,12 @@ namespace Core.UI
         public void AddUIELement(IUIElement uIElement)
         {
             elements.Add(uIElement);
-            elements.OrderBy(p => p.layer);
+            elements = elements.OrderBy(p => p.layer).ToList();
         }
         public void AddClickableElement (ICLickable clickable)
         {
             clickableUI.Add(clickable);
-            clickableUI.OrderBy(p => p.layer);
+           clickableUI =  clickableUI.OrderBy(p => p.layer).ToList();
         }
         public void Update(GameTime gameTime)
         {
@@ -72,6 +77,25 @@ namespace Core.UI
                 {
                     item.Update(gameTime);
                 }
+                foreach (var item in clickableUI)
+                {
+                    item.Update(gameTime);
+                    if (InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position, item.size)))
+                    {
+                        item.OnMouseOver(this, EventArgs.Empty);
+                        break;
+                    }
+                }
+
+                if(InputManager.inputState != GameInputState.UI&&(elements.Any(p=>InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position,p.size)))|| clickableUI.Any(p =>InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position, p.size)))))
+                {
+                    InputManager.inputState = GameInputState.SemiUI;
+                }
+                else
+                {
+                    InputManager.inputState = GameInputState.Gameplay;
+                }
+
             }
         }
         public void DrawText(SpriteBatch spriteBatch)
@@ -79,6 +103,13 @@ namespace Core.UI
             if (isActive || isDrawing)
             {
                 textElements.ForEach(p => p.Draw(spriteBatch));
+                foreach (var item in clickableUI)
+                {
+                    if(item is Button button)
+                    {
+                        button.DrawText(spriteBatch);
+                    }
+                }
             }
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -86,6 +117,7 @@ namespace Core.UI
             if (isActive||isDrawing)
             {
                 elements.ForEach(p => p.Draw(spriteBatch));
+                clickableUI.ForEach(p => p.Draw(spriteBatch));
             }
         }
     }

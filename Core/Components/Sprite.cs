@@ -30,7 +30,7 @@ namespace Core.Components
         public float rotation { get;  set ; }
         private float scale=1f;
         public float layer{get;set; }
-
+        public Vector2 tilemapPosition { get; set; }
 
         [JsonConstructor]
         public Sprite(  Vector2 position, Vector2 size,Vector2 tilemapPosition,string texturePath,string name= "",float layer = 0f)

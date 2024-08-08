@@ -10,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace Core.UI
 {
-    internal interface IUIElement : IComponent, IActive, ITaggable,ILayerable
+    internal interface IUIElement : IComponent, IActive, ITaggable,ILayerable,IHoverable
     {
-
+        public Vector2 position { get; set; }
+        public Vector2 size { get; set; }
     }
 }

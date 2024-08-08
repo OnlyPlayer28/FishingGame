@@ -11,50 +11,42 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Core.Cameras
 {
-    internal class CameraManager : IComponent
+    public  class CameraManager 
     {
-        public List<Camera> cameras;
-        public Camera currentCamera { get; private set; }
+        public static List<Camera> cameras = new List<Camera>();
+        public static Camera currentCamera { get; private set; }
 
-        public CameraManager()
-        {
-            cameras = new List<Camera>();
-        }
-        public void LoadContent(ContentManager contentManager)
+
+        public static void LoadContent(ContentManager contentManager)
         {
         }
 
 
-        public CameraManager AddCamera(Camera camera)
+        public static void AddCamera(Camera camera)
         {
             cameras.Add(camera);
-            return this;
         }
 
-        public Camera GetCamera(string cameraName)
+        public static Camera GetCamera(string cameraName)
         {
             return cameras.Where(p => p.name == cameraName).FirstOrDefault();
         }
         
-        public CameraManager SetCurrentCamera(string cameraName)
+        public static  void SetCurrentCamera(string cameraName)
         {
             currentCamera = GetCamera(cameraName);
-            return this;
         }
-        public Matrix GetCurrentMatrix()
+        public static Matrix GetCurrentMatrix()
         {
             return currentCamera.transformMatrix;
         }
-        public Camera GetCurrentCamera() { return  currentCamera; }
+        public static Camera GetCurrentCamera() { return  currentCamera; }
 
-        public void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime)
         {
             currentCamera.Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-        }
 
     }
 }

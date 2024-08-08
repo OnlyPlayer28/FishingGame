@@ -12,7 +12,6 @@ using Core.Debug;
 using System.Globalization;
 using Fishing.Scripts;
 using Core.Components;
-using TopDownShooter.Core;
 using System.Collections.Generic;
 using Fishing.Core;
 using System.Linq;
@@ -48,7 +47,6 @@ namespace Fishing
 
         public static bool isFocused { get; private set; }
 
-        public RenderTarget2D depthBuffer;
 
         public static List<IAddableToInventory> itemRegistry;
 
@@ -63,7 +61,8 @@ namespace Fishing
             IsMouseVisible = true;
 
             contentManager = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
-            cameraManager = new CameraManager().AddCamera(new Camera(Vector2.Zero, 5, new Vector2(1600, 900), "mainCamera")).SetCurrentCamera("mainCamera");
+            CameraManager.AddCamera(new Camera(Vector2.Zero, 5, new Vector2(1600, 900), "mainCamera"));
+            CameraManager.SetCurrentCamera("mainCamera");
 
             string textFile = File.ReadAllText(contentManager.RootDirectory + "/Art/test.txt");
             Console.WriteLine(textFile);
@@ -94,9 +93,9 @@ namespace Fishing
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             stateManager.LoadContent(contentManager);
-            cameraManager.LoadContent(contentManager);
+            CameraManager.LoadContent(contentManager);
 
-            spriteFont = Content.Load<SpriteFont>("Fonts/Verdana_10px");
+            spriteFont = Content.Load<SpriteFont>("Fonts/Font_Pixel");
             Font_10 = Content.Load<SpriteFont>("Fonts/Font_Pixel");
 
             test1.LoadContent(contentManager);
@@ -117,9 +116,9 @@ namespace Fishing
             if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
             {
 
-                cameraManager.GetCurrentCamera().SetShaking(true, .1f, 4); 
+                CameraManager.GetCurrentCamera().SetShaking(true, .1f, 4); 
             }
-            cameraManager.Update(gameTime);
+            CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
             // TODO: Add your update logic here
             InputManager.Update(gameTime);
@@ -130,23 +129,23 @@ namespace Fishing
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointClamp,transformMatrix: cameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.Default);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointClamp,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.Default);
             stateManager.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
-
-            //Text Rendering
-            _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix:cameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
-            stateManager.DrawText(_spriteBatch);
-            _spriteBatch.DrawString(spriteFont, "fps:" + FPS.ToString("F2", CultureInfo.InvariantCulture), new Vector2(2, 2), Color.Black);
-            _spriteBatch.End();
             //UI rendering -> on canvas
-            _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix: cameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
 
             stateManager.DrawUI(_spriteBatch);
             _spriteBatch.End();
+            //Text Rendering
+            _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix:CameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
+            stateManager.DrawText(_spriteBatch);
+            _spriteBatch.DrawString(spriteFont, "fps:" + FPS.ToString("F2", CultureInfo.InvariantCulture), new Vector2(2, 2), Color.Black);
+            _spriteBatch.End();
+
 
            // GraphicsDevice.SetRenderTarget(depthBuffer);
             // TODO: Add your drawing code here

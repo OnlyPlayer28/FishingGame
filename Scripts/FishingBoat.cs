@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TopDownShooter.Core;
 
 namespace Fishing.Scripts
 {
@@ -61,6 +60,7 @@ namespace Fishing.Scripts
         Line line;
         public FishingBoat(Vector2 spawnPosition,Vector2 positionToMoveTo)
         {
+            InputManager.OnMouseClickEvent += OnMouseClick;
             boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.5f).SetOrigin(new Vector2(14,-7));
             this.positionToMoveTo = positionToMoveTo;
             bobber = new Line(Vector2.One,Vector2.One,Color.Red,.5f);
@@ -78,6 +78,45 @@ namespace Fishing.Scripts
         public void LoadContent(ContentManager contentManager)
         {
             boat.LoadContent(Game1.contentManager);
+        }
+        public void OnMouseClick(Object sender,MouseInputEventArgs e)
+        {
+
+            if (InputManager.inputState != GameInputState.Gameplay) { return; }
+            switch (fishingState)
+            {
+                case FishingState.Default:
+                    fishingState = FishingState.Descending;
+                    break;
+                case FishingState.Descending:
+                    if (bobber.position.Y >= waterLevel)
+                    {
+                        ResetFishCatchTime();
+                        fishingState = FishingState.WaitingForFish;
+                    }
+                    else
+                    {
+
+                        stopBobberAfterReachingWaterlevel = true;
+                    }
+                    break;
+                case FishingState.WaitingForFish:
+                    fishingState = FishingState.Ascending;
+                    break;
+                case FishingState.FishingMinigame:
+                    break;
+                case FishingState.Ascending:
+                    fishingState = FishingState.WaitingForFish;
+                    break;
+                case FishingState.HookingFish:
+                    Console.WriteLine("hooked fish in: {0} seconds!" + waitingTime);
+                    minigame = new FishingMinigame(0, new Vector2(70, 40), 0);
+                    OnFishHookEvent?.Invoke(this, new FishHookEventArgs { fishingMinigame = minigame });
+                    fishingState = FishingState.FishingMinigame;
+                    break;
+                default:
+                    break;
+            }
         }
         public void ResetFishCatchTime()
         {
@@ -100,42 +139,7 @@ namespace Fishing.Scripts
             }
             //implement depth checking
 
-            if (InputManager.IsMouseButtonPressed(0))
-            {
-                switch (fishingState)
-                {
-                    case FishingState.Default:
-                        fishingState = FishingState.Descending;
-                        break;
-                    case FishingState.Descending:
-                        if (bobber.position.Y >= waterLevel)
-                        {
-                            ResetFishCatchTime();
-                            fishingState = FishingState.WaitingForFish;
-                        }else
-                        {
-
-                            stopBobberAfterReachingWaterlevel = true;
-                        }
-                        break;
-                    case FishingState.WaitingForFish:
-                        fishingState = FishingState.Ascending;
-                        break;
-                    case FishingState.FishingMinigame:
-                        break;
-                    case FishingState.Ascending:
-                        fishingState = FishingState.WaitingForFish;
-                        break;
-                    case FishingState.HookingFish:
-                        Console.WriteLine("hooked fish in: {0} seconds!" + waitingTime);
-                        minigame = new FishingMinigame(0, new Vector2(70, 40), 0);
-                        OnFishHookEvent?.Invoke(this, new FishHookEventArgs { fishingMinigame = minigame });
-                        fishingState = FishingState.FishingMinigame;
-                        break;
-                    default:
-                        break;
-                }
-            }
+   
 
             switch (fishingState)
             {

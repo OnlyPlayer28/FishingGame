@@ -10,7 +10,7 @@ using Microsoft.Xna;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TopDownShooter.Core
+namespace Core
 {
 
     public enum HexValues
@@ -144,6 +144,17 @@ namespace TopDownShooter.Core
             int blue = HexToInt(hexSplit[4].ToString() + hexSplit[5].ToString());
 
             return new Color(red, green, blue);
+        }
+
+        /// <summary>
+        ///  Converts a Vector2 position and size into a rectangle.
+        /// </summary>
+        /// <param name="position">Position of the rectangle</param>
+        /// <param name="size""size">Size of the rectangle</param>
+        /// <returns>A rectangle with the specified position and size.</returns>
+        public static Rectangle GetRectFromVector2(Vector2 position,Vector2 size)
+        {
+            return new Rectangle((int)position.X,(int)position.Y,(int)size.X, (int)size.Y);
         }
     }
 }

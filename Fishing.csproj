@@ -24,6 +24,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Art\Backdrops\" />
+    <Folder Include="Content\Art\Food\" />
+    <Folder Include="Content\Art\UI\" />
     <Folder Include="Core\SpriteEffects\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
