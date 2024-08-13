@@ -60,7 +60,7 @@ namespace Fishing.Scripts.Minigames
             LoadContent(Game1.contentManager);
             this.fishID = fishID;
 
-
+            OnFishCatchEvent += Game1.player.OnFishCatch;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -93,8 +93,8 @@ namespace Fishing.Scripts.Minigames
             if (timerDirectionChange <= 0)
             {
                 direction *= -1;
-                timerDirectionChange = (random.Next(15 - (int)(difficulty*10), 25 - (int)(difficulty * 10)))/10;
-                currentSpeed = random.Next((int)baseSpeed,(int)( baseSpeed + 10));
+                timerDirectionChange = Math.Clamp(((random.Next(15 - (int)(difficulty*10), 25 - (int)(difficulty * 10)))/10)-difficulty/4f,.5f,3f);
+                currentSpeed = random.Next((int)baseSpeed,(int)( baseSpeed + 10))/*+random.Next((int)(difficulty*10)-5,(int)(difficulty*20))*/;
             }
             if(fishingCursor.position.X <= minigameArea.position.X+1 || fishingCursor.position.X >= minigameArea.position.X + 38)
             {
@@ -112,8 +112,8 @@ namespace Fishing.Scripts.Minigames
                     ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.WaitingForFish;
                 }else  if(score >= progressionBar.Length)
                 {
-                    Console.WriteLine("Caught fish!!!!");
-                    ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.Ascending;
+                    OnFishCatchEvent?.Invoke(this,new FishingMinigameEventArgs { fishID=this.fishID });
+
                 }
 
             }

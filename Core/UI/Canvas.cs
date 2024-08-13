@@ -102,7 +102,13 @@ namespace Core.UI
         {
             if (isActive || isDrawing)
             {
-                textElements.ForEach(p => p.Draw(spriteBatch));
+                foreach (var item in textElements)
+                {
+                    if (item.isActive)
+                    {
+                        item.Draw(spriteBatch);
+                    }
+                }
                 foreach (var item in clickableUI)
                 {
                     if(item is Button button)

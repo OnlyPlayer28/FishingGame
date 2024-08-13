@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    internal interface IActive
+    public interface IActive
     {
         public bool isActive { get; set; }
     }

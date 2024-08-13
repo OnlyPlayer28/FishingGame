@@ -12,7 +12,7 @@ using Core.Cameras;
 
 namespace Core.UI
 {
-    public class Text : IComponent, ITaggable
+    public class Text : IComponent, ITaggable,IActive
     {
         public string name { get; set; }
 
@@ -23,7 +23,7 @@ namespace Core.UI
 
         private SpriteFont font { get; set; }
         private float layer { get; set; }
-
+        public bool isActive { get ; set ; }
 
         public Text(Vector2 position,string text,Color color, SpriteFont font ,string name="defaultText",float layer = .1f)
         {

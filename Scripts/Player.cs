@@ -27,7 +27,9 @@ namespace Fishing.Scripts
 
         public void OnFishCatch(Object sender,FishingMinigameEventArgs e)
         {
-            Console.WriteLine("Caught fish!!!!! :)");
+            Console.WriteLine($"Caught: {Game1.itemRegistry.Where(p=>p.ID == e.fishID).First().name}");
+            ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.FishingResults;
+            ((FishingScene)Game1.stateManager.GetActiveGameState()).fishingResultsScreen.SetActive(true);
         }
 
         public void OnFishHook(Object sender,FishHookEventArgs e)

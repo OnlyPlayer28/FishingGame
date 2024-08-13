@@ -77,6 +77,23 @@
 #begin Fonts/PixelFJVerdana12pt.ttf
 /copy:Fonts/PixelFJVerdana12pt.ttf
 
+#begin Fonts/Tuna_24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Tuna_24.spritefont
+
+#begin Fonts/Tuna.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Tuna.spritefont
+
+#begin Fonts/Tuna.ttf
+/copy:Fonts/Tuna.ttf
+
 #begin Fonts/Verdana_10px.png
 /importer:TextureImporter
 /processor:FontTextureProcessor

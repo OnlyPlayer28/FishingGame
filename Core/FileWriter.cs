@@ -8,8 +8,16 @@ namespace Fishing.Core
     {
         public static void WriteJson<T>(T objectToSerialize,string path)
         {
-            string textOutput = JsonConvert.SerializeObject(objectToSerialize, Formatting.Indented);
+            JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
+            string textOutput = JsonConvert.SerializeObject(objectToSerialize, Formatting.Indented,settings);
             File.WriteAllText(path,textOutput);
+        }
+
+        public static T ReadJson<T>(string path)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
+            string text  =File.ReadAllText(path);
+            return JsonConvert.DeserializeObject<T>(text,settings);
         }
     }
 }

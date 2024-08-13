@@ -33,5 +33,22 @@ namespace Core.InventoryManagement
 
         }
 
+        public static int GenerateLoot(params IAddableToInventory[] items)
+        {
+            float sumOfPropabilities = items.Sum(p => p.rarity)*100;
+            float randomValue = ReferenceHolder.random.Next(1, (int)(sumOfPropabilities));
+            randomValue /= 100;
+
+            int IDToReturn = -1;
+            items = items.OrderBy(p => p.rarity).ToArray();
+            float currentRarity = 0;
+            for (int i = 0; i < items.Length; i++)
+            {
+                currentRarity += items[i].rarity;
+                if (currentRarity >= randomValue) { IDToReturn = items[i].ID; break; }
+            }
+            return IDToReturn;
+
+        }
     }
 }

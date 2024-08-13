@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.InventoryManagement
 {
-    public interface ISellable:IAddableToInventory
+    public interface ISellable
     {
         public int price { get; set; }
 

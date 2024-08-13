@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Core;
 using Core.UI.Elements;
 using Core.Debug;
+using Fishing.Scripts.UI;
 
 namespace Fishing.Scripts.Scenes
 {
@@ -23,6 +24,7 @@ namespace Fishing.Scripts.Scenes
 
         public Canvas uiCanvas { get; set; }
 
+        public FishingResultsScreen fishingResultsScreen { get; set; }
 
         public FishingScene(string name, bool isActive = false, bool isDrawing = false) 
             : base(name, isActive, isDrawing)
@@ -30,6 +32,8 @@ namespace Fishing.Scripts.Scenes
             backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean","oceanBackground",layer:1);
             boat = new FishingBoat(new Vector2(0, 43),new Vector2(50,43));
             uiCanvas = new Canvas("fishingSceneCanvas", true);
+            fishingResultsScreen = new FishingResultsScreen(new Vector2(100, 20), new Vector2(25, 50), .5f, 0);
+            uiCanvas.AddUIELement(fishingResultsScreen);
             components.Add(backgroundSprite);
             components.Add(boat);
         }
@@ -59,7 +63,6 @@ namespace Fishing.Scripts.Scenes
         {
             if (isActive)
             {
-                uiCanvas.textElements[0].text = InputManager.inputState.ToString();
                 uiCanvas.Update(gameTime);
                 components.ForEach(p => p.Update(gameTime));
             }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    internal interface ITaggable
+    public interface ITaggable
     {
         public string name { get; set; }
     }

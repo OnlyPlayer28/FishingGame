@@ -41,7 +41,9 @@ namespace Fishing
 
         public static Player player { get; private set; }
 
-        public static SpriteFont Font_10;
+        public static SpriteFont Font_36;
+
+        public static SpriteFont Font_24;
 
         public static Color gold = new Color(192, 139, 59);
 
@@ -50,12 +52,20 @@ namespace Fishing
 
         public static List<IAddableToInventory> itemRegistry;
 
+
+        /// <summary>
+        /// Returns a new instance of an inventory item.
+        /// </summary>
+        /// <returns></returns>
+        public static IAddableToInventory GetItem(int ID)
+        {
+            return (IAddableToInventory)itemRegistry.Where(p=>p.ID == ID).FirstOrDefault().Clone();
+        }
         public Game1()
         {
             itemRegistry = new List<IAddableToInventory>();
 
             _graphics = new GraphicsDeviceManager(this);
-            //depthBuffer = new RenderTarget2D(_graphics, (int)resolution.X, (int)resolution.Y);
             _graphics.PreferredBackBufferWidth = (int)resolution.X; _graphics.PreferredBackBufferHeight =(int)resolution.Y;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -64,14 +74,10 @@ namespace Fishing
             CameraManager.AddCamera(new Camera(Vector2.Zero, 5, new Vector2(1600, 900), "mainCamera"));
             CameraManager.SetCurrentCamera("mainCamera");
 
-            string textFile = File.ReadAllText(contentManager.RootDirectory + "/Art/test.txt");
-            Console.WriteLine(textFile);
-            Console.WriteLine(contentManager.RootDirectory);
-            Helper.HexToRgb("#943989");
+            Console.WriteLine("root directory: "+contentManager.RootDirectory);
+ 
+            itemRegistry = FileWriter.ReadJson < List<IAddableToInventory>>(Content.RootDirectory+"/Data/Food/fish.json");
 
-            /*itemRegistry.Add(new Fish(0, "bluefin tuna", new Sprite(Vector2.Zero, new Vector2(16, 11), Vector2.Zero, "Art/Food/fish"), 15, FishSpecies.Tuna));
-            FileWriter.WriteJson(itemRegistry, "C:/Users/bruno/OneDrive/Počítač/fish.json");*/
-            
         }
 
         protected override void Initialize()
@@ -95,60 +101,49 @@ namespace Fishing
             stateManager.LoadContent(contentManager);
             CameraManager.LoadContent(contentManager);
 
-            spriteFont = Content.Load<SpriteFont>("Fonts/Font_Pixel");
-            Font_10 = Content.Load<SpriteFont>("Fonts/Font_Pixel");
+            Font_36 = Content.Load<SpriteFont>("Fonts/Tuna");
+            Font_24 = Content.Load<SpriteFont>("Fonts/Tuna_24");
 
-            test1.LoadContent(contentManager);
-            test2.LoadContent(contentManager);
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
-            isFocused = this.IsActive;
+            //Unfortunately the isActive tracks the debug console instead of the game window :(,so when I develop an in-game console I can properly re-implement this feature.
+            isFocused = true;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            
 
             if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
             {
-
                 CameraManager.GetCurrentCamera().SetShaking(true, .1f, 4); 
             }
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
-            // TODO: Add your update logic here
             InputManager.Update(gameTime);
             base.Update(gameTime);
         }
-        public Sprite test1 = new Sprite(Vector2.Zero, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat", .6f).SetColor(Color.Red);
-        public Sprite test2 = new Sprite(Vector2.Zero, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat", .5f).SetColor(Color.Green);
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            //========== World rendering ==========
             _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointClamp,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.Default);
             stateManager.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
-
             _spriteBatch.End();
-
-            //UI rendering -> on canvas
+            //========== On canvas UI rendering ==========
             _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
-
             stateManager.DrawUI(_spriteBatch);
             _spriteBatch.End();
-            //Text Rendering
+            //========== Text rendering ==========
             _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix:CameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.Default);
             stateManager.DrawText(_spriteBatch);
-            _spriteBatch.DrawString(spriteFont, "fps:" + FPS.ToString("F2", CultureInfo.InvariantCulture), new Vector2(2, 2), Color.Black);
+            _spriteBatch.DrawString(Font_24, "fps:" + FPS.ToString("F2", CultureInfo.InvariantCulture), new Vector2(2, 2), Color.Black);
             _spriteBatch.End();
-
-
-           // GraphicsDevice.SetRenderTarget(depthBuffer);
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }

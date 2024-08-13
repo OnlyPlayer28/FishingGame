@@ -1,28 +1,110 @@
-[
-  {
-    "ID": 0,
-    "name": "bluefin tuna",
-    "sprite": {
-      "name": "",
-      "spriteRect": {
-        "X": 0,
-        "Y": 0,
-        "Width": 0,
-        "Height": 0
-      },
-      "position": "0, 0",
-      "origin": "0, 0",
-      "size": "16, 11",
-      "color": {
-        "B": 255,
-        "G": 255,
-        "R": 255,
-        "A": 255
-      },
-      "rotation": 0.0,
-      "layer": 0.0
+{
+  "$type": "System.Collections.Generic.List`1[[Core.InventoryManagement.IAddableToInventory, Fishing]], System.Private.CoreLib",
+  "$values": [
+    {
+      "$type": "Fishing.Scripts.Food.Fish, Fishing",
+      "price": 15,
+      "rarity": 65.0,
+      "minAndMaxDepth": "0, 1",
+      "difficulty": 0.1,
+      "species": 1,
+      "ID": 0,
+      "name": "bluefin tuna",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 0,
+          "Y": 0,
+          "Width": 16,
+          "Height": 11
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "16, 11",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+		"texturePath":"Art/Food/fish",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0"
+      }
     },
-    "price": 15,
-    "species": 1
-  }
-]
+    {
+      "$type": "Fishing.Scripts.Food.Fish, Fishing",
+      "price": 26,
+      "rarity": 50.0,
+      "minAndMaxDepth": "1, 1",
+      "difficulty": 0.35,
+      "species": 2,
+      "ID": 1,
+      "name": "atlantic salmon",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 0,
+          "Y": 11,
+          "Width": 18,
+          "Height": 10
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "18, 10",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+		"texturePath":"Art/Food/fish",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0"
+      }
+    },
+    {
+      "$type": "Fishing.Scripts.Food.Fish, Fishing",
+      "price": 15,
+      "rarity": 46.0,
+      "minAndMaxDepth": "2, 2",
+      "difficulty": 0.6,
+      "species": 0,
+      "ID": 2,
+      "name": "longfin squid",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 10,
+          "Y": 45,
+          "Width": 10,
+          "Height": 15
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "10, 15",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+		"texturePath":"Art/Food/fish",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0"
+      }
+    }
+  ]
+}

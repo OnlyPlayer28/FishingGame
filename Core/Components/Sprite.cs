@@ -12,10 +12,10 @@ namespace Core.Components
     public class Sprite : IComponent, IPosition,ILayerable
     {
         public string name { get; set; }
+        [JsonIgnore]
         public Rectangle spriteRect { get; set; }
 
-        [JsonIgnore]
-        private Rectangle tilemapLocationRect;
+        public Rectangle tilemapLocationRect { get; }
         public Vector2 position { get; set; }
 
         public Vector2 origin { get;private set; } = Vector2.Zero;
@@ -25,7 +25,7 @@ namespace Core.Components
         private Texture2D texture;
         public Color color { get; private set; } = Color.White;
 
-        private string texturePath { get; }
+        public string texturePath { get; private set; }
         private float transparancy=1f;
         public float rotation { get;  set ; }
         private float scale=1f;
@@ -44,7 +44,22 @@ namespace Core.Components
             this.spriteRect = new Rectangle();
             tilemapLocationRect = new Rectangle((int)tilemapPosition.X, (int)tilemapPosition.Y, (int)this.size.X, (int)this.size.Y);
         }
-
+        public Sprite(Vector2 position,Rectangle tilemapLocationRect,string texturePath,string name,float layer)
+        {
+            this.name = name;
+            this.position = position;
+            this.tilemapLocationRect = tilemapLocationRect;
+            this.texturePath = texturePath;
+            this.layer = layer;
+            size = new Vector2(tilemapLocationRect.Width,tilemapLocationRect.Height);
+        }
+        /// <summary>
+        /// Use only for testing/debugging purposes! Dont draw nor update this sprite otherwise the game's gonna crash!
+        /// </summary>
+        public Sprite()
+        {
+            
+        }
         public Sprite SetColor(Color color)
         {
             this.color = color;
