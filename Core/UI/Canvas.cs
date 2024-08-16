@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Core.UI
 {
-    internal class Canvas:ITaggable,IComponent,IActive
+    public class Canvas:ITaggable,IComponent,IActive
     {
         public List<IUIElement> elements { get; set; }
         public List<ICLickable> clickableUI { get; set; }
@@ -36,18 +36,19 @@ namespace Core.UI
         public void OnMouseClick(Object sender,MouseInputEventArgs e)
         {
 
-            if (InputManager.inputState == GameInputState.Gameplay) { return; }
+            if (InputManager.inputState == GameInputState.Gameplay||!isActive) { return; }
             foreach (var item in clickableUI)
             {
                 if(InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position,item.size)))
                 {
                     item.OnMouseClick();
-                    InputManager.inputState = GameInputState.UI;
+                    //InputManager.inputState = GameInputState.UI;
                     break;
                 }
             }
 
         }
+
         public void LoadContent(ContentManager contentManager)
         {
             elements.ForEach(p=>p.LoadContent(Game1.contentManager));
@@ -80,14 +81,14 @@ namespace Core.UI
                 foreach (var item in clickableUI)
                 {
                     item.Update(gameTime);
-                    if (InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position, item.size)))
+                    if (item.isActive &&InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position, item.size)))
                     {
                         item.OnMouseOver(this, EventArgs.Empty);
                         break;
                     }
                 }
 
-                if(InputManager.inputState != GameInputState.UI&&(elements.Any(p=>InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position,p.size)))|| clickableUI.Any(p =>InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position, p.size)))))
+                if(InputManager.inputState != GameInputState.UI&&(elements.Any(p=>p.isActive&&InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position,p.size)))|| clickableUI.Any(p =>p.isActive&&InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position, p.size)))))
                 {
                     InputManager.inputState = GameInputState.SemiUI;
                 }
@@ -111,7 +112,7 @@ namespace Core.UI
                 }
                 foreach (var item in clickableUI)
                 {
-                    if(item is Button button)
+                    if(item.isActive&&item is Button button)
                     {
                         button.DrawText(spriteBatch);
                     }

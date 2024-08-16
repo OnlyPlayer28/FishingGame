@@ -1,4 +1,5 @@
-﻿using Fishing.Scripts.Minigames;
+﻿using Core.InventoryManagement;
+using Fishing.Scripts.Minigames;
 using Fishing.Scripts.Scenes;
 using Microsoft.Xna.Framework;
 using System;
@@ -15,9 +16,12 @@ namespace Fishing.Scripts
 
         public float fishHookReactionTime { get; private set; } = 1.5f;
         Random random = new Random();
+
+        public int money { get; set; } = 0;
+        public Inventory inventory { get; set; }
         public Player()
         {
-
+            inventory = new Inventory();
         }
 
         public float CalculateCurrentFishCatchTime(Vector2 minAndMax)
@@ -27,9 +31,8 @@ namespace Fishing.Scripts
 
         public void OnFishCatch(Object sender,FishingMinigameEventArgs e)
         {
-            Console.WriteLine($"Caught: {Game1.itemRegistry.Where(p=>p.ID == e.fishID).First().name}");
             ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.FishingResults;
-            ((FishingScene)Game1.stateManager.GetActiveGameState()).fishingResultsScreen.SetActive(true);
+            ((FishingScene)Game1.stateManager.GetActiveGameState()).fishingResultsScreen.SetFish(e.fishID).SetActive(true);
         }
 
         public void OnFishHook(Object sender,FishHookEventArgs e)

@@ -19,20 +19,24 @@ namespace Core.Components
         public Vector2 position { get; set; }
 
         public Vector2 origin { get;private set; } = Vector2.Zero;
+
         public Vector2 size { get;  }
 
         [JsonIgnore]
         private Texture2D texture;
-        public Color color { get; private set; } = Color.White;
+        public Color color { get;  set; } = Color.White;
 
         public string texturePath { get; private set; }
         private float transparancy=1f;
         public float rotation { get;  set ; }
-        private float scale=1f;
+        [JsonIgnore]
+        public float scale=1f;
         public float layer{get;set; }
         public Vector2 tilemapPosition { get; set; }
 
-        [JsonConstructor]
+        
+
+
         public Sprite(  Vector2 position, Vector2 size,Vector2 tilemapPosition,string texturePath,string name= "",float layer = 0f)
         {
             this.name = name;
@@ -44,6 +48,7 @@ namespace Core.Components
             this.spriteRect = new Rectangle();
             tilemapLocationRect = new Rectangle((int)tilemapPosition.X, (int)tilemapPosition.Y, (int)this.size.X, (int)this.size.Y);
         }
+        [JsonConstructor]
         public Sprite(Vector2 position,Rectangle tilemapLocationRect,string texturePath,string name,float layer)
         {
             this.name = name;
@@ -51,7 +56,7 @@ namespace Core.Components
             this.tilemapLocationRect = tilemapLocationRect;
             this.texturePath = texturePath;
             this.layer = layer;
-            size = new Vector2(tilemapLocationRect.Width,tilemapLocationRect.Height);
+            size = new Vector2(this.tilemapLocationRect.Width,this.tilemapLocationRect.Height);
         }
         /// <summary>
         /// Use only for testing/debugging purposes! Dont draw nor update this sprite otherwise the game's gonna crash!
@@ -88,6 +93,7 @@ namespace Core.Components
         public  void LoadContent(ContentManager contentManager)
         {
             texture =contentManager.Load<Texture2D>(texturePath);
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {

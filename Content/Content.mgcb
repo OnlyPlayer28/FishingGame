@@ -25,6 +25,42 @@
 /processorParam:TextureFormat=Color
 /build:Art/Backdrops/Ocean.png
 
+#begin Art/Backdrops/restaurant.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Backdrops/restaurant.png
+
+#begin Art/Backdrops/window_overlay.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Backdrops/window_overlay.png
+
+#begin Art/Backdrops/Windows.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Backdrops/Windows.png
+
 #begin Art/Food/fish.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -49,6 +85,18 @@
 /processorParam:TextureFormat=Color
 /build:Art/Props/Boat.png
 
+#begin Art/Props/enviroment.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Props/enviroment.png
+
 #begin Art/test.txt
 /copy:Art/test.txt
 
@@ -64,6 +112,12 @@
 /processorParam:TextureFormat=Color
 /build:Art/UI/UI.png
 
+#begin Audio/error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/error.wav
+
 #begin Data/Food/fish.json
 /copy:Data/Food/fish.json
 
@@ -77,12 +131,26 @@
 #begin Fonts/PixelFJVerdana12pt.ttf
 /copy:Fonts/PixelFJVerdana12pt.ttf
 
+#begin Fonts/Tuna_12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Tuna_12.spritefont
+
 #begin Fonts/Tuna_24.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Tuna_24.spritefont
+
+#begin Fonts/Tuna_HUD.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Tuna_HUD.spritefont
 
 #begin Fonts/Tuna.spritefont
 /importer:FontDescriptionImporter
@@ -93,6 +161,9 @@
 
 #begin Fonts/Tuna.ttf
 /copy:Fonts/Tuna.ttf
+
+#begin Fonts/TunaSmallNumbers.ttf
+/copy:Fonts/TunaSmallNumbers.ttf
 
 #begin Fonts/Verdana_10px.png
 /importer:TextureImporter

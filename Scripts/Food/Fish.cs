@@ -24,13 +24,14 @@ namespace Fishing.Scripts.Food
         public FishSpecies species { get; set; }
 
         public Fish(int ID, string name, Sprite sprite, int price, FishSpecies species,float rarity,float difficulty,Vector2 minAndMaxDepth)
+            :base(ID, name,sprite,rarity)
         {
             this.ID = ID;
             this.name = name;
             this.sprite = sprite;
+            this.rarity = rarity;
             this.price = price;
             this.species = species;
-            this.rarity = rarity;
             this.difficulty = difficulty;
             this.minAndMaxDepth = minAndMaxDepth;
         }

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
@@ -26,9 +26,9 @@
   <ItemGroup>
     <Folder Include="Content\Art\Backdrops\" />
     <Folder Include="Content\Art\Food\" />
+    <Folder Include="Content\Art\Props\" />
     <Folder Include="Content\Art\UI\" />
     <Folder Include="Content\Data\Food\" />
-    <Folder Include="Core\SpriteEffects\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

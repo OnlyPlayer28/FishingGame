@@ -22,13 +22,14 @@ namespace Core.UI
 
         private List<IUIElement> menuElements { get; set; }
 
-        public IMenu(Vector2 position, Vector2 size, float layer,string name = "defaultMenu")
+        public IMenu(Vector2 position, Vector2 size, float layer,Canvas canvas,string name = "defaultMenu")
         {
             menuElements = new List<IUIElement>();
             this.position = position;
             this.size = size;
             this.name = name;
             this.layer = layer;
+            this.canvas = canvas;
         }
         public IMenu AddMenuElement(IUIElement uIElement)
         {

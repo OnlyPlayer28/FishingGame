@@ -1,4 +1,5 @@
 ﻿using Core.Components;
+using Fishing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,28 @@ namespace Core.InventoryManagement
             return inventory.Exists(p=>p.Item2.ID == ID)?inventory.Find(p=>p.Item2.ID ==ID).Item1:-1;
 
         }
-
+        public void AddItem(int ID,int amount=1)
+        {
+            if(inventory.All(p=>p.Item2.ID != ID))
+            {
+                inventory.Add(new Tuple<int, IAddableToInventory>(amount, (IAddableToInventory)Game1.GetItem(ID).Clone()));
+                return;
+            }
+            for (int i =0; i < inventory.Count;i++)
+            {
+                if (inventory[i].Item2.ID == ID)
+                {
+                    inventory[i] = new Tuple<int, IAddableToInventory>(inventory[i].Item1 + amount, inventory[i].Item2);
+                    return;
+                }
+            }
+        }
         public static int GenerateLoot(params IAddableToInventory[] items)
         {
-            float sumOfPropabilities = items.Sum(p => p.rarity)*100;
+            float sumOfPropabilities = items.Sum(p => p.rarity)/**100*/;
+
             float randomValue = ReferenceHolder.random.Next(1, (int)(sumOfPropabilities));
-            randomValue /= 100;
+            //randomValue /= 100;
 
             int IDToReturn = -1;
             items = items.OrderBy(p => p.rarity).ToArray();

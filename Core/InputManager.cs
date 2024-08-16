@@ -45,17 +45,20 @@ namespace Core
 
         public static GameInputState inputState { get; set; }
 
-        public static void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime,bool isFocused)
         {
-            if(IsMouseButtonPressed(0)||IsMouseButtonPressed(MouseButton.Right))
+            if (isFocused) 
             {
-                MouseButton button = IsMouseButtonPressed(0)?MouseButton.Left : MouseButton.Right;
+                if (IsMouseButtonPressed(0) || IsMouseButtonPressed(MouseButton.Right))
+                {
+                    MouseButton button = IsMouseButtonPressed(0) ? MouseButton.Left : MouseButton.Right;
 
-                OnMouseClickEvent?.Invoke(null, new MouseInputEventArgs { inputState = inputState ,mouseRect = new Rectangle(Mouse.GetState().Position.X,Mouse.GetState().Position.Y,1,1),mouseButton=button});
-            }
-            if(Keyboard.GetState().GetPressedKeyCount() > 0)
-            {
-                OnKeyboardPressEvent?.Invoke(null, new KeyboardInputEventArgs { inputState = inputState, keys = Keyboard.GetState().GetPressedKeys() });
+                    OnMouseClickEvent?.Invoke(null, new MouseInputEventArgs { inputState = inputState, mouseRect = new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1), mouseButton = button });
+                }
+                if (Keyboard.GetState().GetPressedKeyCount() > 0)
+                {
+                    OnKeyboardPressEvent?.Invoke(null, new KeyboardInputEventArgs { inputState = inputState, keys = Keyboard.GetState().GetPressedKeys() });
+                }
             }
             previousMouseState = Mouse.GetState();
             previousKeyobardState = Keyboard.GetState();

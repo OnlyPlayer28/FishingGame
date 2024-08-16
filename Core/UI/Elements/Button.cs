@@ -15,14 +15,30 @@ namespace Core.UI.Elements
     {
         public override bool isActive { get ; set ; }
         public  string name { get ; set; }
-        public override Vector2 position { get; set ; }
+        public override Vector2 position 
+        {
+            get;
+            set;
+        }
         public override Vector2 size { get; set; }
 
+        private Vector2 _size;
+
         public Text buttonText { get; set; }
-        public override float layer { get; set; }
+        public override float layer 
+        {
+            get;
+            set;
+        }
 
         public Rect buttonSpriteSimple { get; set; }
 
+        public Action onButtonClickAction { get; set; }
+
+        private Sprite buttonSprite { get; set; }
+
+        private Color originalColor { get; set; }
+        private Color highlightColor { get; set; } = Color.LightGray;
         public Button(  Vector2 position, Vector2 size, float layer,string name = "defaultButton",bool isActive = true)
             :base(position,size,isActive)
         {
@@ -32,13 +48,30 @@ namespace Core.UI.Elements
             this.size = size;
             this.layer = layer;
         }
-
+        public Button SetOnButtonCLickAction(Action onButtonClickAction)
+        {
+            this.onButtonClickAction = onButtonClickAction;
+            return this;
+        }
         public Button SetSimpleSprite(Color outline,Color fill)
         {
             buttonSpriteSimple = new Rect(position, size, outline, true, layer).SetFillColor(fill);
+            originalColor = buttonSpriteSimple.color;
+            return this;
+        }
+        public Button SetButtonSprite(Sprite sprite,ContentManager content)
+        {
+            this.buttonSprite=sprite;
+            buttonSprite.LoadContent(content);
+            originalColor = buttonSprite.color;
             return this;
         }
 
+        public Button SetHighlightColor(Color color)
+        {
+            highlightColor = color;
+            return this;
+        }
         public Button SetButtonText(string text,Color color,SpriteFont font)
         {
   
@@ -51,12 +84,16 @@ namespace Core.UI.Elements
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (!isActive) { return; }
             if(buttonSpriteSimple != null)
                 buttonSpriteSimple.Draw(spriteBatch);
+            if (buttonSprite != null) { 
+                buttonSprite.Draw(spriteBatch);}
         }
 
         public void DrawText(SpriteBatch spriteBatch)
         {
+            if (!isActive) { return; }
             if (buttonText != null)
             {
                 buttonText.Draw(spriteBatch);
@@ -69,11 +106,19 @@ namespace Core.UI.Elements
 
         public override void Update(GameTime gameTime)
         {
-
+            if (!isActive) { return; }
+            if (buttonSprite == null)
+            {
+                buttonSpriteSimple.color = originalColor;
+            }
+            else
+            {
+                buttonSprite.color = originalColor;
+            };
         }
         public override void OnMouseClick()
         {
-
+            onButtonClickAction?.Invoke();
         }
 
         public override void SetPositionAndBoundingBox()
@@ -82,7 +127,14 @@ namespace Core.UI.Elements
 
         public override void OnMouseOver(object sender, EventArgs e)
         {
-
+            if (buttonSprite == null) 
+            { 
+                buttonSpriteSimple.color = highlightColor; 
+            }
+            else 
+            {
+                buttonSprite.color = highlightColor;
+            };
         }
     }
 }

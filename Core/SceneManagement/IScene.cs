@@ -25,9 +25,10 @@ namespace Core.SceneManagement
             this.isDrawing = isDrawing;
         }
 
-        public IScene SetActive(bool active)
+        public  IScene SetActive(bool active)
         {
             isActive = active;
+            InputManager.inputState = GameInputState.Gameplay;
             return this;
         }
 

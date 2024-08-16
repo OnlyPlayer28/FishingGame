@@ -26,14 +26,18 @@ namespace Fishing.Scripts.Scenes
 
         public FishingResultsScreen fishingResultsScreen { get; set; }
 
+        public HUD hud { get; set; }
+
         public FishingScene(string name, bool isActive = false, bool isDrawing = false) 
             : base(name, isActive, isDrawing)
         {
             backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean","oceanBackground",layer:1);
             boat = new FishingBoat(new Vector2(0, 43),new Vector2(50,43));
             uiCanvas = new Canvas("fishingSceneCanvas", true);
-            fishingResultsScreen = new FishingResultsScreen(new Vector2(100, 20), new Vector2(25, 50), .5f, 0);
+            fishingResultsScreen = new FishingResultsScreen(new Vector2(31, 35), new Vector2(66, 60), .5f, 0, uiCanvas);
+            hud = new HUD(Vector2.Zero, Vector2.Zero, .05f, uiCanvas).SetActive(true);
             uiCanvas.AddUIELement(fishingResultsScreen);
+            uiCanvas.AddUIELement(hud);
             components.Add(backgroundSprite);
             components.Add(boat);
         }
@@ -64,6 +68,7 @@ namespace Fishing.Scripts.Scenes
             if (isActive)
             {
                 uiCanvas.Update(gameTime);
+                hud.Update(gameTime);
                 components.ForEach(p => p.Update(gameTime));
             }
         }

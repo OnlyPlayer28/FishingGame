@@ -4,7 +4,7 @@
     {
       "$type": "Fishing.Scripts.Food.Fish, Fishing",
       "price": 15,
-      "rarity": 65.0,
+      "rarity": 55.0,
       "minAndMaxDepth": "0, 1",
       "difficulty": 0.1,
       "species": 1,
@@ -39,7 +39,7 @@
     {
       "$type": "Fishing.Scripts.Food.Fish, Fishing",
       "price": 26,
-      "rarity": 50.0,
+      "rarity": 45.0,
       "minAndMaxDepth": "1, 1",
       "difficulty": 0.35,
       "species": 2,
@@ -74,7 +74,7 @@
     {
       "$type": "Fishing.Scripts.Food.Fish, Fishing",
       "price": 15,
-      "rarity": 46.0,
+      "rarity": 40.0,
       "minAndMaxDepth": "2, 2",
       "difficulty": 0.6,
       "species": 0,

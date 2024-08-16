@@ -19,11 +19,13 @@ namespace Core.UI
         public Color color { get; set; }
         public string text { get; set; }
 
-        public Vector2 position { get; set; }
+        public Vector2 position { get; private set; }
 
         private SpriteFont font { get; set; }
         private float layer { get; set; }
         public bool isActive { get ; set ; }
+
+        public float scale { get; set; } = 1f;
 
         public Text(Vector2 position,string text,Color color, SpriteFont font ,string name="defaultText",float layer = .1f)
         {
@@ -32,18 +34,24 @@ namespace Core.UI
             this.color = color;
             this.name = name;
             this.layer = layer;
-            //this.font = font;
+            this.font = font;
             LoadContent(Game1.contentManager);
+        }
+
+        public Text setPosition(Vector2 position)
+        {
+            this.position = position*CameraManager.GetCurrentCamera().zoom;
+            return this;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, text, position, color,0,Vector2.Zero,1,SpriteEffects.None,layer);
+            spriteBatch.DrawString(font, text, position, color,0,Vector2.Zero,scale,SpriteEffects.None,layer);
         }
 
         public void LoadContent(ContentManager contentManager)
         {
-            font = contentManager.Load<SpriteFont>("Fonts/Font_Pixel");
+           //font = contentManager.Load<SpriteFont>("Fonts/Tuna_24");
         }
 
         public void Update(GameTime gameTime)
