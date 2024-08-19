@@ -105,6 +105,41 @@
         "layer": 0.0,
         "tilemapPosition": "0, 0"
       }
+    },
+    {
+      "$type": "Fishing.Scripts.Food.Fish, Fishing",
+      "price": 30,
+      "rarity": 30.0,
+      "minAndMaxDepth": "2, 2",
+      "difficulty": 1.0,
+      "species": 0,
+      "ID": 3,
+      "name": "shortfin squid",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 12,
+          "Y": 21,
+          "Width": 11,
+          "Height": 20
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "11, 20",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+		"texturePath":"Art/Food/fish",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0"
+      }
     }
   ]
 }

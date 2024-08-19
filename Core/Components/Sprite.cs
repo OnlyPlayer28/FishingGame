@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Core.Components
 {
-    public class Sprite : IComponent, IPosition,ILayerable
+    public class Sprite : IComponent, IPosition, ILayerable
     {
         public string name { get; set; }
         [JsonIgnore]
@@ -18,19 +18,19 @@ namespace Core.Components
         public Rectangle tilemapLocationRect { get; }
         public Vector2 position { get; set; }
 
-        public Vector2 origin { get;private set; } = Vector2.Zero;
+        public Vector2 origin { get; private set; } = Vector2.Zero;
 
-        public Vector2 size { get;  }
+        public Vector2 size { get; }
 
         [JsonIgnore]
         private Texture2D texture;
-        public Color color { get;  set; } = Color.White;
+        public Color color { get; set; } = Color.White;
 
         public string texturePath { get; private set; }
-        private float transparancy=1f;
-        public float rotation { get;  set ; }
+        private float transparancy = 1f;
+        public float rotation { get; set; }
         [JsonIgnore]
-        public float scale=1f;
+        public float scale { get;  set; } = 1f;
         public float layer{get;set; }
         public Vector2 tilemapPosition { get; set; }
 

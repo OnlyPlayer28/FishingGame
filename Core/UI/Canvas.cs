@@ -41,6 +41,10 @@ namespace Core.UI
             {
                 if(InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position,item.size)))
                 {
+                    if(elements.Any(p=>p.isActive&&p.layer <= item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
+                    {
+                        break;
+                    }
                     item.OnMouseClick();
                     //InputManager.inputState = GameInputState.UI;
                     break;

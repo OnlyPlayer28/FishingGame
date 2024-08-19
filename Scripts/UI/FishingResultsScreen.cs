@@ -32,7 +32,6 @@ namespace Fishing.Scripts.UI
             _layerRef = layer;
             backgroundRect = new Rect(position-Vector2.One, size+new Vector2(2,2), Helper.HexToRgb("#542424"), true, layer+.0005f).SetFillColor(Helper.HexToRgb("#6e3b34"));
             fishCaughtIcon = Game1.GetItem(this.fishID).sprite;
-            fishCaughtIcon.scale = .5f;
             fishCaughtIcon.position = this.position + new Vector2(2, 2);
             closeScreenButton = new Button(this.position + this.size - new Vector2(11, 11), new Vector2(10, 10), layer + .0004f,isActive:false)
                 .SetButtonSprite(new Sprite(this.position + this.size - new Vector2(11, 11), new Vector2(10, 10), new Vector2(28, 9), "Art/UI/UI", layer: layer + .0004f), Game1.contentManager)
@@ -87,7 +86,7 @@ namespace Fishing.Scripts.UI
             if (!active)
             {
                 ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.WaitingForFish;
-                Game1.player.inventory.AddItem(fishID, 1);
+                Game1.player.inventory.AddItem(Game1.GetItem(fishID));
             }
             else
             {

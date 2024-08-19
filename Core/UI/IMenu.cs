@@ -14,7 +14,7 @@ namespace Core.UI
     {
         public Vector2 position { get; set ; }
         public Vector2 size { get; set; }
-        public bool isActive { get; set; }
+        public bool isActive { get; set; } = false; 
         public string name { get; set; }
         public float layer { get; set; }
 
@@ -36,11 +36,17 @@ namespace Core.UI
             menuElements.Add(uIElement);
             menuElements.Last().layer += this.layer;
             menuElements.Last().position += this.position;
+            canvas.AddUIELement(menuElements.Last());
             return this;
         }
         public IMenu AddTextEleemnt(Text element)
         {
             canvas.AddTextElement(element);
+            return this;
+        }
+        public IMenu RemoveTextElement(Text element)
+        {
+            canvas.textElements.Remove(element);
             return this;
         }
         public virtual IMenu SetActive(bool active)

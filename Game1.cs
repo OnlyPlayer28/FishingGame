@@ -56,6 +56,7 @@ namespace Fishing
         public static List<IAddableToInventory> itemRegistry;
 
         private SoundEffect testEffect { get; set; }
+        public static string debugText = "";
         /// <summary>
         /// Returns a new instance of an inventory item.
         /// </summary>
@@ -73,6 +74,7 @@ namespace Fishing
 
             _graphics.IsFullScreen = true;
             _graphics.IsFullScreen = false;
+            isFocused = true;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
@@ -99,7 +101,7 @@ namespace Fishing
         public void OnFocusLoss(Object o,EventArgs e)
         {
             isFocused = false;
-            //testEffect.Play();
+            testEffect.Play();
         }
         protected override void LoadContent()
         {
@@ -113,24 +115,28 @@ namespace Fishing
             testEffect = Content.Load<SoundEffect>("Audio/error");
 
             // TODO: use this.Content to load your game content here
-
+            player = new Player();
             LineTool.Initialize(GraphicsDevice);
             fishingState = new FishingScene("fishingScene");
             mainMenuState = new MainMenuState("mainMenuScene");
             restaurantScene = new RestaurantScene("restaurantScene");
-            player = new Player();
+
             stateManager = new SceneManagement(mainMenuState, fishingState,restaurantScene).SetActive(true, "fishingScene");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             stateManager.LoadContent(contentManager);
             CameraManager.LoadContent(contentManager);
+
+            player.inventory.AddItem(GetItem(0), 5);
+            player.inventory.AddItem(GetItem(1), 5);
+            player.inventory.AddItem(GetItem(2), 5);
+            player.inventory.AddItem(GetItem(3), 5);
         }
 
         
-
+       
         protected override void Update(GameTime gameTime)
         {
-            //Unfortunately the isActive tracks the debug console instead of the game window :(,so when I develop an in-game console I can properly re-implement this feature.
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -139,19 +145,19 @@ namespace Fishing
 
             if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
             {
-                CameraManager.GetCurrentCamera().SetShaking(true, .1f, 4); 
+                player.inventory.AddItem(GetItem(2), -1);
+            }
+            if (InputManager.AreKeysBeingPressedDown(false, Keys.L))
+            {
+                player.inventory.AddItem(GetItem(2), 1);
             }
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
             InputManager.Update(gameTime,isFocused);
-            inventoryText = "inventory:"+InputManager.inputState;
-            foreach (var item in player.inventory.inventory)
-            {
-                inventoryText += $"\n {item.Item2.name}: {item.Item1}";
-            } 
+            debugText = InputManager.inputState.ToString();
+
             base.Update(gameTime);
         }
-        public static string inventoryText = "";
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -168,7 +174,7 @@ namespace Fishing
             //========== Text rendering ==========
             _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix:CameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
             stateManager.DrawText(_spriteBatch);
-            _spriteBatch.DrawString(Font_24, inventoryText, new Vector2(2, 2), Color.Black);
+            _spriteBatch.DrawString(Font_24, debugText, new Vector2(2, 2), Color.Black);
             _spriteBatch.End();
 
             base.Draw(gameTime);

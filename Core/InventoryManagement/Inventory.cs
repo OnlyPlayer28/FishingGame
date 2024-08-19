@@ -1,5 +1,4 @@
 ﻿using Core.Components;
-using Fishing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Core.InventoryManagement
 {
+    public class InventoryEventArgs : EventArgs
+    {
+        public int ID;
+        public int totalItemAmount;
+    }
     public class Inventory :ITaggable
     {
         public string name { get; set ; }
@@ -16,6 +20,7 @@ namespace Core.InventoryManagement
 
         public int maxStackSize { get; private set; } 
 
+        public EventHandler<InventoryEventArgs> OnInventoryModifyEvent { get; set; }
         public Inventory(string name = "defaultInventory",int maxStackSIze = 99)
         {
             this.name = name;
@@ -33,21 +38,29 @@ namespace Core.InventoryManagement
             return inventory.Exists(p=>p.Item2.ID == ID)?inventory.Find(p=>p.Item2.ID ==ID).Item1:-1;
 
         }
-        public void AddItem(int ID,int amount=1)
+        public void AddItem( IAddableToInventory @object,int amount=1)
         {
-            if(inventory.All(p=>p.Item2.ID != ID))
+            if(inventory.Any(p=>p.Item2.ID==@object.ID&&amount<0&&p.Item1==0))
             {
-                inventory.Add(new Tuple<int, IAddableToInventory>(amount, (IAddableToInventory)Game1.GetItem(ID).Clone()));
+                return;
+            }
+            if(inventory.All(p=>p.Item2.ID != @object.ID))
+            {
+                inventory.Add(new Tuple<int, IAddableToInventory>(amount, (IAddableToInventory)@object.Clone()));
+                OnInventoryModifyEvent?.Invoke(this, new InventoryEventArgs { ID = inventory.Last().Item2.ID, totalItemAmount = inventory.Last().Item1 });
                 return;
             }
             for (int i =0; i < inventory.Count;i++)
             {
-                if (inventory[i].Item2.ID == ID)
+                if (inventory[i].Item2.ID == @object.ID)
                 {
                     inventory[i] = new Tuple<int, IAddableToInventory>(inventory[i].Item1 + amount, inventory[i].Item2);
+                    OnInventoryModifyEvent?.Invoke(this, new InventoryEventArgs { ID = inventory[i].Item2.ID, totalItemAmount = inventory[i].Item1 });
                     return;
                 }
             }
+
+
         }
         public static int GenerateLoot(params IAddableToInventory[] items)
         {
