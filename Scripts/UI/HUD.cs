@@ -22,7 +22,7 @@ namespace Fishing.Scripts.UI
         public HUD(Vector2 position, Vector2 size, float layer, Canvas canvas, string name = "defaultMenu") 
             : base(position, size, layer, canvas, name)
         {
-            moneyAndDayUI = new Image(new Sprite(new Vector2(96,3),new Vector2(30,18),new Vector2(40,0),"Art/UI/UI",layer:.1f));
+            moneyAndDayUI = new Image(new Sprite(new Vector2(96,3),new Vector2(30,17),new Vector2(40,0),"Art/UI/UI",layer:.1f));
             moneyText = new Text(moneyAndDayUI.position+new Vector2(7,10f), "012345", Helper.HexToRgb("#edeff7"),Game1.Font_HUD, layer: 0.00009f);
             goToRestaurantButton = new Button(new Vector2(116, 116), new Vector2(10, 10),.1f, isActive: true)
                 .SetButtonSprite(new Sprite(new Vector2(116,116),new Vector2(10,10),new Vector2(18,19),"Art/UI/UI",layer:.1f),Game1.contentManager)

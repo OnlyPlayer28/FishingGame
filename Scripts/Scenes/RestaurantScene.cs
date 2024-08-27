@@ -1,4 +1,5 @@
-﻿using Core.Components;
+﻿using Core;
+using Core.Components;
 using Core.SceneManagement;
 using Core.UI;
 using Core.UI.Elements;
@@ -32,19 +33,18 @@ namespace Fishing.Scripts.Scenes
             openableMenus = new List<IMenu>();
             uiCanvas = new Canvas("uiCanvas", isActive);
             inventoryScreen = new InventoryScreen(new Vector2(10, 20), new Vector2(90, 80), .1f, uiCanvas,"inventoryScreen");
-            cuttingBoardScreen = new CuttingBoardScreen(new Vector2(10, 20), new Vector2(90, 80), .1f, uiCanvas,"cuttingBoardScreen");
+            cuttingBoardScreen = new CuttingBoardScreen(new Vector2(30, 25), new Vector2(68, 70), .1f, uiCanvas,"cuttingBoardScreen");
             backdrop = new Sprite(Vector2.Zero, new Vector2(128, 128), Vector2.Zero, "Art/Backdrops/restaurant",layer:.0002f);
             windowView = new Sprite(new Vector2(18, 13), new Vector2(92, 39), new Vector2(2, 2), "Art/Backdrops/Windows",layer:.0001f);
-          //  window = new Sprite(new Vector2(18, 13), new Vector2(92, 39), new Vector2(2, 2), "Art/Backdrops/window_overlay")/*.SetColor(new Color(172, 185, 204, 10))*/;
+            window = new Sprite(new Vector2(18, 13), new Vector2(92, 39), new Vector2(2, 2), "Art/Backdrops/window_overlay").SetColor(Helper.HexToRgb("#43546e")).SetTransparency(.25f);
 
-            goToOceanButton = new Button(new Vector2(1, 2), new Vector2(10), 0)
-                .SetButtonSprite(new Sprite(new Vector2(1, 2), new Vector2(10, 10), new Vector2(28, 19), "art/UI/UI"),Game1.contentManager).SetOnButtonCLickAction(GoToOcean);
+            goToOceanButton = new Button(new Vector2(1, 2), new Vector2(10), 0, onClickSound: "click")
+                .SetButtonSprite(new Sprite(new Vector2(1, 2), new Vector2(10, 10), new Vector2(28, 19), "Art/UI/UI"),Game1.contentManager).SetOnButtonCLickAction(GoToOcean);
 
-            inventoryButton = new Button(new Vector2(91, 89), new Vector2(29, 34), 0)
-                .SetButtonSprite(new Sprite(new Vector2(91, 89), new Vector2(30, 34), new Vector2(70, 0), "art/UI/UI", layer: .25f), Game1.contentManager)
+            inventoryButton = new Button(new Sprite(new Vector2(91, 89), new Vector2(30, 34), new Vector2(70, 0), "Art/UI/UI", layer: .25f),onClickSound:"click")
                 .SetOnButtonCLickAction(OpenInventory);
-            cuttingBoardButton = new Button(new Vector2(87, 75), new Vector2(27, 10), 0)
-                .SetButtonSprite(new Sprite(new Vector2(87, 75), new Vector2(27, 10), new Vector2(100, 0), "art/UI/UI", layer: .25f), Game1.contentManager)
+            cuttingBoardButton = new Button(new Vector2(87, 75), new Vector2(27, 10), 0, onClickSound: "click")
+                .SetButtonSprite(new Sprite(new Vector2(87, 75), new Vector2(27, 10), new Vector2(100, 0), "Art/UI/UI", layer: .25f), Game1.contentManager)
                 .SetOnButtonCLickAction(OpenCuttingBoard);
             uiCanvas.isActive = true;
             uiCanvas.AddClickableElement(goToOceanButton);
@@ -52,7 +52,7 @@ namespace Fishing.Scripts.Scenes
             uiCanvas.AddClickableElement(cuttingBoardButton);
             
             components.Add(backdrop);
-           // components.Add(window);
+            components.Add(window);
             components.Add(windowView);
             openableMenus.Add(inventoryScreen);
             openableMenus.Add(cuttingBoardScreen);
@@ -102,7 +102,7 @@ namespace Fishing.Scripts.Scenes
         {
             if (isActive || isDrawing)
             {
-                inventoryScreen.Draw(spriteBatch);
+                openableMenus.ForEach(p => p.Draw(spriteBatch));
                 uiCanvas.Draw(spriteBatch);
                 uiCanvas.Draw(spriteBatch);
             }
@@ -114,7 +114,8 @@ namespace Fishing.Scripts.Scenes
         {
             if (isActive)
             {
-                inventoryScreen.Update(gameTime);
+                openableMenus.ForEach(p => p.Update(gameTime));
+
                 uiCanvas.Update(gameTime);
                 components.ForEach(p => p.Update(gameTime));
             }

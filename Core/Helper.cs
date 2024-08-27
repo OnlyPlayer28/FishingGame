@@ -105,7 +105,7 @@ namespace Core
         {
             Vector2 direction = positionToMoveTowards - position;
             direction.Normalize();
-            return (float)(position - positionToMoveTowards).Length() <.2f? positionToMoveTowards:position+ (direction)*speed;
+            return (float)(position - positionToMoveTowards).Length() <.25f? positionToMoveTowards:position+ (direction)*speed;
         }
 
         public static int HexToInt(string hex)

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Components;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 
 namespace Fishing.Scripts.Food
 {
@@ -23,20 +24,34 @@ namespace Fishing.Scripts.Food
         public float difficulty { get; set; }
         public FishSpecies species { get; set; }
 
+        [JsonConstructor]
         public Fish(int ID, string name, Sprite sprite, int price, FishSpecies species,float rarity,float difficulty,Vector2 minAndMaxDepth)
             :base(ID, name,sprite,rarity)
         {
-            this.ID = ID;
+           /* this.ID = ID;
             this.name = name;
             this.sprite = sprite;
-            this.rarity = rarity;
+            this.rarity = rarity;*/
             this.price = price;
             this.species = species;
             this.difficulty = difficulty;
             this.minAndMaxDepth = minAndMaxDepth;
         }
 
-        public override object Clone()
+        public Fish(Fish fish) 
+            : base(fish.ID,fish.name,fish.sprite,fish.rarity)
+        {
+           /* this.ID = fish.ID;
+            this.name = fish.name;
+                this.sprite = fish.sprite;
+            this.rarity = fish.rarity;*/
+            this.price = fish.price;
+            this.species = fish.species;
+            this.difficulty = fish.difficulty;
+            this.minAndMaxDepth = fish.minAndMaxDepth;
+        }
+
+        public override Fish Clone()
         {
             return new Fish(this.ID, this.name, this.sprite, this.price, this.species, this.rarity, this.difficulty, this.minAndMaxDepth);
         }

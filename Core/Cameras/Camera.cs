@@ -77,7 +77,9 @@ namespace Core.Cameras
             transformMatrix *=Matrix.CreateTranslation(offset.X+position.X, offset.Y+position.Y, 0);
             transformMatrix = Matrix.CreateScale(1, 1, 1);
 
-            textMatrix = Matrix.CreateTranslation(zoom, zoom, 0);
+            uiMatrix *= Matrix.CreateTranslation(offset.X,offset.Y,0);
+
+            textMatrix = Matrix.CreateTranslation(zoom+offset.X, zoom+offset.Y, 0);
             textMatrix *= transformMatrix;
             //textMatrix *= Matrix.CreateScale(2, 2, 1);
 

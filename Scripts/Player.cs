@@ -1,4 +1,5 @@
-﻿using Core.InventoryManagement;
+﻿using Core.Cameras;
+using Core.InventoryManagement;
 using Fishing.Scripts.Minigames;
 using Fishing.Scripts.Scenes;
 using Microsoft.Xna.Framework;

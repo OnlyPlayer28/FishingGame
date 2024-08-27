@@ -19,11 +19,11 @@ namespace Core.InventoryManagement
         public IAddableToInventory(int id, string name, Sprite sprite,float rarity)
         {
             this.name = name;
-            this.sprite = sprite;
+            this.sprite = new Sprite(sprite);
             this.rarity = rarity;
             this.ID = id;
         }
-        public virtual object Clone() { return null; }
+        public virtual IAddableToInventory Clone() { return null; }
 
     }
 }

@@ -24,7 +24,7 @@ namespace Fishing.Scripts.UI
 
         private int verticalSpacing = 5;
         private int textHorizontalSpacing = 2;
-        private int textVerticalSpacing = 2;
+        private int textVerticalSpacing = 1;
         private float ySizeFirstColumn = 2;
         private float ySizeSecondColumn = 2;
         public InventoryScreen(Vector2 position, Vector2 size, float layer, Canvas canvas, string name = "defaultMenu") 
@@ -32,8 +32,8 @@ namespace Fishing.Scripts.UI
         {
             icons  = new List<Sprite>();
             itemAmountsText = new List<Text>();
-            background = new Rect(this.position , this.size, Helper.HexToRgb("#542424"), true, layer + .0005f).SetFillColor(Helper.HexToRgb("#6e3b34"));
-            UICollision = new EmptyUIELement(this.position, this.size, false, "collsion", 0);
+            background = new Rect(this.position-new Vector2(2,0) , this.size+new Vector2(3,2), Helper.HexToRgb("#542424"), true, layer + .0005f).SetFillColor(Helper.HexToRgb("#6e3b34"));
+            UICollision = new EmptyUIELement(this.position - new Vector2(2, 0), this.size + new Vector2(3, 2), false, "collsion", 0);
             Game1.player.inventory.OnInventoryModifyEvent += SetIcons;
             canvas.AddUIELement(UICollision);
             
@@ -75,7 +75,7 @@ namespace Fishing.Scripts.UI
         public void SetIcons(Object o,InventoryEventArgs e)
         {
             int? removedIndex = null;
-            if (e.totalItemAmount <= 0)
+            if (e.totalItemAmount <= 0&&icons.Count >0)
             {
 
                 removedIndex = icons.IndexOf(icons.Where(p => p.name == e.ID.ToString()).First());
@@ -100,7 +100,7 @@ namespace Fishing.Scripts.UI
             {
                 
                 Span<Sprite> iconSpan = icons.Take(new Range((int)removedIndex,icons.Count)).ToArray();
-                Span<Sprite> unmodifiedSpan = icons.Take(new Range(0,(int)removedIndex-1)).ToArray();
+                Span<Sprite> unmodifiedSpan = icons.Take(new Range(0,(int)removedIndex-1 >0? (int)removedIndex - 1:1)).ToArray();
                 foreach(Sprite icon in iconSpan)
                 {
                     icon.position = CalculatePosition(icon.size);

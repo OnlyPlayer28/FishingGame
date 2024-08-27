@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Core.Debug;
 using Core;
 using Fishing.Scripts.Scenes;
+using Core.Cameras;
 
 namespace Fishing.Scripts.Minigames
 {
@@ -93,7 +94,7 @@ namespace Fishing.Scripts.Minigames
             if (timerDirectionChange <= 0)
             {
                 direction *= -1;
-                timerDirectionChange = Math.Clamp(((random.Next(15 - (int)(difficulty*10), 25 - (int)(difficulty * 10)))/10)-difficulty/4f,.5f,3f);
+                timerDirectionChange = Math.Clamp(((random.Next(20 - (int)(difficulty*10), 35 - (int)(difficulty * 10)))/10)-difficulty/4f,.5f,3f);
                 currentSpeed = random.Next((int)baseSpeed,(int)( baseSpeed + 10))/*+random.Next((int)(difficulty*10)-5,(int)(difficulty*20))*/;
             }
             if(fishingCursor.position.X <= minigameArea.position.X+1 || fishingCursor.position.X >= minigameArea.position.X + 38)
@@ -112,6 +113,7 @@ namespace Fishing.Scripts.Minigames
                     ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.WaitingForFish;
                 }else  if(score >= progressionBar.Length)
                 {
+                    CameraManager.GetCurrentCamera().SetShaking(true, .15f, 1);
                     OnFishCatchEvent?.Invoke(this,new FishingMinigameEventArgs { fishID=this.fishID });
 
                 }

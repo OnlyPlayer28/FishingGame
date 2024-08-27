@@ -13,6 +13,30 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin ../../../consumables.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../consumables.png;Art/Food/consumables.png
+
+#begin ../../../Fishing_Sounds/Win/fishingSounds.xgs
+/copy:../../../Fishing_Sounds/Win/fishingSounds.xgs;Audio/fishingSounds.xgs
+
+#begin ../../../Fishing_Sounds/Win/Music Bank.xwb
+/copy:../../../Fishing_Sounds/Win/Music Bank.xwb;Audio/Music Bank.xwb
+
+#begin ../../../Fishing_Sounds/Win/Sound Bank.xsb
+/copy:../../../Fishing_Sounds/Win/Sound Bank.xsb;Audio/Sound Bank.xsb
+
+#begin ../../../Fishing_Sounds/Win/Wave Bank.xwb
+/copy:../../../Fishing_Sounds/Win/Wave Bank.xwb;Audio/Wave Bank.xwb
+
 #begin Art/Backdrops/Ocean.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -36,6 +60,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Art/Backdrops/restaurant.png
+
+#begin Art/Backdrops/waves.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Backdrops/waves.png
 
 #begin Art/Backdrops/window_overlay.png
 /importer:TextureImporter
@@ -117,6 +153,42 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/error.wav
+
+#begin Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
+
+#begin Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
+
+#begin Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
+
+#begin Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
+
+#begin Audio/Songs/ocean_waves.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Songs/ocean_waves.wav
+
+#begin Data/credits.txt
+/copy:Data/credits.txt
+
+#begin Data/Food/consumables.json
+/copy:Data/Food/consumables.json
 
 #begin Data/Food/fish.json
 /copy:Data/Food/fish.json

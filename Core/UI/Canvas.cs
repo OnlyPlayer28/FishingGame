@@ -1,7 +1,6 @@
 ﻿using Core.Components;
 using Core.UI;
 using Core.UI.Elements;
-using Fishing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,7 +40,7 @@ namespace Core.UI
             {
                 if(InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position,item.size)))
                 {
-                    if(elements.Any(p=>p.isActive&&p.layer <= item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
+                    if(elements.Any(p=>p!=item&&p.isActive&&p.layer < item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
                     {
                         break;
                     }
@@ -55,8 +54,9 @@ namespace Core.UI
 
         public void LoadContent(ContentManager contentManager)
         {
-            elements.ForEach(p=>p.LoadContent(Game1.contentManager));
-            textElements.ForEach(p => p.LoadContent(Game1.contentManager));
+            elements.ForEach(p=>p.LoadContent(contentManager));
+            clickableUI.ForEach(p => p.LoadContent(contentManager));
+            textElements.ForEach(p => p.LoadContent(contentManager));
         }
         public void AddTextElement(Text texToAdd)
         {
@@ -87,8 +87,16 @@ namespace Core.UI
                     item.Update(gameTime);
                     if (item.isActive &&InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position, item.size)))
                     {
-                        item.OnMouseOver(this, EventArgs.Empty);
-                        break;
+                        if (clickableUI.Any(p => p!= item&&p.isActive && p.layer < item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            
+                            item.OnMouseOver(this, EventArgs.Empty);
+                        }
+                            break;
                     }
                 }
 

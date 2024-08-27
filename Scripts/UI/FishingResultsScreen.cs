@@ -3,6 +3,7 @@ using Core.Components;
 using Core.Debug;
 using Core.UI;
 using Core.UI.Elements;
+using Fishing.Scripts.Food;
 using Fishing.Scripts.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -25,20 +26,22 @@ namespace Fishing.Scripts.UI
 
         private Button closeScreenButton { get; set; }
         private Text fishNameText { get; set; }
+
+        private Fish currentFish { get; set; }
         public FishingResultsScreen(Vector2 position,Vector2 size,float layer,int fishID,Canvas canvas)
             :base(position,size,layer,canvas)
         {
             this.fishID = fishID;
             _layerRef = layer;
+            currentFish = (Fish)Game1.GetItem(this.fishID);
             backgroundRect = new Rect(position-Vector2.One, size+new Vector2(2,2), Helper.HexToRgb("#542424"), true, layer+.0005f).SetFillColor(Helper.HexToRgb("#6e3b34"));
-            fishCaughtIcon = Game1.GetItem(this.fishID).sprite;
+            fishCaughtIcon = currentFish.sprite;
             fishCaughtIcon.position = this.position + new Vector2(2, 2);
-            closeScreenButton = new Button(this.position + this.size - new Vector2(11, 11), new Vector2(10, 10), layer + .0004f,isActive:false)
-                .SetButtonSprite(new Sprite(this.position + this.size - new Vector2(11, 11), new Vector2(10, 10), new Vector2(28, 9), "Art/UI/UI", layer: layer + .0004f), Game1.contentManager)
+            closeScreenButton = new Button(this.position + this.size - new Vector2(11, 11), new Vector2(10, 10), layer + .0001f,isActive:false)
+                .SetButtonSprite(new Sprite(this.position + this.size - new Vector2(11, 11), new Vector2(10, 10), new Vector2(28, 9), "Art/UI/UI","g", layer: layer + .0001f), Game1.contentManager)
                 .SetOnButtonCLickAction(OnCLoseButtonCLick);
-
-            fishNameText = new Text(this.position, "test name", Color.White, Game1.Font_24, layer: this.layer + .0001f);
-            fishCaughtIcon.layer = layer;
+            fishNameText = new Text(this.position, "test name", Color.White, Game1.Font_24, layer: this.layer + .00015f);
+            fishCaughtIcon.layer = layer+.00015f;
             AddTextEleemnt(fishNameText);
             canvas.AddClickableElement(closeScreenButton);
             LoadContent(Game1.contentManager);
@@ -49,13 +52,13 @@ namespace Fishing.Scripts.UI
         }
         public FishingResultsScreen SetFish(int ID)
         {
+            currentFish = new Fish((Fish)Game1.GetItem(ID));
             this.fishID = ID;
-            fishNameText.text = Game1.GetItem(ID).name;
-            fishCaughtIcon = Game1.GetItem(this.fishID).sprite;
+            fishNameText.text = currentFish.name;
+            fishCaughtIcon = currentFish.sprite;
             fishCaughtIcon.position = this.position + new Vector2(2, 2);
             fishNameText.setPosition(new Vector2(fishCaughtIcon.size.X +0, 0) + position);
             fishCaughtIcon.LoadContent(Game1.contentManager);
-
             fishCaughtIcon.scale = .75f;
             return this;
         }
@@ -83,7 +86,7 @@ namespace Fishing.Scripts.UI
         public override IMenu SetActive(bool active)
         {
             //Disable Text !!!!!!!
-            if (!active)
+            if (active == false)
             {
                 ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.WaitingForFish;
                 Game1.player.inventory.AddItem(Game1.GetItem(fishID));

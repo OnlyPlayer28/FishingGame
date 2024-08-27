@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Audio;
 using Core.Components;
 using Core.Debug;
 using Core.InventoryManagement;
@@ -48,6 +49,7 @@ namespace Fishing.Scripts
         private Vector2 minAndMaxWaitingTimeForFish { get; set; } = new Vector2(2, 6);
         private float waitingTime { get; set; } = 0f;
         public EventHandler<FishHookEventArgs> OnFishHookEvent { get; set; }
+        public EventHandler OnFishAppearEvent { get; set; }
 
         private float currentTimeToCatchFish;
 
@@ -75,10 +77,11 @@ namespace Fishing.Scripts
             }
             random = new Random();
             InputManager.OnMouseClickEvent += OnMouseClick;
-            boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.5f).SetOrigin(new Vector2(14,-7));
+            OnFishAppearEvent += OnFishAppear;
+            boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.5f).SetOrigin(Origin.BottomCenter);
             fisherman = new Sprite(spawnPosition, new Vector2(19, 10), new Vector2(14, 8), "Art/Props/Boat", layer: .49999f);
             fishHookedWarningSprite = new Sprite(Vector2.Zero, new Vector2(3, 9), new Vector2(10, 9), "Art/UI/UI", layer:.49f);
-            this.positionToMoveTo = positionToMoveTo;
+            this.positionToMoveTo = positionToMoveTo;       //SET BOAT TO FINNISH
             bobber = new Sprite(Vector2.One, new Vector2(3, 4), new Vector2(0, 8), "Art/Props/Boat", layer: .5f);
 
             fishingLine = new Line(bobberRestingPosition, Vector2.Zero, Helper.HexToRgb("#d1d9e5"),layer:.5f);
@@ -145,16 +148,24 @@ namespace Fishing.Scripts
         {
             return Inventory.GenerateLoot(catchableFish.ToArray());
         }
+
+        public void OnFishAppear(Object o,EventArgs e)
+        {
+            AudioManager.PlayCue("water_splash");
+            waitingTime = Game1.player.fishHookReactionTime;
+            fishHookedWarningSprite.position = bobber.position + new Vector2(5, -4);
+            fishingState = FishingState.HookingFish;
+        }
         public void Update(GameTime gameTime)
         {
 
             boat.Update(gameTime);
 
             boat.position= Helper.MoveToward(boat.position,positionToMoveTo,moveSpeed*(float)gameTime.ElapsedGameTime.TotalSeconds);
-            fisherman.position = boat.position + new Vector2(12, -7);
+            fisherman.position = boat.getPosition() + new Vector2(12, -7);
             if(boat.position== positionToMoveTo&&fishingState==FishingState.BoatIsMoving){  fishingState = FishingState.Default; }
 
-            bobberRestingPosition = boat.position + new Vector2(boat.size.X +5, -(boat.size.Y/2)+3);
+            bobberRestingPosition = boat.getPosition() + new Vector2(boat.size.X +5, -(boat.size.Y/2)+3);
 
             fishingLine.position = fishingLine.position == bobberRestingPosition ? fishingLine.position : bobberRestingPosition;
             fishingLine.size = new Vector2(1,bobber.position.Y- bobberRestingPosition.Y);
@@ -179,9 +190,7 @@ namespace Fishing.Scripts
                     waitingTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if(waitingTime>= currentTimeToCatchFish)
                     {
-                        waitingTime = Game1.player.fishHookReactionTime;
-                        fishingState = FishingState.HookingFish;
-                        fishHookedWarningSprite.position = bobber.position+new Vector2(5,-4);
+                        OnFishAppearEvent?.Invoke(this, EventArgs.Empty);
                     }
                     break;
                 case FishingState.FishingMinigame:

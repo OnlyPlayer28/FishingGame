@@ -1,0 +1,277 @@
+{
+  "$type": "System.Collections.Generic.List`1[[Core.InventoryManagement.IAddableToInventory, Fishing]], System.Private.CoreLib",
+  "$values": [
+    {
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 0,
+      "price": 20,
+      "ID": 4,
+      "name": "salmon filet",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 0,
+          "Y": 5,
+          "Width": 12,
+          "Height": 5
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    },
+	{
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 1,
+      "price": 30,
+      "ID": 5,
+      "name": "grilled salmon",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 12,
+          "Y": 5,
+          "Width": 12,
+          "Height": 5
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    },
+	{
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 2,
+      "price": 25,
+      "ID": 6,
+      "name": "fried salmon",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 24,
+          "Y": 5,
+          "Width": 12,
+          "Height": 5
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    },
+	    {
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 0,
+      "price": 24,
+      "ID": 7,
+      "name": "tuna filet",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 0,
+          "Y": 0,
+          "Width": 7,
+          "Height": 5
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    },
+	{
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 1,
+      "price": 30,
+      "ID": 8,
+      "name": "grilled tuna",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 7,
+          "Y": 0,
+          "Width": 7,
+          "Height": 5
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    },
+	    {
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 0,
+      "price": 15,
+      "ID": 9,
+      "name": "calamari",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 0,
+          "Y": 10,
+          "Width": 7,
+          "Height": 6
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    },
+	{
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 1,
+      "price": 30,
+      "ID": 10,
+      "name": "grilled calamari",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 7,
+          "Y": 10,
+          "Width": 7,
+          "Height": 6
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    },
+	{
+      "$type": "Fishing.Scripts.Food.Consumable, Fishing",
+      "foodState": 2,
+      "price": 25,
+      "ID": 11,
+      "name": "fried calamari",
+      "sprite": {
+        "$type": "Core.Components.Sprite, Fishing",
+        "name": "",
+        "tilemapLocationRect": {
+          "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+          "X": 14,
+          "Y": 10,
+          "Width": 7,
+          "Height": 6
+        },
+        "position": "0, 0",
+        "origin": "0, 0",
+        "size": "0, 0",
+        "color": {
+          "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+          "B": 255,
+          "G": 255,
+          "R": 255,
+          "A": 255
+        },
+        "texturePath": "Art/Food/consumables",
+        "rotation": 0.0,
+        "layer": 0.0,
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0
+      },
+      "rarity": 0.0
+    }
+  ]
+}

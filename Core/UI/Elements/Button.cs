@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Audio;
 using Core.Components;
 using Core.Debug;
 using Core.UI;
@@ -11,6 +12,10 @@ using System.Linq;
 
 namespace Core.UI.Elements
 {
+    public class ButtonEventArgs : EventArgs
+    {
+        public Button buttonRef;
+    }
     public class Button : ICLickable,IUIElement
     {
         public override bool isActive { get ; set ; }
@@ -34,19 +39,33 @@ namespace Core.UI.Elements
         public Rect buttonSpriteSimple { get; set; }
 
         public Action onButtonClickAction { get; set; }
+        public EventHandler<ButtonEventArgs> OnButtonClickEvent { get; set; }
 
-        private Sprite buttonSprite { get; set; }
+        public Sprite buttonSprite { get; set; }
 
         private Color originalColor { get; set; }
         private Color highlightColor { get; set; } = Color.LightGray;
-        public Button(  Vector2 position, Vector2 size, float layer,string name = "defaultButton",bool isActive = true)
+        private string onClickSound { get; set; } = "";
+        public Button(  Vector2 position, Vector2 size, float layer,string name = "defaultButton",bool isActive = true,string onClickSound = "")
             :base(position,size,isActive)
         {
+            this.onClickSound = onClickSound;
             this.isActive = isActive;
             this.name = name;
             this.position = position;
             this.size = size;
             this.layer = layer;
+        }
+
+        public Button(Sprite sprite,bool isActive = true,string onClickSound = "")
+            :base(sprite.position,sprite.size,isActive)
+        {
+            this.onClickSound = onClickSound;
+            this.buttonSprite = sprite;
+            this.layer = buttonSprite.layer;
+            this.name = buttonSprite.name;
+
+            originalColor = buttonSprite.color;
         }
         public Button SetOnButtonCLickAction(Action onButtonClickAction)
         {
@@ -102,6 +121,8 @@ namespace Core.UI.Elements
 
         public override void LoadContent(ContentManager contentManager)
         {
+            if (buttonSprite != null)
+                buttonSprite.LoadContent(contentManager);
         }
 
         public override void Update(GameTime gameTime)
@@ -118,7 +139,12 @@ namespace Core.UI.Elements
         }
         public override void OnMouseClick()
         {
+            if(onClickSound != "")
+            {
+                AudioManager.PlayCue(onClickSound);
+            }
             onButtonClickAction?.Invoke();
+            OnButtonCLickEvent?.Invoke(this, new ButtonEventArgs { buttonRef = this }) ;
         }
 
         public override void SetPositionAndBoundingBox()

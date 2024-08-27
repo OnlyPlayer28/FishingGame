@@ -18,6 +18,7 @@ using System.Linq;
 using Core.InventoryManagement;
 using Fishing.Scripts.Food;
 using Microsoft.Xna.Framework.Audio;
+using Core.Audio;
 
 namespace Fishing
 {
@@ -55,8 +56,11 @@ namespace Fishing
 
         public static List<IAddableToInventory> itemRegistry;
 
-        private SoundEffect testEffect { get; set; }
+        public static SoundEffect testEffect { get; set; }
         public static string debugText = "";
+
+        private Texture2D scrollingWaves;
+        private double waveScrollX;
         /// <summary>
         /// Returns a new instance of an inventory item.
         /// </summary>
@@ -83,8 +87,12 @@ namespace Fishing
             CameraManager.SetCurrentCamera("mainCamera");
 
             Console.WriteLine("root directory: "+contentManager.RootDirectory);
- 
+            
             itemRegistry = FileWriter.ReadJson < List<IAddableToInventory>>(Content.RootDirectory+"/Data/Food/fish.json");
+            itemRegistry.AddRange(FileWriter.ReadJson<List<IAddableToInventory>>(contentManager.RootDirectory + "/Data/Food/consumables.json"));
+
+            itemRegistry.OrderBy(p => p.ID);
+
 
         }
 
@@ -123,14 +131,23 @@ namespace Fishing
 
             stateManager = new SceneManagement(mainMenuState, fishingState,restaurantScene).SetActive(true, "fishingScene");
 
+            scrollingWaves = Content.Load<Texture2D>("Art/Backdrops/waves");
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             stateManager.LoadContent(contentManager);
             CameraManager.LoadContent(contentManager);
+            
 
-            player.inventory.AddItem(GetItem(0), 5);
-            player.inventory.AddItem(GetItem(1), 5);
-            player.inventory.AddItem(GetItem(2), 5);
-            player.inventory.AddItem(GetItem(3), 5);
+            player.inventory.AddItem(GetItem(4), 5);
+            player.inventory.AddItem(GetItem(5), 5);
+            player.inventory.AddItem(GetItem(6), 5);
+            player.inventory.AddItem(GetItem(7), 5);
+            player.inventory.AddItem(GetItem(8), 5);
+            player.inventory.AddItem(GetItem(9), 5);
+            player.inventory.AddItem(GetItem(10), 5);
+            player.inventory.AddItem(GetItem(11), 5);
+            AudioManager.LoadSongs(Content,"Audio/Songs/","ocean_waves");
+            AudioManager.PlaySong("ocean_waves",true);
         }
 
         
@@ -142,20 +159,20 @@ namespace Fishing
 
             FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
 
-
+            AudioManager.Update(gameTime);
             if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
             {
-                player.inventory.AddItem(GetItem(2), -1);
+                player.inventory.AddItem(GetItem(2), 1);
             }
             if (InputManager.AreKeysBeingPressedDown(false, Keys.L))
             {
-                player.inventory.AddItem(GetItem(2), 1);
+                player.inventory.AddItem(GetItem(2),-1);
             }
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
             InputManager.Update(gameTime,isFocused);
-            debugText = InputManager.inputState.ToString();
-
+            //debugText = InputManager.inputState.ToString();
+            waveScrollX += 11 * gameTime.ElapsedGameTime.TotalSeconds;
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
@@ -163,9 +180,11 @@ namespace Fishing
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //========== World rendering ==========
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointClamp,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.DepthRead);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointWrap,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.DepthRead);
             stateManager.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
+            if (stateManager.GetActiveGameState().name == "fishingScene")
+                _spriteBatch.Draw(scrollingWaves, Vector2.Zero, new Rectangle(-(int)waveScrollX, 0, 128, 128), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, .51f);
             _spriteBatch.End();
             //========== On canvas UI rendering ==========
             _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
