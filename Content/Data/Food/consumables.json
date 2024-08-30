@@ -19,7 +19,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "12, 5",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,
@@ -53,7 +53,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "12, 5",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,
@@ -87,7 +87,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "12, 5",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,
@@ -121,7 +121,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "7, 5",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,
@@ -155,7 +155,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "7, 5",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,
@@ -189,7 +189,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "7, 6",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,
@@ -223,7 +223,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "7, 6",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,
@@ -257,7 +257,7 @@
         },
         "position": "0, 0",
         "origin": "0, 0",
-        "size": "0, 0",
+        "size": "7, 6",
         "color": {
           "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
           "B": 255,

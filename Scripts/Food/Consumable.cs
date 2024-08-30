@@ -20,21 +20,23 @@ namespace Fishing.Scripts.Food
     {
         public FoodState foodState { get; set; }
         [JsonConstructor]
-        public Consumable(int id, string name, Sprite sprite, float rarity,FoodState foodState)
+        public Consumable(int id, string name, Sprite sprite, float rarity,FoodState foodState,int price)
             : base(id, name, sprite, rarity)
         {
             this.foodState = foodState;
+                this.price = price;
         }
-        public Consumable(Consumable consumable)
+        public Consumable(Consumable consumable,int price)
             : base(consumable.ID, consumable.name, consumable.sprite, consumable.rarity)
         {
             this.foodState = consumable.foodState;
+            this.price = price;
         }
 
 
         public override IAddableToInventory Clone()
         {
-            return new Consumable(this);
+            return new Consumable(ID,name,sprite,rarity,foodState,price);
         }
 
         public int price { get ; set; }

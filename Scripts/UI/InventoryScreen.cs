@@ -100,7 +100,6 @@ namespace Fishing.Scripts.UI
             {
                 
                 Span<Sprite> iconSpan = icons.Take(new Range((int)removedIndex,icons.Count)).ToArray();
-                Span<Sprite> unmodifiedSpan = icons.Take(new Range(0,(int)removedIndex-1 >0? (int)removedIndex - 1:1)).ToArray();
                 foreach(Sprite icon in iconSpan)
                 {
                     icon.position = CalculatePosition(icon.size);

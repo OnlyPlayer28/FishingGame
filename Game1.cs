@@ -61,6 +61,8 @@ namespace Fishing
 
         private Texture2D scrollingWaves;
         private double waveScrollX;
+
+        internal DayNightSystem dayNightSystem;
         /// <summary>
         /// Returns a new instance of an inventory item.
         /// </summary>
@@ -92,8 +94,8 @@ namespace Fishing
             itemRegistry.AddRange(FileWriter.ReadJson<List<IAddableToInventory>>(contentManager.RootDirectory + "/Data/Food/consumables.json"));
 
             itemRegistry.OrderBy(p => p.ID);
-
-
+            dayNightSystem = new DayNightSystem(10);
+            DayNightSystem.SetTime(6, 0);
         }
 
         protected override void Initialize()
@@ -111,9 +113,14 @@ namespace Fishing
             isFocused = false;
             testEffect.Play();
         }
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            AudioManager.Dispose();
+            base.OnExiting(sender, args);
+        }
         protected override void LoadContent()
         {
-
+            AudioManager.LoadSongs(Content, "Audio/Songs/", "ocean_waves");
 
             Font_36 = Content.Load<SpriteFont>("Fonts/Tuna");
             Font_24 = Content.Load<SpriteFont>("Fonts/Tuna_24");
@@ -146,8 +153,8 @@ namespace Fishing
             player.inventory.AddItem(GetItem(9), 5);
             player.inventory.AddItem(GetItem(10), 5);
             player.inventory.AddItem(GetItem(11), 5);
-            AudioManager.LoadSongs(Content,"Audio/Songs/","ocean_waves");
-            AudioManager.PlaySong("ocean_waves",true);
+
+
         }
 
         
@@ -157,6 +164,7 @@ namespace Fishing
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            dayNightSystem.Update(gameTime);
             FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
 
             AudioManager.Update(gameTime);
@@ -171,7 +179,7 @@ namespace Fishing
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
             InputManager.Update(gameTime,isFocused);
-            //debugText = InputManager.inputState.ToString();
+            /*debugText = DayNightSystem.GetCurrentDate().ToString();*/
             waveScrollX += 11 * gameTime.ElapsedGameTime.TotalSeconds;
             base.Update(gameTime);
         }

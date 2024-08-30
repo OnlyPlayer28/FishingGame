@@ -28,10 +28,6 @@ namespace Fishing.Scripts.Food
         public Fish(int ID, string name, Sprite sprite, int price, FishSpecies species,float rarity,float difficulty,Vector2 minAndMaxDepth)
             :base(ID, name,sprite,rarity)
         {
-           /* this.ID = ID;
-            this.name = name;
-            this.sprite = sprite;
-            this.rarity = rarity;*/
             this.price = price;
             this.species = species;
             this.difficulty = difficulty;
@@ -41,10 +37,6 @@ namespace Fishing.Scripts.Food
         public Fish(Fish fish) 
             : base(fish.ID,fish.name,fish.sprite,fish.rarity)
         {
-           /* this.ID = fish.ID;
-            this.name = fish.name;
-                this.sprite = fish.sprite;
-            this.rarity = fish.rarity;*/
             this.price = fish.price;
             this.species = fish.species;
             this.difficulty = fish.difficulty;

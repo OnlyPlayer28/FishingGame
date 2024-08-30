@@ -144,7 +144,7 @@ namespace Core.UI.Elements
                 AudioManager.PlayCue(onClickSound);
             }
             onButtonClickAction?.Invoke();
-            OnButtonCLickEvent?.Invoke(this, new ButtonEventArgs { buttonRef = this }) ;
+            OnButtonClickEvent?.Invoke(this, new ButtonEventArgs { buttonRef = this }) ;
         }
 
         public override void SetPositionAndBoundingBox()

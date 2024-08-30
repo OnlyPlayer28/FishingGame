@@ -156,5 +156,24 @@ namespace Core
         {
             return new Rectangle((int)position.X,(int)position.Y,(int)size.X, (int)size.Y);
         }
+        public static Vector2 FitSizeIntoBounds(Vector2 size,Vector2 bounds,bool canUpscale = false,float limitUpscaleSize = 5)
+        {
+            float xOverBounds = size.X - bounds.X;
+            float yOverBounds = size.Y - bounds.Y;
+
+            Vector2 scaleCorrection = Vector2.One;
+                
+            scaleCorrection = new Vector2(bounds.X/ size.X);
+
+            if(bounds.Y / size.Y<scaleCorrection.X)
+            {
+                scaleCorrection = new Vector2(bounds.Y / size.Y);
+            }else 
+            {
+                scaleCorrection = new Vector2(scaleCorrection.X);
+            }
+
+            return (scaleCorrection.X > 1) ? canUpscale?scaleCorrection.X>limitUpscaleSize?new Vector2(limitUpscaleSize):scaleCorrection:Vector2.One : scaleCorrection;
+        }
     }
 }

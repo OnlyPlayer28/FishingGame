@@ -151,7 +151,7 @@ namespace Fishing.Scripts
 
         public void OnFishAppear(Object o,EventArgs e)
         {
-            AudioManager.PlayCue("water_splash");
+            AudioManager.PlayCue("water_splash_2");
             waitingTime = Game1.player.fishHookReactionTime;
             fishHookedWarningSprite.position = bobber.position + new Vector2(5, -4);
             fishingState = FishingState.HookingFish;

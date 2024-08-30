@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 
-namespace Fishing.Core
+namespace Core
 {
     public  class FileWriter
     {

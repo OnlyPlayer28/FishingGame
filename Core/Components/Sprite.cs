@@ -13,36 +13,36 @@ namespace Core.Components
     {
         BottomCenter
     }
-    public class Sprite : IComponent, IPosition, ILayerable
+    public class Sprite : IComponent, IPosition, ILayerable,ICloneable
     {
         public string name { get; set; }
         [JsonIgnore]
         public Rectangle spriteRect { get; set; }
 
-        public Rectangle tilemapLocationRect { get; }
+        public Rectangle tilemapLocationRect { get; set; }
         public Vector2 position { get; set; }
-   
+
 
         public Vector2 origin { get; private set; } = Vector2.Zero;
 
-        public Vector2 size { get; }
+        public Vector2 size { get; set;  }
 
         [JsonIgnore]
-        private Texture2D texture;
+        public Texture2D texture { get; private set; }
         public Color color { get; set; } = Color.White;
 
         public string texturePath { get; private set; }
         private float transparancy = 1f;
         public float rotation { get; set; }
         [JsonIgnore]
-        public float scale { get;  set; } = 1f;
-        public float layer{get;set; }
+        public float scale { get; set; } = 1f;
+        public float layer { get; set; }
         public Vector2 tilemapPosition { get; set; }
 
         public SpriteEffects spriteEffects { get; set; }
 
 
-        public Sprite(  Vector2 position, Vector2 size,Vector2 tilemapPosition,string texturePath,string name= "",float layer = 0f)
+        public Sprite(Vector2 position, Vector2 size, Vector2 tilemapPosition, string texturePath, string name = "", float layer = 0f)
         {
             this.name = name;
             this.position = position;
@@ -54,14 +54,14 @@ namespace Core.Components
             tilemapLocationRect = new Rectangle((int)tilemapPosition.X, (int)tilemapPosition.Y, (int)this.size.X, (int)this.size.Y);
         }
         [JsonConstructor]
-        public Sprite(Vector2 position,Rectangle tilemapLocationRect,string texturePath,string name,float layer)
+        public Sprite(Vector2 position, Rectangle tilemapLocationRect, string texturePath, string name, float layer)
         {
             this.name = name;
             this.position = position;
             this.tilemapLocationRect = tilemapLocationRect;
             this.texturePath = texturePath;
             this.layer = layer;
-            this.size = new Vector2(this.tilemapLocationRect.Width,this.tilemapLocationRect.Height);
+            this.size = new Vector2(this.tilemapLocationRect.Width, this.tilemapLocationRect.Height);
         }
         public Sprite(Sprite sprite)
         {
@@ -79,7 +79,31 @@ namespace Core.Components
         /// </summary>
         public Sprite()
         {
-            
+
+        }
+        /// <summary>
+        /// Defines a new texturePath and textureCoordinates for the sprite.Using "default" as path resets the sprite to default.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="tilemapLocationRect"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public Sprite SetNewPathAndLocationRect(string path, Rectangle tilemapLocationRect,ContentManager content)
+        {
+            if(path == "default")
+            {
+                this.tilemapLocationRect = new Rectangle(0, 0, 0, 0);
+                return this;
+            }
+
+            this.tilemapLocationRect = tilemapLocationRect;
+            if(texturePath!= path)
+            {
+                this.texturePath = path;
+                LoadContent(content);
+            }
+
+            return this;
         }
         public Sprite SetColor(Color color)
         {
@@ -133,13 +157,24 @@ namespace Core.Components
         public void Draw(SpriteBatch spriteBatch)
         {
             //Vector2 subPixelOffset = position - new Vector2((int)position.X, (int)position.Y);
-            spriteBatch.Draw(texture,position, tilemapLocationRect, color*transparancy, rotation, origin, scale,spriteEffects, layer);
+            try
+            {
+                spriteBatch.Draw(texture, position, tilemapLocationRect, color * transparancy, rotation, origin, scale, spriteEffects, layer);
+            }catch(Exception e)
+            {
+
+            }
 
         }
 
         public  void Update(GameTime gameTime)
         {
             spriteRect = new Rectangle((int)(position.X-origin.X), (int)(position.Y-origin.Y), (int)size.X, (int)size.Y);
+        }
+
+        public object Clone()
+        {
+            return new Sprite(this);
         }
     }
 }

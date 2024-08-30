@@ -1,8 +1,10 @@
 ﻿using Core;
+using Core.Audio;
 using Core.Components;
 using Core.SceneManagement;
 using Core.UI;
 using Core.UI.Elements;
+using Fishing.Core;
 using Fishing.Scripts.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -27,11 +29,23 @@ namespace Fishing.Scripts.Scenes
         public InventoryScreen inventoryScreen { get; set; }
         public CuttingBoardScreen cuttingBoardScreen {  get; set; }
         private List<IMenu> openableMenus { get; set; }
+
+        private string[] restaurantTracks { get; set; }
+
+        public HUD hud { get; set; }
+
+        static RestaurantScene()
+        {
+
+        }
         public RestaurantScene(string name, bool isActive = false, bool isDrawing = false) 
             : base(name, isActive, isDrawing)
         {
-            openableMenus = new List<IMenu>();
             uiCanvas = new Canvas("uiCanvas", isActive);
+            hud  = new HUD(Vector2.Zero, Vector2.Zero, .05f, uiCanvas).SetActive(true);
+            restaurantTracks = FileWriter.ReadJson<string[]>(Game1.contentManager.RootDirectory + "/Data/Audio/restaurantTracks.json");
+            AudioManager.LoadSongs(Game1.contentManager, "Audio/Songs/", restaurantTracks);
+            openableMenus = new List<IMenu>();
             inventoryScreen = new InventoryScreen(new Vector2(10, 20), new Vector2(90, 80), .1f, uiCanvas,"inventoryScreen");
             cuttingBoardScreen = new CuttingBoardScreen(new Vector2(30, 25), new Vector2(68, 70), .1f, uiCanvas,"cuttingBoardScreen");
             backdrop = new Sprite(Vector2.Zero, new Vector2(128, 128), Vector2.Zero, "Art/Backdrops/restaurant",layer:.0002f);
@@ -41,7 +55,7 @@ namespace Fishing.Scripts.Scenes
             goToOceanButton = new Button(new Vector2(1, 2), new Vector2(10), 0, onClickSound: "click")
                 .SetButtonSprite(new Sprite(new Vector2(1, 2), new Vector2(10, 10), new Vector2(28, 19), "Art/UI/UI"),Game1.contentManager).SetOnButtonCLickAction(GoToOcean);
 
-            inventoryButton = new Button(new Sprite(new Vector2(91, 89), new Vector2(30, 34), new Vector2(70, 0), "Art/UI/UI", layer: .25f),onClickSound:"click")
+            inventoryButton = new Button(new Sprite(new Vector2(91, 89), new Vector2(30, 34), new Vector2(70, 0), "Art/UI/UI", layer: .25f),onClickSound:"seagull_1")
                 .SetOnButtonCLickAction(OpenInventory);
             cuttingBoardButton = new Button(new Vector2(87, 75), new Vector2(27, 10), 0, onClickSound: "click")
                 .SetButtonSprite(new Sprite(new Vector2(87, 75), new Vector2(27, 10), new Vector2(100, 0), "Art/UI/UI", layer: .25f), Game1.contentManager)
@@ -50,6 +64,8 @@ namespace Fishing.Scripts.Scenes
             uiCanvas.AddClickableElement(goToOceanButton);
             uiCanvas.AddClickableElement(inventoryButton);
             uiCanvas.AddClickableElement(cuttingBoardButton);
+
+            uiCanvas.AddUIELement(hud);
             
             components.Add(backdrop);
             components.Add(window);
@@ -62,10 +78,16 @@ namespace Fishing.Scripts.Scenes
         }
         public override void LoadContent(ContentManager contentManager)
         {
+
             inventoryScreen.LoadContent(contentManager);
             cuttingBoardScreen.LoadContent(contentManager);
             components.ForEach(p => p.LoadContent(contentManager));
             uiCanvas.LoadContent(contentManager);
+        }
+        public override IScene SetActive(bool active)
+        {
+            if (active) { AudioManager.PlaySong(restaurantTracks[ReferenceHolder.random.Next(0, restaurantTracks.Length)],true,.06f); }
+            return base.SetActive(active);
         }
         private bool CanOpenMenu(string menuName)
         {
