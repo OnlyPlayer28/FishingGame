@@ -14,6 +14,7 @@ using Core.UI.Elements;
 using Core.Debug;
 using Fishing.Scripts.UI;
 using Core.Audio;
+using Core.Animations;
 
 namespace Fishing.Scripts.Scenes
 {
@@ -67,7 +68,7 @@ namespace Fishing.Scripts.Scenes
         }
         private void GenerateSeafloor(int maxSeaweed = 10,int maxRocks = 4)
         {
-            Rectangle[] seaweeDimensions = new Rectangle[] {new Rectangle(3,14,8,17),new Rectangle(8,14,7,13),new Rectangle(15,14,7,7),new Rectangle(22,14,3,10),new Rectangle(25,14,5,14) };
+            Rectangle[] seaweeDimensions = new Rectangle[] {new Rectangle(12,18,12,21),new Rectangle(11,39,11,17),new Rectangle(9,56,9,14)/*,new Rectangle(22,14,3,10),new Rectangle(25,14,5,14)*/ };
             Rectangle[] rockDimensions = new Rectangle[] { new Rectangle(30, 14, 3, 2), new Rectangle(33, 14, 5, 3) };
             oceanFloorDecorations = new Sprite[maxSeaweed + maxRocks];
             int currentSeaweed = 0;
@@ -79,8 +80,19 @@ namespace Fishing.Scripts.Scenes
                 
                 if (randomNum <= .65f&&currentSeaweed<maxSeaweed)
                 {
-                    oceanFloorDecorations[i] = new Sprite(positionToSpawn, seaweeDimensions[ReferenceHolder.random.Next(0, seaweeDimensions.Length )], "Art/Props/enviroment", $"seaweed_{currentSeaweed}", .01f).SetOrigin(Origin.BottomCenter);
+                    int index = ReferenceHolder.random.Next(0, seaweeDimensions.Length);
+                    oceanFloorDecorations[i] = new Sprite(positionToSpawn, seaweeDimensions[index], "Art/Props/enviroment", $"seaweed_{currentSeaweed}", .01f,
+                        new Animation("move",1,
+                            new Rectangle(seaweeDimensions[index].X, seaweeDimensions[index].Y, seaweeDimensions[index].Width, seaweeDimensions[index].Height),
+                            new Rectangle(seaweeDimensions[index].X + seaweeDimensions[index].Width, seaweeDimensions[index].Y , seaweeDimensions[index].Width, seaweeDimensions[index].Height),
+                            new Rectangle(seaweeDimensions[index].X, seaweeDimensions[index].Y, seaweeDimensions[index].Width, seaweeDimensions[index].Height),
+                            new Rectangle(seaweeDimensions[index].X - seaweeDimensions[index].Width, seaweeDimensions[index].Y, seaweeDimensions[index].Width, seaweeDimensions[index].Height)
+                        )
+                        
+                        ).SetOrigin(Origin.BottomCenter);
+                    oceanFloorDecorations[i].SetOrigin(oceanFloorDecorations[i].origin - (Vector2.One*2));
                     currentSeaweed++;
+                    oceanFloorDecorations[i].PlayAnimation("move");
                 }else if(randomNum > .65f&&currentRocks < maxRocks)
                 {
                     oceanFloorDecorations[i] = new Sprite(positionToSpawn, rockDimensions[ReferenceHolder.random.Next(0, rockDimensions.Length )], "Art/Props/enviroment", $"rock_{currentRocks}", .01f).SetOrigin(Origin.BottomCenter);
@@ -92,7 +104,7 @@ namespace Fishing.Scripts.Scenes
                     oceanFloorDecorations[i] = currentSeaweed < maxSeaweed ? new Sprite(positionToSpawn, seaweeDimensions[ReferenceHolder.random.Next(0, seaweeDimensions.Length )], "Art/Props/enviroment", $"seaweed_{currentSeaweed+=1}", .01f).SetOrigin(Origin.BottomCenter) : new Sprite(positionToSpawn, rockDimensions[ReferenceHolder.random.Next(0, rockDimensions.Length )], "Art/Props/enviroment", $"rock_{currentRocks+=1}", .01f).SetOrigin(Origin.BottomCenter);
                 }
 
-                positionToSpawn += new Vector2(oceanFloorDecorations[i].size.X + ReferenceHolder.random.Next(1, 5),0);
+                positionToSpawn += new Vector2(oceanFloorDecorations[i].name.StartsWith("seaweed")? oceanFloorDecorations[i].size.X-2 : oceanFloorDecorations[i].size.X + ReferenceHolder.random.Next(1, 5),0);
                 positionToSpawn = new Vector2(positionToSpawn.X, 125 + ReferenceHolder.random.Next(0, 2));
 
                 oceanFloorDecorations[i].LoadContent(Game1.contentManager);
@@ -154,7 +166,10 @@ namespace Fishing.Scripts.Scenes
                 uiCanvas.Update(gameTime);
                 hud.Update(gameTime);
                 components.ForEach(p => p.Update(gameTime));
-
+                foreach (var item in oceanFloorDecorations)
+                {
+                    item.Update(gameTime);
+                }
                 foreach (var item in clouds)
                 {
                     item.position += new Vector2(cloudMoveSpeed, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;

@@ -55,7 +55,7 @@ namespace Fishing.Scripts.Scenes
             goToOceanButton = new Button(new Vector2(1, 2), new Vector2(10), 0, onClickSound: "click")
                 .SetButtonSprite(new Sprite(new Vector2(1, 2), new Vector2(10, 10), new Vector2(28, 19), "Art/UI/UI"),Game1.contentManager).SetOnButtonCLickAction(GoToOcean);
 
-            inventoryButton = new Button(new Sprite(new Vector2(91, 89), new Vector2(30, 34), new Vector2(70, 0), "Art/UI/UI", layer: .25f),onClickSound:"seagull_1")
+            inventoryButton = new Button(new Sprite(new Vector2(91, 89), new Vector2(30, 34), new Vector2(70, 0), "Art/UI/UI", layer: .25f),onClickSound:"click")
                 .SetOnButtonCLickAction(OpenInventory);
             cuttingBoardButton = new Button(new Vector2(87, 75), new Vector2(27, 10), 0, onClickSound: "click")
                 .SetButtonSprite(new Sprite(new Vector2(87, 75), new Vector2(27, 10), new Vector2(100, 0), "Art/UI/UI", layer: .25f), Game1.contentManager)

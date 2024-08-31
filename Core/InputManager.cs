@@ -1,4 +1,5 @@
 ﻿using Core.Cameras;
+using Core.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -55,6 +56,14 @@ namespace Core
 
                     OnMouseClickEvent?.Invoke(null, new MouseInputEventArgs { inputState = inputState, mouseRect = new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1), mouseButton = button });
                 }
+                if(Mouse.GetState().LeftButton == ButtonState.Pressed&&previousMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    OnMouseDownEvent?.Invoke(null, new MouseInputEventArgs { inputState = inputState, mouseRect = new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1), mouseButton = MouseButton.Left });
+                }
+                if(Mouse.GetState().RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Pressed)
+                {
+                    OnMouseDownEvent?.Invoke(null, new MouseInputEventArgs { inputState = inputState, mouseRect = new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1), mouseButton = MouseButton.Right });
+                }
                 if (Keyboard.GetState().GetPressedKeyCount() > 0)
                 {
                     OnKeyboardPressEvent?.Invoke(null, new KeyboardInputEventArgs { inputState = inputState, keys = Keyboard.GetState().GetPressedKeys() });
@@ -88,7 +97,7 @@ namespace Core
 
         public static Vector2 GetMousePosition()
         {
-            return new Vector2(Mouse.GetState().X,Mouse.GetState().Y);
+            return new Vector2(Mouse.GetState().X / CameraManager.GetCurrentCamera().zoom, Mouse.GetState().Y / CameraManager.GetCurrentCamera().zoom);
         }
 
         public static Rectangle GetMouseRect()

@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../consumables.png;Art/Food/consumables.png
 
+#begin ../../../enviroment.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../enviroment.png;Art/Props/enviroment.png
+
 #begin ../../../Fishing_Sounds/Win/fishingSounds.xgs
 /copy:../../../Fishing_Sounds/Win/fishingSounds.xgs;Audio/fishingSounds.xgs
 
@@ -36,6 +48,18 @@
 
 #begin ../../../Fishing_Sounds/Win/Wave Bank.xwb
 /copy:../../../Fishing_Sounds/Win/Wave Bank.xwb;Audio/Wave Bank.xwb
+
+#begin Art/animationTest.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/animationTest.png
 
 #begin Art/Backdrops/Ocean.png
 /importer:TextureImporter
@@ -120,18 +144,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Art/Props/Boat.png
-
-#begin Art/Props/enviroment.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Art/Props/enviroment.png
 
 #begin Art/test.txt
 /copy:Art/test.txt

@@ -19,6 +19,7 @@ using Core.InventoryManagement;
 using Fishing.Scripts.Food;
 using Microsoft.Xna.Framework.Audio;
 using Core.Audio;
+using Core.Animations;
 
 namespace Fishing
 {
@@ -154,7 +155,6 @@ namespace Fishing
             player.inventory.AddItem(GetItem(10), 5);
             player.inventory.AddItem(GetItem(11), 5);
 
-
         }
 
         
@@ -181,6 +181,8 @@ namespace Fishing
             InputManager.Update(gameTime,isFocused);
             /*debugText = DayNightSystem.GetCurrentDate().ToString();*/
             waveScrollX += 11 * gameTime.ElapsedGameTime.TotalSeconds;
+
+            animationTest.Update(gameTime);
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)

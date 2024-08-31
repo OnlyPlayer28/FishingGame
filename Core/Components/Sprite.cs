@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Core.Animations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
@@ -11,7 +12,15 @@ namespace Core.Components
 {
     public enum Origin
     {
-        BottomCenter
+        BottomCenter,
+        Center,
+        BottomLeft,
+        BottomRight,
+        CenterLeft,
+        CenterRight,
+        TopCenter,
+        TopRight,
+        TopLeft
     }
     public class Sprite : IComponent, IPosition, ILayerable,ICloneable
     {
@@ -41,6 +50,7 @@ namespace Core.Components
 
         public SpriteEffects spriteEffects { get; set; }
 
+        public List<Animation> animations { get;private set; } = new List<Animation> ();
 
         public Sprite(Vector2 position, Vector2 size, Vector2 tilemapPosition, string texturePath, string name = "", float layer = 0f)
         {
@@ -54,7 +64,7 @@ namespace Core.Components
             tilemapLocationRect = new Rectangle((int)tilemapPosition.X, (int)tilemapPosition.Y, (int)this.size.X, (int)this.size.Y);
         }
         [JsonConstructor]
-        public Sprite(Vector2 position, Rectangle tilemapLocationRect, string texturePath, string name, float layer)
+        public Sprite(Vector2 position, Rectangle tilemapLocationRect, string texturePath, string name, float layer, params Animation[] animations)
         {
             this.name = name;
             this.position = position;
@@ -62,6 +72,10 @@ namespace Core.Components
             this.texturePath = texturePath;
             this.layer = layer;
             this.size = new Vector2(this.tilemapLocationRect.Width, this.tilemapLocationRect.Height);
+            if (animations != null)
+                this.animations = animations.ToList();
+            else
+                this.animations = new List<Animation>();
         }
         public Sprite(Sprite sprite)
         {
@@ -115,25 +129,41 @@ namespace Core.Components
             this.transparancy = transparency;
             return this;
         }
-        public Sprite SetOriginToCenter()
-        {
-            origin = size / 2;
-            return this;
-        }
-
-
         public Sprite SetOrigin(Vector2 origin)
         {
             this.origin = origin;
             return this;
         }
-
         public Sprite SetOrigin(Origin origin)
         {
             switch (origin)
             {
                 case Origin.BottomCenter:
                     this.origin = new Vector2((int)(size.X / 2), size.Y);
+                    break;
+                case Origin.Center:
+                    this.origin = new Vector2((int)(size.X / 2), (int)(size.Y / 2));
+                    break;
+                case Origin.BottomLeft:
+                    this.origin = new Vector2(size.X, (int)(size.Y));
+                    break;
+                case Origin.BottomRight:
+                    this.origin = new Vector2((int)(size.X ), (int)(size.Y));
+                    break;
+                case Origin.CenterLeft:
+                    this.origin = new Vector2((int)(size.X), (int)(size.Y / 2));
+                    break;
+                case Origin.CenterRight:
+                    this.origin = new Vector2((int)(size.X), (int)(size.Y / 2));
+                    break;
+                case Origin.TopCenter:
+                    this.origin = new Vector2((int)(size.X / 2),0);
+                    break;
+                case Origin.TopRight:
+                    this.origin = new Vector2((int)(size.X ), 0);
+                    break;
+                case Origin.TopLeft:
+                    this.origin = new Vector2(0, 0);
                     break;
                 default:
                     break;
@@ -152,23 +182,56 @@ namespace Core.Components
         public  void LoadContent(ContentManager contentManager)
         {
             texture =contentManager.Load<Texture2D>(texturePath);
-
+        }
+        public Sprite PlayAnimation(string name,bool looping = true)
+        {
+            if(animations.Any(p=>p.name == name))
+            {
+                foreach (var item in animations)
+                {
+                    if(item.name == name)
+                    {
+                        item.Play().SetLooping(looping);
+                    }
+                    else
+                    {
+                        item.Stop();
+                    }
+                }
+            }
+            return this;
+        }
+        public void StopAllAnimation()
+        {
+            animations.ForEach(p => p.Stop());
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            //Vector2 subPixelOffset = position - new Vector2((int)position.X, (int)position.Y);
             try
             {
-                spriteBatch.Draw(texture, position, tilemapLocationRect, color * transparancy, rotation, origin, scale, spriteEffects, layer);
+                if(animations.Any(p=>p.state == AnimationState.Playing))
+                {
+                    spriteBatch.Draw(texture, position,animations.Where(p=>p.state==AnimationState.Playing).First().GetCurrentFrameRect(), color * transparancy, rotation, origin, scale, spriteEffects, layer);
+                }
+                else
+                {
+                    spriteBatch.Draw(texture, position, tilemapLocationRect, color * transparancy, rotation, origin, scale, spriteEffects, layer);
+                }
             }catch(Exception e)
             {
 
             }
-
         }
 
-        public  void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
+            foreach (var item in animations)
+            {
+                if(item.state == AnimationState.Playing)
+                {
+                    item.Update(gameTime);
+                }
+            }
             spriteRect = new Rectangle((int)(position.X-origin.X), (int)(position.Y-origin.Y), (int)size.X, (int)size.Y);
         }
 

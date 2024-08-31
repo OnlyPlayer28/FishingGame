@@ -88,12 +88,12 @@ namespace Fishing.Scripts.UI
             //Disable Text !!!!!!!
             if (active == false)
             {
-                ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.WaitingForFish;
+                ((FishingScene)Game1.stateManager.GetGameState("fishingScene")).boat.fishingState = FishingState.WaitingForFish;
                 Game1.player.inventory.AddItem(Game1.GetItem(fishID));
             }
             else
             {
-                ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.FishingResults;
+                ((FishingScene)Game1.stateManager.GetGameState("fishingScene")).boat.fishingState = FishingState.FishingResults;
             }
             fishNameText.isActive = active;
             closeScreenButton.isActive = active;
