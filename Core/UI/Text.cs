@@ -27,7 +27,7 @@ namespace Core.UI
 
         public float scale { get; set; } = 1f;
 
-        public Text(Vector2 position,string text,Color color, SpriteFont font ,string name="defaultText",float layer = .1f)
+        public Text(Vector2 position,string text,Color color, SpriteFont font ,string name="defaultText",float layer = .1f,bool isActive = false)
         {
             this.position = position*CameraManager.GetCurrentCamera().zoom;   
             this.text = text;
@@ -35,6 +35,7 @@ namespace Core.UI
             this.name = name;
             this.layer = layer;
             this.font = font;
+            this.isActive = isActive;
             LoadContent(Game1.contentManager);
         }
 

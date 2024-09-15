@@ -20,6 +20,8 @@ using Fishing.Scripts.Food;
 using Microsoft.Xna.Framework.Audio;
 using Core.Audio;
 using Core.Animations;
+using Fishing.Scripts.Crafting;
+ 
 
 namespace Fishing
 {
@@ -35,6 +37,7 @@ namespace Fishing
         private FishingScene fishingState;
         private RestaurantScene restaurantScene;
         internal static SceneManagement stateManager;
+        private PauseScene pauseScene;
 
         internal static CameraManager cameraManager;
         internal static Vector2 resolution = new Vector2(128*5, 128*5);
@@ -89,7 +92,6 @@ namespace Fishing
             CameraManager.AddCamera(new Camera(Vector2.Zero, 5, new Vector2(1600, 900), "mainCamera"));
             CameraManager.SetCurrentCamera("mainCamera");
 
-            Console.WriteLine("root directory: "+contentManager.RootDirectory);
             
             itemRegistry = FileWriter.ReadJson < List<IAddableToInventory>>(Content.RootDirectory+"/Data/Food/fish.json");
             itemRegistry.AddRange(FileWriter.ReadJson<List<IAddableToInventory>>(contentManager.RootDirectory + "/Data/Food/consumables.json"));
@@ -97,6 +99,7 @@ namespace Fishing
             itemRegistry.OrderBy(p => p.ID);
             dayNightSystem = new DayNightSystem(10);
             DayNightSystem.SetTime(6, 0);
+
         }
 
         protected override void Initialize()
@@ -130,23 +133,24 @@ namespace Fishing
 
             testEffect = Content.Load<SoundEffect>("Audio/error");
 
-            // TODO: use this.Content to load your game content here
             player = new Player();
             LineTool.Initialize(GraphicsDevice);
             fishingState = new FishingScene("fishingScene");
             mainMenuState = new MainMenuState("mainMenuScene");
             restaurantScene = new RestaurantScene("restaurantScene");
+            pauseScene = new PauseScene("pauseScene");
 
-            stateManager = new SceneManagement(mainMenuState, fishingState,restaurantScene).SetActive(true, "fishingScene");
+            stateManager = new SceneManagement(mainMenuState, fishingState, restaurantScene,pauseScene).SetActive(true, "fishingScene");
 
             scrollingWaves = Content.Load<Texture2D>("Art/Backdrops/waves");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             stateManager.LoadContent(contentManager);
             CameraManager.LoadContent(contentManager);
-            
 
-            player.inventory.AddItem(GetItem(4), 5);
+            InputManager.OnKeyboardPressEvent += OnInput;
+
+            player.inventory.AddItem(GetItem(1), 1);
             player.inventory.AddItem(GetItem(5), 5);
             player.inventory.AddItem(GetItem(6), 5);
             player.inventory.AddItem(GetItem(7), 5);
@@ -157,23 +161,33 @@ namespace Fishing
 
         }
 
-        
+        public void OnInput(Object o,KeyboardInputEventArgs e)
+        {
+            if (e.keys.Contains( Keys.Escape))
+            {
+                stateManager.SetActiveAndPause(!stateManager.GetGameState("pauseScene").isActive,"pauseScene");
+            }
+        }
        
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            /*if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();*/
 
             dayNightSystem.Update(gameTime);
             FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
 
             AudioManager.Update(gameTime);
-            if (InputManager.AreKeysBeingPressedDown(false, Keys.P)) 
+
+            
+            if (InputManager.AreKeysBeingPressedDown(false, Keys.P))
             {
+
                 player.inventory.AddItem(GetItem(2), 1);
             }
             if (InputManager.AreKeysBeingPressedDown(false, Keys.L))
             {
+
                 player.inventory.AddItem(GetItem(2),-1);
             }
             CameraManager.Update(gameTime);
@@ -182,7 +196,6 @@ namespace Fishing
             /*debugText = DayNightSystem.GetCurrentDate().ToString();*/
             waveScrollX += 11 * gameTime.ElapsedGameTime.TotalSeconds;
 
-            animationTest.Update(gameTime);
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)

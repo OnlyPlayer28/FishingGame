@@ -199,6 +199,9 @@
 #begin Data/Audio/restaurantTracks.json
 /copy:Data/Audio/restaurantTracks.json
 
+#begin Data/Crafting/cuttableFoodCrafting.json
+/copy:Data/Crafting/cuttableFoodCrafting.json
+
 #begin Data/credits.txt
 /copy:Data/credits.txt
 

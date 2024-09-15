@@ -1,0 +1,18 @@
+{
+  "$type": "System.Collections.Generic.List`1[[Fishing.Scripts.Crafting.CraftingRecipe, Fishing]], System.Private.CoreLib",
+  "$values": [
+    {
+      "$type": "Fishing.Scripts.Crafting.CraftingRecipe, Fishing",
+      "input": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "1": 1
+      },
+      "output": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "4": 3
+      },
+      "specialRequirements": 0,
+      "name": "salmon filet"
+    }
+  ]
+}

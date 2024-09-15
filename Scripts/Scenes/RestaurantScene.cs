@@ -114,42 +114,30 @@ namespace Fishing.Scripts.Scenes
             
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (isActive || isDrawing)
-            {
                 components.ForEach(p => p.Draw(spriteBatch));
-            }
         }
 
         public override void DrawUI(SpriteBatch spriteBatch)
         {
-            if (isActive || isDrawing)
-            {
                 openableMenus.ForEach(p => p.Draw(spriteBatch));
                 uiCanvas.Draw(spriteBatch);
                 uiCanvas.Draw(spriteBatch);
-            }
         }
 
 
 
         public override void Update(GameTime gameTime)
         {
-            if (isActive)
-            {
                 openableMenus.ForEach(p => p.Update(gameTime));
 
                 uiCanvas.Update(gameTime);
                 components.ForEach(p => p.Update(gameTime));
-            }
         }
 
         public override void DrawText(SpriteBatch spriteBatch)
         {
-            if (isActive || isDrawing)
-            {
                 uiCanvas.DrawText(spriteBatch);
                 uiCanvas.DrawText(spriteBatch);
-            }
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Core
                 {
                     OnMouseDownEvent?.Invoke(null, new MouseInputEventArgs { inputState = inputState, mouseRect = new Rectangle(Mouse.GetState().Position.X, Mouse.GetState().Position.Y, 1, 1), mouseButton = MouseButton.Right });
                 }
-                if (Keyboard.GetState().GetPressedKeyCount() > 0)
+                if (Keyboard.GetState().GetPressedKeyCount() > 0 && previousKeyobardState.GetPressedKeyCount() == 0)
                 {
                     OnKeyboardPressEvent?.Invoke(null, new KeyboardInputEventArgs { inputState = inputState, keys = Keyboard.GetState().GetPressedKeys() });
                 }

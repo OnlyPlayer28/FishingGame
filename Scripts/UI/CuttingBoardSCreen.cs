@@ -4,11 +4,13 @@ using Core.Debug;
 using Core.InventoryManagement;
 using Core.UI;
 using Core.UI.Elements;
+using Fishing.Scripts.Crafting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +30,7 @@ namespace Fishing.Scripts.UI
         private Rect[] cuttingRectangles { get; set; }
 
         private Sprite currentIngredientBeingSliced { get; set; }
+        private List<CraftingRecipe> cuttableFoodRecipes { get; set; }
 
         private int cuttingRectWidth = 2;
         private int currentCuttingRectangle = -1;
@@ -38,7 +41,9 @@ namespace Fishing.Scripts.UI
         public CuttingBoardScreen(Vector2 position, Vector2 size, float layer, Canvas canvas, string name = "defaultMenu") 
             : base(position, size, layer, canvas, name)
         {
+            cuttableFoodRecipes = FileWriter.ReadJson<List<CraftingRecipe>>(Game1.contentManager.RootDirectory + "/Data/Crafting/cuttableFoodCrafting.json");
             InputManager.OnMouseDownEvent += OnMouseHold;
+            Game1.player.inventory.OnInventoryModifyEvent += OnInventoryModify;
 
             currentIngredientBeingSliced = new Sprite(position +new Vector2(15),new Rectangle(),"Art/UI/UI","",this.layer);
             arrowButtons = new Button[2];
@@ -68,6 +73,7 @@ namespace Fishing.Scripts.UI
         private void OnMouseHold(Object o,MouseInputEventArgs e)
         {
             int lastRect = currentCuttingRectangle;
+
             if (!isActive&&e.mouseButton == MouseButton.Right) { return; }
             if(cuttingRectangles!= null &&currentCuttingRectangle!= -1&&(isCuttingVertically?
                 cuttingRectangles[currentCuttingRectangle].position.Y+ cuttingRectangles[currentCuttingRectangle].size.Y-1: 
@@ -82,22 +88,31 @@ namespace Fishing.Scripts.UI
                 currentCuttingRectangle = cuttingRectangles.ToList().IndexOf(cuttingRectangles.Where(p =>p!=null&& p.GetCollision().Intersects(InputManager.GetMouseRect())).First());
                 if(lastRect == -1 && !new Rectangle( (int)cuttingRectangles[currentCuttingRectangle].position.X, (int)cuttingRectangles[currentCuttingRectangle].position.Y, cuttingRectWidth, cuttingRectWidth).Intersects(InputManager.GetMouseRect()))
                 {
-                    Console.WriteLine("failed cutting(didnt start at proper position):(");
+                    Debug.WriteLine("failed cutting(didnt start at proper position):(");
                     currentCuttingRectangle = -1;
                 }
                 if (lastRect != currentCuttingRectangle)
                 {
                     isCuttingVertically = cuttingRectangles[currentCuttingRectangle].size.X == cuttingRectWidth ? true : false;
                     cuttingStartPosition = isCuttingVertically? InputManager.GetMousePosition().Y : InputManager.GetMousePosition().X;
-                    Console.WriteLine("changed cutting rect");
+                    Debug.WriteLine("changed cutting rect");
                 }
 
             }else if(currentCuttingRectangle != -1&& (cuttingRectangles.All(p => p!= null&&!p.GetCollision().Intersects(InputManager.GetMouseRect()))))
             {
-                Console.WriteLine("failed cutting :(");
+                Debug.WriteLine("failed cutting :(");
                 currentCuttingRectangle = -1;
             }
-            if (currentCuttingRectangle!= -1&&cuttingRectangles[currentCuttingRectangle] == null) { currentCuttingRectangle = -1; }
+            if (currentCuttingRectangle != -1 && cuttingRectangles.All(p=>p is null)) 
+            { 
+                Debug.WriteLine("okay");
+                GiveItemAfterCutting(cuttableFoodRecipes.Where(p => p.input.ContainsKey(Convert.ToInt16(currentIngredientBeingSliced.name))).First().name);
+                currentCuttingRectangle = -1; 
+            }
+            else if(currentCuttingRectangle != -1 && cuttingRectangles[currentCuttingRectangle] == null) 
+            { 
+                currentCuttingRectangle = -1;
+            }
         }
         public override IMenu SetActive(bool active)
         {
@@ -112,12 +127,16 @@ namespace Fishing.Scripts.UI
             boardCollision.isActive= active;
             return base.SetActive(active);
         }
+        private void GiveItemAfterCutting(string recipe)
+        {
+            cuttableFoodRecipes.Where(p => p.name == recipe).First().Craft(Game1.player.inventory);
+        }
         private void SetButtonIcons()
         {
             for (int i = 0; i < 5; i++)
             {
                 int index = i + (currentInventoryPage * 5);
-                if (Game1.player.inventory.inventory.Count >index)
+                if (Game1.player.inventory.inventory.Where(x=>cuttableFoodRecipes.Any(p=>p.input.ContainsKey(x.Item2.ID))).Count() > index && Game1.player.inventory.inventory[index].Item1>0)
                 {
                     
                     inventoryButtonIcons[i].SetNewPathAndLocationRect(Game1.player.inventory.inventory[index].Item2.sprite.texturePath, Game1.player.inventory.inventory[index].Item2.sprite.tilemapLocationRect, Game1.contentManager);
@@ -168,11 +187,14 @@ namespace Fishing.Scripts.UI
         private void OnInventoryModify(Object o,InventoryEventArgs e)
         {
             if (!isActive) { return; }
+            currentIngredientBeingSliced.SetNewPathAndLocationRect("default", new Rectangle(), Game1.contentManager);
             SetButtonIcons();
         }
 
         public void OnArrowButtonsClick(Object o ,ButtonEventArgs e)
         {
+            currentIngredientBeingSliced.SetNewPathAndLocationRect("default", new Rectangle(), Game1.contentManager);
+            cuttingRectangles =cuttingRectangles != null&&cuttingRectangles.Count() != 0 ? cuttingRectangles = new Rect[] {} : cuttingRectangles;
             if(e.buttonRef.name == "leftArrow")
             {
                currentInventoryPage= currentInventoryPage == 0 ?(int)MathF.Round(Game1.player.inventory.inventory.Count/5,MidpointRounding.ToZero) : currentInventoryPage - 1;
@@ -185,13 +207,14 @@ namespace Fishing.Scripts.UI
         }
         public void OnSelectButtonsClick(Object o,ButtonEventArgs  e)
         {
+            cuttingRectangles =cuttingRectangles!=null&& cuttingRectangles.Count() != 0 ? cuttingRectangles = new Rect[] { } : cuttingRectangles;
             if (e.buttonRef.name == "-1")
             {
                 currentIngredientBeingSliced.SetNewPathAndLocationRect("default", new Rectangle(), Game1.contentManager);
             }
             else
             {
-                
+                currentIngredientBeingSliced.name = e.buttonRef.name;
                 currentIngredientBeingSliced.SetNewPathAndLocationRect(Game1.GetItem(Convert.ToInt16(e.buttonRef.name)).sprite.texturePath, Game1.GetItem(Convert.ToInt16(e.buttonRef.name)).sprite.tilemapLocationRect, Game1.contentManager);
                 currentIngredientBeingSliced.size = new Vector2(currentIngredientBeingSliced.tilemapLocationRect.Width, currentIngredientBeingSliced.tilemapLocationRect.Height);
                 currentIngredientBeingSliced.scale = Helper.FitSizeIntoBounds(currentIngredientBeingSliced.size, new Vector2(30, 30), true, 3).X;

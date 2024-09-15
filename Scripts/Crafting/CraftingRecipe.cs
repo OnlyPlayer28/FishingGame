@@ -9,7 +9,9 @@ namespace Fishing.Scripts.Crafting
 {
     public class CraftingRecipe
     {
-        public Dictionary<int,int> input { get; set; }  
+        /// <summary>/// Key=item,Value=amount/// </summary>
+        public Dictionary<int, int> input { get; set; }
+        /// <summary>/// Key=item,Value=amount/// </summary>
         public Dictionary<int,int> output { get; set; }
         public int specialRequirements { get; set; } 
 
@@ -36,6 +38,10 @@ namespace Fishing.Scripts.Crafting
             {
                 inventory.AddItem(Game1.GetItem(item.Key), item.Value);
             }
+            foreach (var item in input)
+            {
+                inventory.AddItem(Game1.GetItem(item.Key), -item.Value);
+            }
 
         }
         /// <summary>
@@ -57,6 +63,7 @@ namespace Fishing.Scripts.Crafting
             }
             canCraft = true;
         }
+        
 
 
     }

@@ -128,23 +128,19 @@ namespace Fishing.Scripts.Scenes
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if(isActive||isDrawing)
-            {
+
                 foreach (var item in oceanFloorDecorations)
                 {
                     item.Draw(spriteBatch);
                 }
                 components.ForEach(p => p.Draw(spriteBatch));
-            }
+
         }
 
         public override void DrawUI(SpriteBatch spriteBatch)
         {
-            if(isActive||isDrawing)
-            {
                 fishingResultsScreen.Draw(spriteBatch);
                 uiCanvas.Draw(spriteBatch);
-            }
         }
 
         public override void LoadContent(ContentManager contentManager)
@@ -156,8 +152,6 @@ namespace Fishing.Scripts.Scenes
 
         public override void Update(GameTime gameTime)
         {
-            if (isActive)
-            {
                 if (InputManager.AreKeysBeingPressedDown(keys: Microsoft.Xna.Framework.Input.Keys.M))
                 {
                     GenerateSeafloor();
@@ -178,15 +172,11 @@ namespace Fishing.Scripts.Scenes
                         item.position = new Vector2(-item.size.X, ReferenceHolder.random.Next(maxCloudYPos, minCloudYPos));
                     }
                 }
-            }
         }
 
         public override void DrawText(SpriteBatch spriteBatch)
         {
-            if (isActive || isDrawing)
-            {
                 uiCanvas.DrawText(spriteBatch);
-            }
         }
     }
 }

@@ -32,9 +32,34 @@ namespace Core.SceneManagement
             return this;
         }
 
-        public abstract void LoadContent(ContentManager contentManager);
-        public abstract void Update(GameTime gameTime);
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public virtual IScene SetDrawing(bool drawing)
+        {
+            isDrawing = drawing;
+            return this;
+        }
+
+        public virtual void LoadContent(ContentManager contentManager)
+        {
+            foreach (var component in components)
+            {
+                component.LoadContent(contentManager);
+            }
+        }
+        public virtual void Update(GameTime gameTime) 
+        {
+            foreach (var item in components)
+            {
+                item.Update(gameTime);
+            }
+        }
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            foreach(var item in components)
+            {
+                item.Draw(spriteBatch);
+                
+            }
+        }
         public abstract void DrawUI(SpriteBatch spriteBatch);
         public abstract void DrawText(SpriteBatch spriteBatch);
     }
