@@ -1,4 +1,6 @@
 ﻿using Core.Animations;
+using Core.Effects;
+using Core.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,7 +24,7 @@ namespace Core.Components
         TopRight,
         TopLeft
     }
-    public class Sprite : IComponent, IPosition, ILayerable,ICloneable
+    public class Sprite : IComponent, IPosition, ILayerable,ICloneable,IAffectableByEffects
     {
         public string name { get; set; }
         [JsonIgnore]
@@ -41,7 +43,7 @@ namespace Core.Components
         public Color color { get; set; } = Color.White;
 
         public string texturePath { get; private set; }
-        private float transparancy = 1f;
+        public float transparency { get; set; }
         public float rotation { get; set; }
         [JsonIgnore]
         public float scale { get; set; } = 1f;
@@ -51,6 +53,7 @@ namespace Core.Components
         public SpriteEffects spriteEffects { get; set; }
 
         public List<Animation> animations { get;private set; } = new List<Animation> ();
+        private List<IEffect> effects { get;  set; } = new List<IEffect> ();
 
         public Sprite(Vector2 position, Vector2 size, Vector2 tilemapPosition, string texturePath, string name = "", float layer = 0f)
         {
@@ -126,7 +129,7 @@ namespace Core.Components
         }
         public Sprite SetTransparency(float transparency)
         {
-            this.transparancy = transparency;
+            this.transparency = transparency;
             return this;
         }
         public Sprite SetOrigin(Vector2 origin)
@@ -205,17 +208,26 @@ namespace Core.Components
         {
             animations.ForEach(p => p.Stop());
         }
+        public void AddEffect(IEffect effectToAdd)
+        {
+            effectToAdd.OnDestroyEvent += OnEffectDestroy;
+            effects.Add(effectToAdd);
+        }
+        private void OnEffectDestroy(Object o,EventArgs e)
+        {
+            effects.Remove((IEffect)o);
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             try
             {
                 if(animations.Any(p=>p.state == AnimationState.Playing))
                 {
-                    spriteBatch.Draw(texture, position,animations.Where(p=>p.state==AnimationState.Playing).First().GetCurrentFrameRect(), color * transparancy, rotation, origin, scale, spriteEffects, layer);
+                    spriteBatch.Draw(texture, position,animations.Where(p=>p.state==AnimationState.Playing).First().GetCurrentFrameRect(), color * transparency, rotation, origin, scale, spriteEffects, layer);
                 }
                 else
                 {
-                    spriteBatch.Draw(texture, position, tilemapLocationRect, color * transparancy, rotation, origin, scale, spriteEffects, layer);
+                    spriteBatch.Draw(texture, position, tilemapLocationRect, color * transparency, rotation, origin, scale, spriteEffects, layer);
                 }
             }catch(Exception e)
             {
@@ -231,6 +243,10 @@ namespace Core.Components
                 {
                     item.Update(gameTime);
                 }
+            }
+            foreach (var item in effects)
+            {
+                item?.Update(gameTime);
             }
             spriteRect = new Rectangle((int)(position.X-origin.X), (int)(position.Y-origin.Y), (int)size.X, (int)size.Y);
         }
