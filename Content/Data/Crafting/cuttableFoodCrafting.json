@@ -13,6 +13,45 @@
       },
       "specialRequirements": 0,
       "name": "salmon filet"
+    },
+    {
+      "$type": "Fishing.Scripts.Crafting.CraftingRecipe, Fishing",
+      "input": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "0": 1
+      },
+      "output": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "7": 3
+      },
+      "specialRequirements": 0,
+      "name": "tuna filet"
+    },
+    {
+      "$type": "Fishing.Scripts.Crafting.CraftingRecipe, Fishing",
+      "input": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "2": 1
+      },
+      "output": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "9": 5
+      },
+      "specialRequirements": 0,
+      "name": "longfin squid calamari"
+    },
+    {
+      "$type": "Fishing.Scripts.Crafting.CraftingRecipe, Fishing",
+      "input": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "3": 1
+      },
+      "output": {
+        "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib",
+        "9": 5
+      },
+      "specialRequirements": 0,
+      "name": "shortfin squid calamari"
     }
   ]
 }

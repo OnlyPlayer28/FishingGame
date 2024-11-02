@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Audio;
 using Core.Components;
 using Core.Debug;
 using Core.InventoryManagement;
@@ -18,9 +19,12 @@ namespace Fishing.Scripts.UI
     {
 
         private Rect background { get; set; }
+        private Rect descriptionBackground { get; set; }
         public List<Sprite> icons { get; set; }
         public List<Text> itemAmountsText { get; set; }
         private EmptyUIELement UICollision { get; set; }
+
+        private Text itemDescriptionText { get; set; }
 
         private int verticalSpacing = 5;
         private int textHorizontalSpacing = 2;
@@ -30,12 +34,15 @@ namespace Fishing.Scripts.UI
         public InventoryScreen(Vector2 position, Vector2 size, float layer, Canvas canvas, string name = "defaultMenu") 
             : base(position, size, layer, canvas, name)
         {
+            descriptionBackground = new Rect(Vector2.One,new Vector2(0,0), new Color(0, 0, 0, 125), true, layer ).SetFillColor(new Color(0,0,0,125));
+            itemDescriptionText = new Text(Vector2.One, "", Color.Wheat, Game1.Font_24);
             icons  = new List<Sprite>();
             itemAmountsText = new List<Text>();
             background = new Rect(this.position-new Vector2(2,0) , this.size+new Vector2(3,2), Helper.HexToRgb("#542424"), true, layer + .0005f).SetFillColor(Helper.HexToRgb("#6e3b34"));
             UICollision = new EmptyUIELement(this.position - new Vector2(2, 0), this.size + new Vector2(3, 2), false, "collsion", 0);
             Game1.player.inventory.OnInventoryModifyEvent += SetIcons;
             canvas.AddUIELement(UICollision);
+            AddTextEleemnt(itemDescriptionText);
             
         }
 
@@ -47,11 +54,13 @@ namespace Fishing.Scripts.UI
 
         public override IMenu SetActive(bool active)
         {
+            AudioManager.PlayCue("fridge_opening_and_closing");
             foreach (var item in itemAmountsText)
             {
                 item.isActive = active;
             }
             UICollision.isActive = active;
+            itemDescriptionText.isActive = active;
             return base.SetActive(active);
         }
         public Vector2 CalculatePosition(Vector2 objectSize)
@@ -115,7 +124,7 @@ namespace Fishing.Scripts.UI
                 spriteToAdd.name = e.ID.ToString();
                 icons.Add(spriteToAdd);
 
-                itemAmountsText.Add(new Text(spriteToAdd.position+new Vector2(spriteToAdd.size.X+textHorizontalSpacing,textVerticalSpacing), e.totalItemAmount.ToString(), Color.White, Game1.Font_24, layer: this.layer));
+                itemAmountsText.Add(new Text(spriteToAdd.position+new Vector2(spriteToAdd.size.X+textHorizontalSpacing,textVerticalSpacing), e.totalItemAmount.ToString(), Color.White, Game1.Font_24, layer: this.layer+.0001f));
                 itemAmountsText.Last().isActive = isActive;
                 AddTextEleemnt(itemAmountsText.Last());
             }
@@ -124,6 +133,10 @@ namespace Fishing.Scripts.UI
         {
             if (isActive)
             {
+                if (itemDescriptionText.isActive)
+                {
+                    descriptionBackground.Draw(spriteBatch);
+                }
                 icons.ForEach(p => p.Draw(spriteBatch));
                 background.Draw(spriteBatch);
             }
@@ -132,7 +145,35 @@ namespace Fishing.Scripts.UI
 
         public override void Update(GameTime gameTime)
         {
-            
+            if (isActive)
+            {
+                if (icons.Any(p => InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position, p.size))))
+                {
+                    try
+                    {
+                        Sprite icon = icons.Where(p => InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(p.position, p.size))).FirstOrDefault();
+                        itemAmountsText[icons.IndexOf(icon)].isActive = false;
+                        itemDescriptionText.text = Game1.GetItem(Convert.ToInt16(icon.name)).name;
+                        itemDescriptionText.setPosition(icon.position + new Vector2(icon.size.X + .5f, 0));
+                        itemDescriptionText.isActive = true;
+                        descriptionBackground.position = icon.position + new Vector2(icon.size.X + .5f, 0);
+                        descriptionBackground.SetSize(new Vector2(2.39f * itemDescriptionText.text.Length, 8));
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                }
+                else
+                {
+                    if (itemDescriptionText.isActive)
+                    {
+                        itemAmountsText.ForEach(p => p.isActive = true);
+                        itemDescriptionText.isActive = false;
+                    }
+                }
+            }
             base.Update(gameTime);
         }
     }

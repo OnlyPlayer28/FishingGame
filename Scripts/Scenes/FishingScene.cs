@@ -15,6 +15,7 @@ using Core.Debug;
 using Fishing.Scripts.UI;
 using Core.Audio;
 using Core.Animations;
+using Core.Effects;
 
 namespace Fishing.Scripts.Scenes
 {
@@ -55,6 +56,7 @@ namespace Fishing.Scripts.Scenes
             uiCanvas.AddClickableElement(goToRestaurantButton);
             GenerateSeafloor();
             GenerateClouds(6);
+
         }
         public override IScene SetActive(bool active)
         {

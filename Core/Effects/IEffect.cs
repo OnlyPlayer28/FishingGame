@@ -13,14 +13,18 @@ namespace Core.Effects
     {
         public EventHandler OnDestroyEvent { get; set; }
 
-        private float startDelay = 0f;
-        private float length = 1f;
+        internal EventHandler OnLoopEvent { get; set; }
 
-        private float timer = 0;
-        private float? delayTimer = 0f;
-        private bool isLooping = false;
+        internal float startDelay = 0f;
+        internal float length = 1f;
 
-        public IAffectableByEffects itemAffectedByEffectRef {  get; set; }
+        internal float timer = 0;
+        internal float? delayTimer = 0f;
+        internal bool isLooping = false;
+
+        internal IAffectableByEffects itemAffectedByEffectRef {  get; set; }
+        internal IAffectableByEffects originalItemState { get; private set; }
+
         public IEffect(float length,IAffectableByEffects itemAffectableByEffectRef, float startDelay = 0f,bool isLooping= false) 
         {
             this.length = length;
@@ -29,17 +33,30 @@ namespace Core.Effects
             delayTimer = this.startDelay;
             this.itemAffectedByEffectRef = itemAffectableByEffectRef;
             OnDestroyEvent+= this.OnDestroy;
+            OnLoopEvent += OnLoop;
+            timer = this.length;
+
+            originalItemState =  (IAffectableByEffects)this.itemAffectedByEffectRef.Clone();
+
         }
         internal virtual void OnDestroy(Object o,EventArgs e)
         {
             //RESET ALL THE FIELDS BACK TO THEIR ORIGINAL VALUES-> WHEN EFFECT ENDS ALL ITS 
         }
+
+        internal virtual void OnLoop(Object o,EventArgs e)
+        {
+
+        }
         public virtual void Update(GameTime gameTime)
         {
             if(delayTimer != null&&delayTimer >= 0) {  delayTimer-= (float)gameTime.ElapsedGameTime.TotalSeconds; return; }
-            else { timer = length; delayTimer = null; }
+            else 
+            { 
+                 delayTimer = null;
+            }
 
-            if (timer >= 0)
+            if (timer > 0)
             {
                 timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -47,9 +64,11 @@ namespace Core.Effects
             {
                 if (isLooping)
                 {
+                    OnLoopEvent?.Invoke(this, EventArgs.Empty);
                     timer = length;
                 }else
                 {
+
                     OnDestroyEvent?.Invoke(this,EventArgs.Empty);
                 }
             }

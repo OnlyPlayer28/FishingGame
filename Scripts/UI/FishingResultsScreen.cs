@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Cameras;
 using Core.Components;
 using Core.Debug;
 using Core.UI;
@@ -48,6 +49,7 @@ namespace Fishing.Scripts.UI
         }
         public void OnCLoseButtonCLick()
         {
+            CameraManager.GetCurrentCamera().SetShaking(true, .15f);
             SetActive(false);
         }
         public FishingResultsScreen SetFish(int ID)

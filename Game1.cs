@@ -21,7 +21,8 @@ using Microsoft.Xna.Framework.Audio;
 using Core.Audio;
 using Core.Animations;
 using Fishing.Scripts.Crafting;
- 
+using System.Diagnostics;
+
 
 namespace Fishing
 {
@@ -67,6 +68,8 @@ namespace Fishing
         private double waveScrollX;
 
         internal DayNightSystem dayNightSystem;
+
+        public static bool devMode = true;
         /// <summary>
         /// Returns a new instance of an inventory item.
         /// </summary>
@@ -77,6 +80,7 @@ namespace Fishing
         }
         public Game1()
         {
+
             itemRegistry = new List<IAddableToInventory>();
 
             _graphics = new GraphicsDeviceManager(this);
@@ -180,15 +184,15 @@ namespace Fishing
             AudioManager.Update(gameTime);
 
             
-            if (InputManager.AreKeysBeingPressedDown(false, Keys.P))
-            {
-
-                player.inventory.AddItem(GetItem(2), 1);
-            }
             if (InputManager.AreKeysBeingPressedDown(false, Keys.L))
             {
 
-                player.inventory.AddItem(GetItem(2),-1);
+                player.inventory.AddItem(GetItem(1),1);
+            }
+            if (InputManager.AreKeysBeingPressedDown(false, Keys.I))
+            {
+
+                player.inventory.AddItem(GetItem(0), 1);
             }
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);

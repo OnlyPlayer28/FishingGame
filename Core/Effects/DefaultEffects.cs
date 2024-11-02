@@ -12,18 +12,57 @@ namespace Core.Effects
     {
     }
 
-    public class Fade : IEffect
+    public   class Fade : IEffect
     {
-        float fadeIncrement = 0f;
+        private float fadeIncrement = 0f;
+
+        private float originalTransparency;
         public Fade(float length, IAffectableByEffects itemAffectableByEffectRef, float startDelay = 0, bool isLooping = false) 
             : base(length, itemAffectableByEffectRef, startDelay, isLooping)
         {
             fadeIncrement = 1/length;
+            originalTransparency = base.itemAffectedByEffectRef.transparency;
+        }
+        internal override void OnLoop(object o, EventArgs e)
+        {
+            itemAffectedByEffectRef.transparency = originalTransparency;
         }
         public override void Update(GameTime gameTime)
-        {itemAffectedByEffectRef.transparency -= fadeIncrement*(float)gameTime.ElapsedGameTime.TotalSeconds;
+        {
+            if (base.delayTimer == null)
+            {
+                itemAffectedByEffectRef.transparency -= fadeIncrement * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             base.Update(gameTime);
 
         }
+    }
+
+    public class Shake : IEffect
+    {
+        private Random random = new Random();
+        private float intensity;
+
+    
+        public Shake(float intensity,float length, IAffectableByEffects itemAffectableByEffectRef, float startDelay = 0, bool isLooping = false) 
+            : base(length, itemAffectableByEffectRef, startDelay, isLooping)
+        {
+            this.intensity = intensity;
+        }
+        internal override void OnLoop(object o, EventArgs e)
+        {
+            itemAffectedByEffectRef.posOffset = originalItemState.posOffset;
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            itemAffectedByEffectRef.posOffset = new Vector2(random.Next(-100,100)/10,random.Next(-100,100)/10)*intensity;
+        }
+    }
+
+    public class Scale
+    {
+
     }
 }

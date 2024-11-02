@@ -113,7 +113,6 @@ namespace Fishing.Scripts.Minigames
                     ((FishingScene)Game1.stateManager.GetActiveGameState()).boat.fishingState = FishingState.WaitingForFish;
                 }else  if(score >= progressionBar.Length)
                 {
-                    CameraManager.GetCurrentCamera().SetShaking(true, .15f, 1);
                     OnFishCatchEvent?.Invoke(this,new FishingMinigameEventArgs { fishID=this.fishID });
 
                 }

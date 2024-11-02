@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../enviroment.png;Art/Props/enviroment.png
 
+#begin ../../../fishing assets/UI.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../fishing assets/UI.png;Art/UI/UI.png
+
 #begin ../../../Fishing_Sounds/Win/fishingSounds.xgs
 /copy:../../../Fishing_Sounds/Win/fishingSounds.xgs;Audio/fishingSounds.xgs
 
@@ -147,18 +159,6 @@
 
 #begin Art/test.txt
 /copy:Art/test.txt
-
-#begin Art/UI/UI.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Art/UI/UI.png
 
 #begin Audio/error.wav
 /importer:WavImporter

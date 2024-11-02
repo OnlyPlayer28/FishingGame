@@ -1,6 +1,7 @@
 ﻿using Core.InventoryManagement;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace Fishing.Scripts.Crafting
         {
             foreach (KeyValuePair<int,int> item in input)
             {
-                if (inventory.GetItemAmount(input[item.Key]) < item.Value)
+                if (inventory.GetItemAmount(item.Key) < item.Value)
                 {
                     return;
                 }

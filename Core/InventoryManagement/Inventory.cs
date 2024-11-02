@@ -1,6 +1,7 @@
 ﻿using Core.Components;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ namespace Core.InventoryManagement
     {
         public int ID;
         public int totalItemAmount;
+        public IAddableToInventory item;
     }
     public class Inventory :ITaggable
     {
         public string name { get; set ; }
 
+        //Item1 = amount; Item2 = item
         public List<Tuple<int,IAddableToInventory>> inventory { get; set; }
 
         public int maxStackSize { get; private set; } 
@@ -26,6 +29,16 @@ namespace Core.InventoryManagement
             this.name = name;
             this.maxStackSize = maxStackSIze;
             inventory = new List<Tuple<int, IAddableToInventory>> ();
+            OnInventoryModifyEvent += OnInventoryModify;
+
+        }
+        public void OnInventoryModify(Object sender, InventoryEventArgs e)
+        {
+
+            if (e.totalItemAmount <= 0)
+            {
+                inventory.Remove(new Tuple<int,IAddableToInventory> (e.totalItemAmount,e.item));
+            }
 
         }
         /// <summary> 
@@ -35,7 +48,7 @@ namespace Core.InventoryManagement
         /// <returns>A positive int if item was found, otherwise returns -1</returns>
         public int GetItemAmount(int ID)
         {
-            return inventory.Exists(p=>p.Item2.ID == ID)?inventory.Find(p=>p.Item2.ID ==ID).Item1:-1;
+            return inventory.Any(p=>p.Item2.ID == ID)?inventory.Find(p=>p.Item2.ID ==ID).Item1:-1;
 
         }
         public void AddItem( IAddableToInventory @object,int amount=1)
@@ -47,7 +60,7 @@ namespace Core.InventoryManagement
             if(inventory.All(p=>p.Item2.ID != @object.ID))
             {
                 inventory.Add(new Tuple<int, IAddableToInventory>(amount, (IAddableToInventory)@object.Clone()));
-                OnInventoryModifyEvent?.Invoke(this, new InventoryEventArgs { ID = inventory.Last().Item2.ID, totalItemAmount = inventory.Last().Item1 });
+                OnInventoryModifyEvent?.Invoke(this, new InventoryEventArgs { ID = inventory.Last().Item2.ID, totalItemAmount = inventory.Last().Item1 ,item = inventory.Last().Item2});
                 return;
             }
             for (int i =0; i < inventory.Count;i++)
@@ -55,7 +68,7 @@ namespace Core.InventoryManagement
                 if (inventory[i].Item2.ID == @object.ID)
                 {
                     inventory[i] = new Tuple<int, IAddableToInventory>(inventory[i].Item1 + amount, inventory[i].Item2);
-                    OnInventoryModifyEvent?.Invoke(this, new InventoryEventArgs { ID = inventory[i].Item2.ID, totalItemAmount = inventory[i].Item1 });
+                    OnInventoryModifyEvent?.Invoke(this, new InventoryEventArgs { ID = inventory[i].Item2.ID, totalItemAmount = inventory[i].Item1 ,item = inventory[i].Item2 });
                     return;
                 }
             }

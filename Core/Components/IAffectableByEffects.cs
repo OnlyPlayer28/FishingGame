@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace Core.Components
 {
-    public interface IAffectableByEffects:IPosition
+    public interface IAffectableByEffects:IPosition,ICloneable
     {
         public float scale { get; set; }
         public float rotation { get; set; }
         public float transparency { get; set; }
+
+        public Vector2 posOffset { get; set; }  
     }
 }

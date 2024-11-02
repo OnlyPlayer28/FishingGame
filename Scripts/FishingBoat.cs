@@ -2,6 +2,7 @@
 using Core.Audio;
 using Core.Components;
 using Core.Debug;
+using Core.Effects;
 using Core.InventoryManagement;
 using Fishing.Scripts.Food;
 using Fishing.Scripts.Minigames;
@@ -81,12 +82,13 @@ namespace Fishing.Scripts
             boat = new Sprite(spawnPosition, new Vector2(25, 8), Vector2.Zero, "Art/Props/Boat", "boat",.5f).SetOrigin(Origin.BottomCenter);
             fisherman = new Sprite(spawnPosition, new Vector2(19, 10), new Vector2(14, 8), "Art/Props/Boat", layer: .49999f);
             fishHookedWarningSprite = new Sprite(Vector2.Zero, new Vector2(3, 9), new Vector2(10, 9), "Art/UI/UI", layer:.49f);
-            this.positionToMoveTo = positionToMoveTo;       //SET BOAT TO FINNISH
+            this.positionToMoveTo = positionToMoveTo;       //SET BOAT TO FINISH
             bobber = new Sprite(Vector2.One, new Vector2(3, 4), new Vector2(0, 8), "Art/Props/Boat", layer: .5f);
 
             fishingLine = new Line(bobberRestingPosition, Vector2.Zero, Helper.HexToRgb("#d1d9e5"),layer:.5f);
 
-            boat.position = this.positionToMoveTo;
+            if(Game1.devMode)
+                boat.position = this.positionToMoveTo;
             if (Game1.player != null)
             {
                 OnFishHookEvent += Game1.player.OnFishHook;
@@ -151,9 +153,11 @@ namespace Fishing.Scripts
 
         public void OnFishAppear(Object o,EventArgs e)
         {
+
             AudioManager.PlayCue("water_splash_2");
             waitingTime = Game1.player.fishHookReactionTime;
             fishHookedWarningSprite.position = bobber.position + new Vector2(5, -4);
+            fishHookedWarningSprite.AddEffect(new Shake(.05f, Game1.player.fishHookReactionTime, fishHookedWarningSprite));
             fishingState = FishingState.HookingFish;
         }
         public void Update(GameTime gameTime)
@@ -200,7 +204,8 @@ namespace Fishing.Scripts
                     break;
                 case FishingState.HookingFish:
                     waitingTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    if(waitingTime < -0)
+                    fishHookedWarningSprite.Update(gameTime);
+                    if (waitingTime < -0)
                     {
                         waitingTime = 0;
                         fishingState = FishingState.WaitingForFish;

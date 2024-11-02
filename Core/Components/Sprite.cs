@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace Core.Components
 {
@@ -43,7 +44,7 @@ namespace Core.Components
         public Color color { get; set; } = Color.White;
 
         public string texturePath { get; private set; }
-        public float transparency { get; set; }
+        public float transparency { get; set; } = 1f;
         public float rotation { get; set; }
         [JsonIgnore]
         public float scale { get; set; } = 1f;
@@ -54,6 +55,7 @@ namespace Core.Components
 
         public List<Animation> animations { get;private set; } = new List<Animation> ();
         private List<IEffect> effects { get;  set; } = new List<IEffect> ();
+        public Vector2 posOffset { get; set ; }
 
         public Sprite(Vector2 position, Vector2 size, Vector2 tilemapPosition, string texturePath, string name = "", float layer = 0f)
         {
@@ -215,6 +217,7 @@ namespace Core.Components
         }
         private void OnEffectDestroy(Object o,EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("destroyed effect!!!");
             effects.Remove((IEffect)o);
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -223,11 +226,11 @@ namespace Core.Components
             {
                 if(animations.Any(p=>p.state == AnimationState.Playing))
                 {
-                    spriteBatch.Draw(texture, position,animations.Where(p=>p.state==AnimationState.Playing).First().GetCurrentFrameRect(), color * transparency, rotation, origin, scale, spriteEffects, layer);
+                    spriteBatch.Draw(texture, position+posOffset,animations.Where(p=>p.state==AnimationState.Playing).First().GetCurrentFrameRect(), color * transparency, rotation, origin, scale, spriteEffects, layer);
                 }
                 else
                 {
-                    spriteBatch.Draw(texture, position, tilemapLocationRect, color * transparency, rotation, origin, scale, spriteEffects, layer);
+                    spriteBatch.Draw(texture, position+posOffset, tilemapLocationRect, color * transparency, rotation, origin, scale, spriteEffects, layer);
                 }
             }catch(Exception e)
             {
@@ -244,7 +247,7 @@ namespace Core.Components
                     item.Update(gameTime);
                 }
             }
-            foreach (var item in effects)
+            foreach (var item in effects.ToArray())
             {
                 item?.Update(gameTime);
             }
