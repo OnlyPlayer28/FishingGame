@@ -25,12 +25,12 @@ namespace Fishing.Scripts.Scenes
             : base(name, isActive, isDrawing)
         {
             canvas = new Canvas("canvas", true);
-            pausedText = new Text(new Vector2((128 / 2) -14, (128 / 2)-23 ), "-=Paused=-", Color.White, Game1.Font_24, layer: 0,isActive:true);
-            settingsButton = new Button(new Vector2((128 / 2) - 15, (128 / 2) - 15), new Vector2(30, 10), 0, isActive: true,onClickSound:"click").SetSimpleSprite(Helper.HexToRgb("#542424"), Helper.HexToRgb("#6e3b34"));
+            pausedText = new Text(new Vector2((128 / 2) -14, (128 / 2)-23 ), "-=Paused=-", Color.White, Game1.Font_24, layer: Layer.UI,isActive:true);
+            settingsButton = new Button(new Vector2((128 / 2) - 15, (128 / 2) - 15), new Vector2(30, 10), Layer.UI-.00001f, isActive: true,onClickSound:"click").SetSimpleSprite(Helper.HexToRgb("#542424"), Helper.HexToRgb("#6e3b34")).SetHighlightColor(Color.Gray);
             canvas.AddTextElement(new Text(new Vector2((128 / 2) - 10, (128 / 2)-14 ), "Settings", Color.White, Game1.Font_24, layer: 0, isActive: true));
             canvas.AddClickableElement(settingsButton);
             canvas.AddTextElement(pausedText);
-            backdrop = new Rect(new Vector2((128/2)-25, (128/2)-25), new Vector2(50, 50), new Color(0,0,0,150), true,.0000001f);
+            backdrop = new Rect(new Vector2((128/2)-25, (128/2)-25), new Vector2(50, 50), new Color(0,0,0,150), true,Layer.UI);
             components.Add(backdrop);
 
             LoadContent(Game1.contentManager);

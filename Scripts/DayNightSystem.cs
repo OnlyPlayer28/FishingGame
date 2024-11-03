@@ -82,6 +82,7 @@ namespace Fishing.Scripts
         private float hourLength { get; set; }
          
         public static EventHandler<DateEventArgs> OnNewDayEvent { get; set; }
+        public static EventHandler<DateEventArgs> OnHourPassEvent { get; set; }
 
         static DayNightSystem()
         {
@@ -108,6 +109,7 @@ namespace Fishing.Scripts
         }
         public static void SetTime(int hour,int minutes)
         {
+            if(currentHour != hour) { OnHourPassEvent?.Invoke(new Object(), new DateEventArgs { date = new DateHolder(currentDay, currentWeek, currentMonth,currentYear, hour, minutes) }); }
             currentHour = hour;
             currentMinutes = minutes;
             
@@ -129,6 +131,7 @@ namespace Fishing.Scripts
             {
                 currentHour++;
                 timer = 0;
+                OnHourPassEvent?.Invoke(this, new DateEventArgs { date = new DateHolder(currentDay, currentWeek, currentMonth, currentYear, currentHour, currentMinutes) });
             }
             
         }

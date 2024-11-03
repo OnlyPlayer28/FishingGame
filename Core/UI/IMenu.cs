@@ -75,5 +75,10 @@ namespace Core.UI
         public virtual void Update(GameTime gameTime)
         {
         }
+
+        public void OnMouseOver(object sender, MouseInputEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

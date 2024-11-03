@@ -61,5 +61,10 @@ namespace Core.UI.Elements
             if(isActive)
                 image.Update(gameTime);
         }
+
+        public void OnMouseOver(object sender, MouseInputEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

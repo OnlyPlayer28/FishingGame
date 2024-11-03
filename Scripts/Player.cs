@@ -1,6 +1,7 @@
 ﻿using Core.Cameras;
 using Core.InventoryManagement;
 using Fishing.Scripts.Minigames;
+using Fishing.Scripts.Restaurant;
 using Fishing.Scripts.Scenes;
 using Microsoft.Xna.Framework;
 using System;
@@ -20,9 +21,12 @@ namespace Fishing.Scripts
 
         public int money { get; set; } = 0;
         public Inventory inventory { get; set; }
+
+        public RestaurantManager restaurantManager { get; set; }
         public Player()
         {
             inventory = new Inventory();
+            restaurantManager = new RestaurantManager("default restaurant").SetOpeningHours(22,0).SetClosingHours(2,0);
         }
 
         public float CalculateCurrentFishCatchTime(Vector2 minAndMax)

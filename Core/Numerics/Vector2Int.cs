@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fishing.Scripts.Scenes
+namespace Fishing.Core.Numerics
 {
-    class PauseScreen
+    internal class Vector2Int
     {
     }
 }

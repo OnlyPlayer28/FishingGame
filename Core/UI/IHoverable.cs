@@ -9,6 +9,6 @@ namespace Core.UI
 {
     public interface IHoverable
     {
-        public void OnMouseOver(Object sender, EventArgs e);
+        public  void OnMouseOver(Object sender, EventArgs e);
     }
 }

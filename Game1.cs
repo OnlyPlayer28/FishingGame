@@ -64,8 +64,6 @@ namespace Fishing
         public static SoundEffect testEffect { get; set; }
         public static string debugText = "";
 
-        private Texture2D scrollingWaves;
-        private double waveScrollX;
 
         internal DayNightSystem dayNightSystem;
 
@@ -146,7 +144,6 @@ namespace Fishing
 
             stateManager = new SceneManagement(mainMenuState, fishingState, restaurantScene,pauseScene).SetActive(true, "fishingScene");
 
-            scrollingWaves = Content.Load<Texture2D>("Art/Backdrops/waves");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             stateManager.LoadContent(contentManager);
@@ -197,8 +194,7 @@ namespace Fishing
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
             InputManager.Update(gameTime,isFocused);
-            /*debugText = DayNightSystem.GetCurrentDate().ToString();*/
-            waveScrollX += 11 * gameTime.ElapsedGameTime.TotalSeconds;
+            debugText = player.restaurantManager.isOpen.ToString();
 
             base.Update(gameTime);
         }
@@ -210,8 +206,6 @@ namespace Fishing
             _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointWrap,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.DepthRead);
             stateManager.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
-            if (stateManager.GetActiveGameState().name == "fishingScene")
-                _spriteBatch.Draw(scrollingWaves, Vector2.Zero, new Rectangle(-(int)waveScrollX, 0, 128, 128), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, .51f);
             _spriteBatch.End();
             //========== On canvas UI rendering ==========
             _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
