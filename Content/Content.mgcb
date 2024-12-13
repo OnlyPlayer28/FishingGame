@@ -109,6 +109,18 @@
 /processorParam:TextureFormat=Color
 /build:Art/Props/Boat.png
 
+#begin Art/Props/enviroment.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Props/enviroment.png
+
 #begin Art/UI/UI.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -136,25 +148,25 @@
 #begin Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Best
+/processorParam:Quality=Low
 /build:Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
 
 #begin Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Best
+/processorParam:Quality=Low
 /build:Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
 
 #begin Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Best
+/processorParam:Quality=Low
 /build:Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
 
 #begin Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Best
+/processorParam:Quality=Low
 /build:Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
 
 #begin Audio/Songs/ocean_waves.wav

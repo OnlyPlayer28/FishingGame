@@ -42,10 +42,10 @@ namespace Core.Audio
 
         public static void LoadSongs(ContentManager contentManager,string path,params string[] songNames)
         {
-            /*for (int i = 0; i < songNames.Length; i++)
+            for (int i = 0; i < songNames.Length; i++)
             {
                 songCollection.Add(contentManager.Load<Song>(path + songNames[i]));
-            }*/
+            }
 
         }
         public static void Update(GameTime gameTime)
@@ -96,10 +96,10 @@ namespace Core.Audio
         public static void PlaySong(string songName,bool looping = false,float volume = 1f)
         {
             
-            /*MediaPlayer.Volume = musicVolume * volume;
+            MediaPlayer.Volume = musicVolume * volume;
           
             MediaPlayer.IsRepeating = looping;
-           MediaPlayer.Play( songCollection.Where(p => p.Name == songName).First());*/
+           MediaPlayer.Play( songCollection.Where(p => p.Name == songName).First());
         }
     }
 }
