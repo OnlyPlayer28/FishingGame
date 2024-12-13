@@ -147,25 +147,25 @@
 
 #begin Audio/Songs/Barista Ballad.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Songs/Barista Ballad.wav
 
 #begin Audio/Songs/Cappuccino Cadence.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Songs/Cappuccino Cadence.wav
 
 #begin Audio/Songs/Cool Caffeine.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Songs/Cool Caffeine.wav
 
 #begin Audio/Songs/Decaf Dreaming.wav
 /importer:WavImporter
-/processor:SoundEffectProcessor
+/processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Songs/Decaf Dreaming.wav
 
