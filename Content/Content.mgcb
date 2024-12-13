@@ -145,29 +145,29 @@
 #begin Audio/Music Bank.xwb
 /copy:Audio/Music Bank.xwb
 
-#begin Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
+#begin Audio/Songs/Barista Ballad.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Low
-/build:Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
+/processorParam:Quality=Best
+/build:Audio/Songs/Barista Ballad.wav
 
-#begin Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
+#begin Audio/Songs/Cappuccino Cadence.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Low
-/build:Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
+/processorParam:Quality=Best
+/build:Audio/Songs/Cappuccino Cadence.wav
 
-#begin Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
+#begin Audio/Songs/Cool Caffeine.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Low
-/build:Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
+/processorParam:Quality=Best
+/build:Audio/Songs/Cool Caffeine.wav
 
-#begin Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
+#begin Audio/Songs/Decaf Dreaming.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Low
-/build:Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
+/processorParam:Quality=Best
+/build:Audio/Songs/Decaf Dreaming.wav
 
 #begin Audio/Songs/ocean_waves.wav
 /importer:WavImporter
