@@ -13,66 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../../consumables.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../../consumables.png;Art/Food/consumables.png
-
-#begin ../../../enviroment.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../../enviroment.png;Art/Props/enviroment.png
-
-#begin ../../../fishing assets/UI.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../../fishing assets/UI.png;Art/UI/UI.png
-
-#begin ../../../Fishing_Sounds/Win/fishingSounds.xgs
-/copy:../../../Fishing_Sounds/Win/fishingSounds.xgs;Audio/fishingSounds.xgs
-
-#begin ../../../Fishing_Sounds/Win/Music Bank.xwb
-/copy:../../../Fishing_Sounds/Win/Music Bank.xwb;Audio/Music Bank.xwb
-
-#begin ../../../Fishing_Sounds/Win/Sound Bank.xsb
-/copy:../../../Fishing_Sounds/Win/Sound Bank.xsb;Audio/Sound Bank.xsb
-
-#begin ../../../Fishing_Sounds/Win/Wave Bank.xwb
-/copy:../../../Fishing_Sounds/Win/Wave Bank.xwb;Audio/Wave Bank.xwb
-
-#begin Art/animationTest.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Art/animationTest.png
-
 #begin Art/Backdrops/Ocean.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -133,6 +73,18 @@
 /processorParam:TextureFormat=Color
 /build:Art/Backdrops/Windows.png
 
+#begin Art/Food/consumables.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/Food/consumables.png
+
 #begin Art/Food/fish.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -157,8 +109,17 @@
 /processorParam:TextureFormat=Color
 /build:Art/Props/Boat.png
 
-#begin Art/test.txt
-/copy:Art/test.txt
+#begin Art/UI/UI.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Art/UI/UI.png
 
 #begin Audio/error.wav
 /importer:WavImporter
@@ -166,35 +127,47 @@
 /processorParam:Quality=Best
 /build:Audio/error.wav
 
+#begin Audio/fishingSounds.xgs
+/copy:Audio/fishingSounds.xgs
+
+#begin Audio/Music Bank.xwb
+/copy:Audio/Music Bank.xwb
+
 #begin Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/Songs/CoffeeShop - Barista Ballad Loop.wav;Audio/Songs/Barista Ballad.wav
+/build:Audio/Songs/CoffeeShop - Barista Ballad Loop.wav
 
 #begin Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav;Audio/Songs/Cappuccino Cadence.wav
+/build:Audio/Songs/CoffeeShop - Cappuccino Cadence Loop.wav
 
 #begin Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav;Audio/Songs/Cool Caffeine.wav
+/build:Audio/Songs/CoffeeShop - Cool Caffeine Loop.wav
 
 #begin Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav;Audio/Songs/Decaf Dreaming.wav
+/build:Audio/Songs/CoffeeShop - Decaf Dreaming Loop.wav
 
 #begin Audio/Songs/ocean_waves.wav
 /importer:WavImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Audio/Songs/ocean_waves.wav
+
+#begin Audio/Sound Bank.xsb
+/copy:Audio/Sound Bank.xsb
+
+#begin Audio/Wave Bank.xwb
+/copy:Audio/Wave Bank.xwb
 
 #begin Data/Audio/restaurantTracks.json
 /copy:Data/Audio/restaurantTracks.json
