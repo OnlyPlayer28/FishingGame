@@ -183,7 +183,6 @@ namespace Fishing.Scripts
             {
                 minigame.Update(gameTime);
             }
-            //implement depth checking
 
    
 
@@ -230,7 +229,7 @@ namespace Fishing.Scripts
             if((bobber.position.Y< bobberRestingPosition.Y||bobber.position.Y > maxDepth)&&fishingState!=FishingState.BoatIsMoving) 
             { 
                 bobber.position = new Vector2(bobberRestingPosition.X, Math.Clamp(bobber.position.Y, bobberRestingPosition.Y, maxDepth)); 
-                if(bobber.position.Y == maxDepth) {/* bobber.position -= new Vector2(0, 2);*/ fishingState = FishingState.Stopped; }
+                if(bobber.position.Y == maxDepth) { fishingState = FishingState.Stopped; }
                 else { fishingState = FishingState.Default; }
             }
 

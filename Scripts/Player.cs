@@ -26,7 +26,7 @@ namespace Fishing.Scripts
         public Player()
         {
             inventory = new Inventory();
-            restaurantManager = new RestaurantManager("default restaurant").SetOpeningHours(22,0).SetClosingHours(2,0);
+            restaurantManager = new RestaurantManager("default restaurant").SetOpeningHours(7,0).SetClosingHours(21,0);
         }
 
         public float CalculateCurrentFishCatchTime(Vector2 minAndMax)
@@ -43,6 +43,11 @@ namespace Fishing.Scripts
         public void OnFishHook(Object sender,FishHookEventArgs e)
         {
             e.fishingMinigame.OnFishCatchEvent += OnFishCatch;
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            Game1.player.restaurantManager.Update(gameTime);
         }
     }
 }

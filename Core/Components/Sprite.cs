@@ -217,7 +217,6 @@ namespace Core.Components
         }
         private void OnEffectDestroy(Object o,EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("destroyed effect!!!");
             effects.Remove((IEffect)o);
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -234,7 +233,7 @@ namespace Core.Components
                 }
             }catch(Exception e)
             {
-
+                System.Diagnostics.Debug.WriteLine(e.ToString());
             }
         }
 

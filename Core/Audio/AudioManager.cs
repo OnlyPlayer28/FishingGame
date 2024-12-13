@@ -91,15 +91,15 @@ namespace Core.Audio
         /// <param name="songName"></param>
         /// <param name="looping"></param>
         /// <param name="volume"></param>
+        /// 
+        
         public static void PlaySong(string songName,bool looping = false,float volume = 1f)
         {
-            /* if(lastSongName != songName) { lastSongName = songName;isStoringPreviousSong = true;timeSinceNewSongStartedPlaying = 0; lastSongEndTime = MediaPlayer.PlayPosition; }
-             if(lastSongName == songName&&isStoringPreviousSong) { MediaPlayer.PlayPosition = lastSongEndTime; }*/
-            MediaPlayer.Volume = musicVolume * volume;
+            
+            /*MediaPlayer.Volume = musicVolume * volume;
           
             MediaPlayer.IsRepeating = looping;
-           MediaPlayer.Play( songCollection.Where(p => p.Name == songName).First());
-           // soundBank.PlayCue("ocean_waves");
+           MediaPlayer.Play( songCollection.Where(p => p.Name == songName).First());*/
         }
     }
 }

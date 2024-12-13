@@ -91,7 +91,7 @@ namespace Fishing.Scripts.Scenes
         }
         private bool CanOpenMenu(string menuName)
         {
-            return !openableMenus.Any(p => p.name != menuName && p.isActive);
+            return !openableMenus.Any(p => p.name != menuName && p.isActive)&&this.isActive;
         }
         public void GoToOcean()
         {

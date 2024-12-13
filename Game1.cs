@@ -43,7 +43,7 @@ namespace Fishing
         internal static CameraManager cameraManager;
         internal static Vector2 resolution = new Vector2(128*5, 128*5);
 
-        static SpriteFont spriteFont;
+        //static SpriteFont spriteFont;
 
         public static float FPS { get; private set; }
 
@@ -67,7 +67,8 @@ namespace Fishing
 
         internal DayNightSystem dayNightSystem;
 
-        public static bool devMode = true;
+        public static bool devMode = false;
+
         /// <summary>
         /// Returns a new instance of an inventory item.
         /// </summary>
@@ -136,13 +137,14 @@ namespace Fishing
             testEffect = Content.Load<SoundEffect>("Audio/error");
 
             player = new Player();
+
             LineTool.Initialize(GraphicsDevice);
             fishingState = new FishingScene("fishingScene");
             mainMenuState = new MainMenuState("mainMenuScene");
             restaurantScene = new RestaurantScene("restaurantScene");
             pauseScene = new PauseScene("pauseScene");
 
-            stateManager = new SceneManagement(mainMenuState, fishingState, restaurantScene,pauseScene).SetActive(true, "fishingScene");
+            stateManager = new SceneManagement(mainMenuState, fishingState, restaurantScene,pauseScene).SetActive(true, devMode?"fishingScene":"mainMenuScene");
 
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -159,7 +161,6 @@ namespace Fishing
             player.inventory.AddItem(GetItem(9), 5);
             player.inventory.AddItem(GetItem(10), 5);
             player.inventory.AddItem(GetItem(11), 5);
-
         }
 
         public void OnInput(Object o,KeyboardInputEventArgs e)
@@ -179,7 +180,7 @@ namespace Fishing
             FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
 
             AudioManager.Update(gameTime);
-
+            player.Update(gameTime);
             
             if (InputManager.AreKeysBeingPressedDown(false, Keys.L))
             {
@@ -189,7 +190,7 @@ namespace Fishing
             if (InputManager.AreKeysBeingPressedDown(false, Keys.I))
             {
 
-                player.inventory.AddItem(GetItem(0), 1);
+                player.inventory.AddItem(GetItem(1), -1);
             }
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
@@ -198,6 +199,7 @@ namespace Fishing
 
             base.Update(gameTime);
         }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);

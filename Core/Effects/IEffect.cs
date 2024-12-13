@@ -41,7 +41,7 @@ namespace Core.Effects
         }
         internal virtual void OnDestroy(Object o,EventArgs e)
         {
-            //RESET ALL THE FIELDS BACK TO THEIR ORIGINAL VALUES-> WHEN EFFECT ENDS ALL ITS 
+
         }
 
         internal virtual void OnLoop(Object o,EventArgs e)

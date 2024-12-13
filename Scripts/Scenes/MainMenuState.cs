@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core;
 using Core.SceneManagement;
 using Core.UI;
 using Core.UI.Elements;
@@ -20,10 +21,18 @@ namespace Fishing.Scripts.Scenes
             : base(name, isActive, isDrawing)
         {
             uiCanvas = new Canvas("canvas", true);
-            playButton = new Button(Vector2.Zero, new Vector2(20, 10), 0).SetSimpleSprite(Color.AliceBlue,Color.Aqua).SetHighlightColor(Color.Red);
+            playButton = new Button(new Vector2(128/2,128/2)-new Vector2(10,15), new Vector2(20, 10), Layer.UI, "playButton",onClickSound:"click").SetSimpleSprite(Helper.HexToRgb("#542424"), Helper.HexToRgb("#6e3b34")).SetHighlightColor(Color.Gray);
             uiCanvas.AddClickableElement(playButton);
+            playButton.OnButtonClickEvent += OnMouseClick;
+            
         }
-
+        public void OnMouseClick(Object o,ButtonEventArgs e)
+        {
+            if (e.buttonRef.name == "playButton")
+            {
+                Game1.stateManager.SetActive(true, "fishingScene");
+            }
+        }
         public override void LoadContent(ContentManager contentManager)
         {
             uiCanvas.LoadContent(contentManager);

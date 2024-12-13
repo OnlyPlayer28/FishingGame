@@ -24,6 +24,8 @@ namespace Core
     }
     public static class Helper
     {
+        //remove Game1 reference
+        #region OUTDATED
         /*public static Vector2 GetAnchorPosition(AnchorPoint anchorPoint)
         {
             Vector2 positon = Vector2.Zero;
@@ -86,21 +88,17 @@ namespace Core
          }
          public static Vector2 RotateVector(Vector2 direction, float degrees)
          {
-             // Convert degrees to radians
              float radians = MathHelper.ToRadians(degrees);
 
-             // Calculate sine and cosine of the angle
              float cosTheta = (float)Math.Cos(radians);
              float sinTheta = (float)Math.Sin(radians);
 
-             // Perform rotation
              float newX = direction.X * cosTheta - direction.Y * sinTheta;
              float newY = direction.X * sinTheta + direction.Y * cosTheta;
 
-             // Return the rotated vector
              return new Vector2(newX, newY);
          }*/
-
+        #endregion OUTDATED
         public static Vector2 MoveToward(Vector2 position, Vector2 positionToMoveTowards,float speed) 
         {
             Vector2 direction = positionToMoveTowards - position;
