@@ -4,4 +4,7 @@ Pouzite nuget packages:
   MonoGame.Content.Builder.Task verzia 3.8.1.303
 
 Projekt pouziva .NET 6.0, je to windows aplikacia.
-sda
+ovladanie:
+|   LBM  |        |
+|--------|--------|
+|        |        |
