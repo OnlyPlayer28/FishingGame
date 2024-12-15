@@ -16,7 +16,7 @@ namespace Core.UI
         public bool isActive { get; set; }
         public string name { get; set; }
         public float layer { get; set; }
-
+        public bool ignoreMouseInput { get; set; }
         public EmptyUIELement(Vector2 position, Vector2 size, bool isActive, string name, float layer)
         {
             this.position = position;

@@ -47,20 +47,20 @@ namespace Core.Debug
 
         public Rect SetFillColor(Color color)
         {
-            lines[4].color = color;
+            lines[4].originalColor = color;
             return this;
         }
         public Rect SetSize(Vector2 size)
         {
-            lines[0] = new Line(Vector2.Zero, new Vector2(1, 1), color, layer);
-            lines[1] = new Line(Vector2.Zero + new Vector2(1, 0), new Vector2(size.X - 2, 1), color, layer);
-            lines[2] = new Line(Vector2.Zero + new Vector2(size.X - 1, 0), new Vector2(1, 1), color, layer);
-            lines[3] = new Line(Vector2.Zero + new Vector2(0, 1), new Vector2(1, size.Y - 2), color, layer);
-            lines[4] = new Line(Vector2.Zero + new Vector2(1, 1), this.fillCenter ? new Vector2(size.X - 2, size.Y - 2) : Vector2.Zero, color, layer);
-            lines[5] = new Line(Vector2.Zero + new Vector2(size.X - 1, 1), new Vector2(1, size.Y - 2), color, layer);
-            lines[6] = new Line(Vector2.Zero + new Vector2(0, size.Y - 1), new Vector2(1, 1), color, layer);
-            lines[7] = new Line(Vector2.Zero + new Vector2(1, size.Y - 1), new Vector2(size.X - 2, 1), color, layer);
-            lines[8] = new Line(Vector2.Zero + new Vector2(size.X - 1, size.Y - 1), new Vector2(1, 1), color, layer);
+            lines[0] = new Line(Vector2.Zero, new Vector2(1, 1), originalColor, layer);
+            lines[1] = new Line(Vector2.Zero + new Vector2(1, 0), new Vector2(size.X - 2, 1), originalColor, layer);
+            lines[2] = new Line(Vector2.Zero + new Vector2(size.X - 1, 0), new Vector2(1, 1), originalColor, layer);
+            lines[3] = new Line(Vector2.Zero + new Vector2(0, 1), new Vector2(1, size.Y - 2), originalColor, layer);
+            lines[4] = new Line(Vector2.Zero + new Vector2(1, 1), this.fillCenter ? new Vector2(size.X - 2, size.Y - 2) : Vector2.Zero, originalColor, layer);
+            lines[5] = new Line(Vector2.Zero + new Vector2(size.X - 1, 1), new Vector2(1, size.Y - 2), originalColor, layer);
+            lines[6] = new Line(Vector2.Zero + new Vector2(0, size.Y - 1), new Vector2(1, 1), originalColor, layer);
+            lines[7] = new Line(Vector2.Zero + new Vector2(1, size.Y - 1), new Vector2(size.X - 2, 1), originalColor, layer);
+            lines[8] = new Line(Vector2.Zero + new Vector2(size.X - 1, size.Y - 1), new Vector2(1, 1), originalColor, layer);
             return this;
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -71,6 +71,15 @@ namespace Core.Debug
                 item.Draw(spriteBatch);
             }
         }
+        public void SetOverlayColor(Color color)
+        {
+            if (lines[0].color == color) { return; }
+            foreach (var item in lines)
+            {
+                item.color = color;
+            }
+            this.color = color;
+        }
 
     }
     public class DebugShape : IComponent
@@ -78,7 +87,8 @@ namespace Core.Debug
         public Vector2 position { get; set; }
         public Vector2 size { get; set; }
         public Texture2D texture { get; set; }
-        public Color color { get; set; }
+        public Color color { get; set; } = Color.White;
+        public Color originalColor { get; set; }
 
         public float rotation { get; set; }
 
@@ -89,7 +99,7 @@ namespace Core.Debug
         {
             this.position = position;
             this.texture = LineTool.pointTexture;
-            this.color = color;
+            this.originalColor = color;
             this.size = size;
             this.layer = layer;
         }
@@ -100,7 +110,7 @@ namespace Core.Debug
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position+offset, new Rectangle(0,0,texture.Width,texture.Height), color, rotation, origin, size, SpriteEffects.None, layer);
+            spriteBatch.Draw(texture, position+offset, new Rectangle(0,0,texture.Width,texture.Height), Helper.MultiplyColors(originalColor,color), rotation, origin, size, SpriteEffects.None, layer);
         }
 
         public void LoadContent(ContentManager contentManager)

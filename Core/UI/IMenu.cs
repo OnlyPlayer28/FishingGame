@@ -21,6 +21,7 @@ namespace Core.UI
         private Canvas canvas;
 
         private List<IUIElement> menuElements { get; set; }
+        public bool ignoreMouseInput { get ; set; }
 
         public IMenu(Vector2 position, Vector2 size, float layer,Canvas canvas,string name = "defaultMenu")
         {

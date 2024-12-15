@@ -57,8 +57,8 @@ namespace Fishing.Scripts.Scenes
 
             inventoryButton = new Button(new Sprite(new Vector2(91, 89), new Vector2(30, 34), new Vector2(70, 0), "Art/UI/UI", layer: Layer.Overlay),onClickSound:"click")
                 .SetOnButtonCLickAction(OpenInventory);
-            cuttingBoardButton = new Button(new Vector2(87, 75), new Vector2(27, 10), 0, onClickSound: "click")
-                .SetButtonSprite(new Sprite(new Vector2(87, 75), new Vector2(27, 10), new Vector2(100, 0), "Art/UI/UI", layer:Layer.Overlay), Game1.contentManager)
+            cuttingBoardButton = new Button(new Vector2(87, 75), new Vector2(27, 10), layer:Layer.Overlay, onClickSound: "click")
+                .SetButtonSprite(new Sprite(new Vector2(87, 75), new Vector2(27, 10), new Vector2(100, 0), "Art/UI/UI",layer: Layer.Overlay), Game1.contentManager)
                 .SetOnButtonCLickAction(OpenCuttingBoard);
             uiCanvas.isActive = true;
             uiCanvas.AddClickableElement(goToOceanButton);
@@ -74,7 +74,8 @@ namespace Fishing.Scripts.Scenes
             openableMenus.Add(cuttingBoardScreen);
             LoadContent(Game1.contentManager);
 
-            
+            Game1.disableHUDGloballyEvent += OnHUDDisable;
+            Game1.enableHUDGloballyEvent += OnHUDEnable;
         }
         public override void LoadContent(ContentManager contentManager)
         {
@@ -89,6 +90,8 @@ namespace Fishing.Scripts.Scenes
             if (active) { AudioManager.PlaySong(restaurantTracks[ReferenceHolder.random.Next(0, restaurantTracks.Length)],true,.06f); }
             return base.SetActive(active);
         }
+        public void OnHUDDisable(Object o, EventArgs e) => hud.SetActive(false);
+        public void OnHUDEnable(Object o, EventArgs e) => hud.SetActive(true);
         private bool CanOpenMenu(string menuName)
         {
             return !openableMenus.Any(p => p.name != menuName && p.isActive)&&this.isActive;
@@ -121,7 +124,6 @@ namespace Fishing.Scripts.Scenes
         {
                 openableMenus.ForEach(p => p.Draw(spriteBatch));
                 uiCanvas.Draw(spriteBatch);
-                uiCanvas.Draw(spriteBatch);
         }
 
 
@@ -136,7 +138,6 @@ namespace Fishing.Scripts.Scenes
 
         public override void DrawText(SpriteBatch spriteBatch)
         {
-                uiCanvas.DrawText(spriteBatch);
                 uiCanvas.DrawText(spriteBatch);
         }
     }

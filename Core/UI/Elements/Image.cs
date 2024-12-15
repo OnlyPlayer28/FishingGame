@@ -31,14 +31,14 @@ namespace Core.UI.Elements
             get { return image.layer; }
             set { image.layer = value; }
         }
-
+        public bool ignoreMouseInput { get; set; }
         public Sprite image { get;set; }
 
-        public Image(Sprite image,bool isActive = true)
+        public Image(Sprite image, bool ignoreMouseInput = false,bool isActive = true)
         {
             this.image = image;
             this.isActive = true;
-
+            this.ignoreMouseInput = ignoreMouseInput;
         }
 
         public void Draw(SpriteBatch spriteBatch)

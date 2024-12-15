@@ -67,8 +67,10 @@ namespace Fishing
 
         internal DayNightSystem dayNightSystem;
 
-        public static bool devMode = false;
+        public static bool devMode = true;
 
+        internal static EventHandler disableHUDGloballyEvent;
+        internal static EventHandler enableHUDGloballyEvent;
         /// <summary>
         /// Returns a new instance of an inventory item.
         /// </summary>
@@ -102,6 +104,13 @@ namespace Fishing
             itemRegistry.OrderBy(p => p.ID);
             dayNightSystem = new DayNightSystem(10);
             DayNightSystem.SetTime(6, 0);
+
+            ControlsManager.SetupInputKeys(new Dictionary<string, Keys>
+            {
+                {"PAUSE",Keys.Escape},
+                {"ADD_ITEM",Keys.L },
+                {"REMOVE_ITEM",Keys.I}
+            });
 
         }
 
@@ -161,11 +170,13 @@ namespace Fishing
             player.inventory.AddItem(GetItem(9), 5);
             player.inventory.AddItem(GetItem(10), 5);
             player.inventory.AddItem(GetItem(11), 5);
+
+
         }
 
         public void OnInput(Object o,KeyboardInputEventArgs e)
         {
-            if (e.keys.Contains( Keys.Escape))
+            if (e.keys.Contains(ControlsManager.GetInputKey("PAUSE")))
             {
                 stateManager.SetActiveAndPause(!stateManager.GetGameState("pauseScene").isActive,"pauseScene");
             }
@@ -199,22 +210,27 @@ namespace Fishing
 
             base.Update(gameTime);
         }
-
+        DepthStencilState depthStencilState = new DepthStencilState
+        {
+            DepthBufferEnable = true,         
+            DepthBufferWriteEnable = true,   
+            DepthBufferFunction = CompareFunction.LessEqual
+        };
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(/*ClearOptions.Target,*/ Color.CornflowerBlue/*, 1, 0*/);
 
             //========== World rendering ==========
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointWrap,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:DepthStencilState.DepthRead);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointWrap,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:depthStencilState);
             stateManager.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
             _spriteBatch.End();
             //========== On canvas UI rendering ==========
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: depthStencilState);
             stateManager.DrawUI(_spriteBatch);
             _spriteBatch.End();
             //========== Text rendering ==========
-            _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix:CameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState: DepthStencilState.DepthRead);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix:CameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState: depthStencilState);
             stateManager.DrawText(_spriteBatch);
             _spriteBatch.DrawString(Font_24, debugText, new Vector2(2, 2), Color.Black);
             _spriteBatch.End();

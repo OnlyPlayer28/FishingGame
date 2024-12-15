@@ -25,8 +25,8 @@ namespace Fishing.Scripts.Scenes
     internal class FishingScene : IScene
     {
 
-        public  Sprite backgroundSprite { get; set; }
-        public  FishingBoat boat { get; set; }
+        public Sprite backgroundSprite { get; set; }
+        public FishingBoat boat { get; set; }
 
         public Canvas uiCanvas { get; set; }
 
@@ -42,28 +42,30 @@ namespace Fishing.Scripts.Scenes
         private int minCloudYPos = 20;
         private int maxCloudYPos = 0;
 
-        private float waveScrollX=0;
+        private float waveScrollX = 0;
         private Texture2D scrollingWaves;
 
-        public FishingScene(string name, bool isActive = false, bool isDrawing = false) 
+        public FishingScene(string name, bool isActive = false, bool isDrawing = false)
             : base(name, isActive, isDrawing)
         {
             uiCanvas = new Canvas("fishingSceneCanvas", true);
             hud = new HUD(Vector2.Zero, Vector2.Zero, Layer.UI, uiCanvas).SetActive(true);
-            backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean","oceanBackground",layer:Layer.Backdrop);
-            boat = new FishingBoat(new Vector2(0, 51),new Vector2(50,51));
+            backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean", "oceanBackground", layer: Layer.Backdrop);
+            boat = new FishingBoat(new Vector2(0, 51), new Vector2(50, 51));
             fishingResultsScreen = new FishingResultsScreen(new Vector2(31, 35), new Vector2(66, 60), Layer.Overlay, 0, uiCanvas);
             fishingResultsScreen.name = "fishingResultsScreen";
-           // uiCanvas.AddUIELement(fishingResultsScreen);
+            // uiCanvas.AddUIELement(fishingResultsScreen);
             uiCanvas.AddUIELement(hud);
             components.Add(backgroundSprite);
             components.Add(boat);
-            goToRestaurantButton = new Button(new Sprite(new Vector2(116, 116), new Vector2(10, 10), new Vector2(18, 19), "Art/UI/UI", layer: Layer.UI),true,"click")
+            goToRestaurantButton = new Button(new Sprite(new Vector2(116, 116), new Vector2(10, 10), new Vector2(18, 19), "Art/UI/UI", layer: Layer.UI), true, "click")
                 .SetOnButtonCLickAction(OnRestaurantButtonClick);
             uiCanvas.AddClickableElement(goToRestaurantButton);
             GenerateSeafloor();
             GenerateClouds(6);
 
+            Game1.disableHUDGloballyEvent += OnHUDDisable;
+            Game1.enableHUDGloballyEvent+= OnHUDEnable;
         }
         public override IScene SetActive(bool active)
         {
@@ -72,9 +74,12 @@ namespace Fishing.Scripts.Scenes
         }
         public void OnRestaurantButtonClick()
         {
-            if(boat.fishingState!= FishingState.BoatIsMoving&& boat.fishingState !=FishingState.FishingMinigame&& boat.fishingState !=FishingState.FishingResults)
+            if (boat.fishingState != FishingState.BoatIsMoving && boat.fishingState != FishingState.FishingMinigame && boat.fishingState != FishingState.FishingResults)
                 Game1.stateManager.SetActive(true, "restaurantScene");
         }
+
+        public void OnHUDDisable(Object o, EventArgs e) => hud.SetActive(false);
+        public void OnHUDEnable(Object o, EventArgs e) => hud.SetActive(true);
         private void GenerateSeafloor(int maxSeaweed = 10,int maxRocks = 4)
         {
             Rectangle[] seaweeDimensions = new Rectangle[] {new Rectangle(12,18,12,21),new Rectangle(11,39,11,17),new Rectangle(9,56,9,14)/*,new Rectangle(22,14,3,10),new Rectangle(25,14,5,14)*/ };
@@ -104,7 +109,7 @@ namespace Fishing.Scripts.Scenes
                     oceanFloorDecorations[i].PlayAnimation("move");
                 }else if(randomNum > .65f&&currentRocks < maxRocks)
                 {
-                    oceanFloorDecorations[i] = new Sprite(positionToSpawn, rockDimensions[ReferenceHolder.random.Next(0, rockDimensions.Length )], "Art/Props/enviroment", $"rock_{currentRocks}", .01f).SetOrigin(Origin.BottomCenter);
+                    oceanFloorDecorations[i] = new Sprite(positionToSpawn, rockDimensions[ReferenceHolder.random.Next(0, rockDimensions.Length )], "Art/Props/enviroment", $"rock_{currentRocks}", Layer.Entity - .0001f).SetOrigin(Origin.BottomCenter);
                     currentRocks++;
                 }
                 else

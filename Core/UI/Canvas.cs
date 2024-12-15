@@ -40,7 +40,7 @@ namespace Core.UI
             {
                 if(InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position,item.size)))
                 {
-                    if(elements.Any(p=>p!=item&&p.isActive&&p.layer < item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
+                    if(elements.Any(p=>!p.ignoreMouseInput&&p!=item&&p.isActive&&p.layer < item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
                     {
                         break;
                     }

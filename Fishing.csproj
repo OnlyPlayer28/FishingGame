@@ -31,6 +31,7 @@
     <Folder Include="Content\Art\UI\" />
     <Folder Include="Content\Data\Food\" />
     <Folder Include="Content\References\" />
+    <Folder Include="Core\Serialization\" />
     <Folder Include="Core\Numerics\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">

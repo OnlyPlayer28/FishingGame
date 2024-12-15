@@ -27,6 +27,7 @@ namespace Fishing.Core.UI.Elements
         public float maxValue { get; private set; }
         private Rect fillRectangle { get; set; }
         private Color fillColor {  get; set; } = Color.Red;
+        public bool ignoreMouseInput { get; set; }
         public Bar(Vector2 position, Vector2 size, bool isActive, string name, float layer, bool displayProgressOnMouseOver)
         {
             this.position = position;

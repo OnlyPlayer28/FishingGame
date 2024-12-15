@@ -173,5 +173,16 @@ namespace Core
 
             return (scaleCorrection.X > 1) ? canUpscale?scaleCorrection.X>limitUpscaleSize?new Vector2(limitUpscaleSize):scaleCorrection:Vector2.One : scaleCorrection;
         }
+
+        public static Color MultiplyColors(Color color1,Color color2)
+        {
+            return new Color
+                (
+                    color1.R / 255f * color2.R/255f,
+                    color1.G/255f*color2.G/255f,
+                    color1.B/255f*color2.B/255f,
+                    color1.A / 255f * color2.A / 255f
+                );
+        }
     }
 }

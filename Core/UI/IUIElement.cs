@@ -14,5 +14,6 @@ namespace Core.UI
     {
         public Vector2 position { get; set; }
         public Vector2 size { get; set; }
+        public bool ignoreMouseInput { get; set; }
     }
 }

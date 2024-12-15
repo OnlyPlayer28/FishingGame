@@ -30,11 +30,7 @@ namespace Core.UI.Elements
         private Vector2 _size;
 
         public Text buttonText { get; set; }
-        public override float layer 
-        {
-            get;
-            set;
-        }
+        public override float layer { get; set; }
 
         public Rect buttonSpriteSimple { get; set; }
 
@@ -43,9 +39,10 @@ namespace Core.UI.Elements
 
         public Sprite buttonSprite { get; set; }
 
-        private Color originalColor { get; set; }
+        private Color originalColor { get; set; } = Color.White;
         private Color highlightColor { get; set; } = Color.LightGray;
         private string onClickSound { get; set; } = "";
+        public bool ignoreMouseInput { get; set; }
         public Button(  Vector2 position, Vector2 size, float layer,string name = "defaultButton",bool isActive = true,string onClickSound = "")
             :base(position,size,isActive)
         {
@@ -65,7 +62,7 @@ namespace Core.UI.Elements
             this.layer = buttonSprite.layer;
             this.name = buttonSprite.name;
 
-            originalColor = buttonSprite.color;
+            //originalColor = buttonSprite.color;
         }
         public Button SetOnButtonCLickAction(Action onButtonClickAction)
         {
@@ -75,14 +72,14 @@ namespace Core.UI.Elements
         public Button SetSimpleSprite(Color outline,Color fill)
         {
             buttonSpriteSimple = new Rect(position, size, outline, true, layer).SetFillColor(fill);
-            originalColor = buttonSpriteSimple.color;
+            //originalColor = buttonSpriteSimple.originalColor;
             return this;
         }
         public Button SetButtonSprite(Sprite sprite,ContentManager content)
         {
             this.buttonSprite=sprite;
             buttonSprite.LoadContent(content);
-            originalColor = buttonSprite.color;
+            //originalColor = buttonSprite.color;
             return this;
         }
 
@@ -94,7 +91,7 @@ namespace Core.UI.Elements
         public Button SetButtonText(string text,Color color,SpriteFont font)
         {
   
-            float _layer = layer - .0001f;
+            float _layer = layer - .00000001f;
             _layer = Math.Clamp(_layer, 0, 1);
             Console.WriteLine(_layer);
             buttonText = new Text(position+Vector2.One, text, color, font,layer:_layer);
@@ -130,7 +127,7 @@ namespace Core.UI.Elements
             if (!isActive) { return; }
             if (buttonSprite == null)
             {
-                buttonSpriteSimple.color = originalColor;
+                buttonSpriteSimple.SetOverlayColor(originalColor);
             }
             else
             {
@@ -154,8 +151,9 @@ namespace Core.UI.Elements
         public override void OnMouseOver(object sender, EventArgs e)
         {
             if (buttonSprite == null) 
-            { 
-                buttonSpriteSimple.color = highlightColor; 
+            {
+
+                buttonSpriteSimple.SetOverlayColor(highlightColor);
             }
             else 
             {
