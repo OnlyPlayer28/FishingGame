@@ -4,6 +4,7 @@ using Fishing.Scripts.Minigames;
 using Fishing.Scripts.Restaurant;
 using Fishing.Scripts.Scenes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,11 @@ namespace Fishing.Scripts
         public void Update(GameTime gameTime)
         {
             Game1.player.restaurantManager.Update(gameTime);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            restaurantManager.Draw(spriteBatch);
         }
     }
 }

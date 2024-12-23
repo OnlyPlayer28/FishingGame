@@ -1,6 +1,7 @@
 ﻿using Core;
 using Fishing.Scripts.Scenes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace Fishing.Scripts.Restaurant
 {
+    public enum RestaurantState
+    {
+        NoCustomer,
+        CustomerWaiting
+    }
     public class RestaurantManager
     {
         [JsonIgnore]
@@ -31,7 +37,7 @@ namespace Fishing.Scripts.Restaurant
         [JsonIgnore]
         public EventHandler OnCustomerSpawnEvent { get;private set; }
         [JsonIgnore]
-        public bool isOpen { get; private set; }
+        public bool isOpen { get; private set; } = true;
         [JsonRequired]
         private int maxCostumersPerHour { get; set; } = 5;
         private int currentCustomerCountPerHour { get; set; }
@@ -45,9 +51,17 @@ namespace Fishing.Scripts.Restaurant
         private float minTimeBetweenCustumers { get;  set; } = 9;
         private float customerTimer { get; set; }
 
+        private Customer currentCustomer { get; set; }
 
+        private RestaurantMenu currentRestaurantMenu { get; set; }
+        [JsonRequired]
+        private int maxItemsPerMenu { get; set; } = 6;
+        [JsonIgnore]
+        public RestaurantState restaurantState { get; set; }
+        private Vector2 customerSpawnPosition { get; set; } = new Vector2(50, 45);
         public RestaurantManager(string name)
         {
+            currentRestaurantMenu = new RestaurantMenu(maxItemsPerMenu);
             customerTimer = minTimeBetweenCustumers;
             restaurantName = name;
             DayNightSystem.OnHourPassEvent += OnHourPass;
@@ -75,8 +89,8 @@ namespace Fishing.Scripts.Restaurant
             GenerateNextCustomerWaitTime();
             if(currentCustomerCountPerHour>=(isPeakHour?maxCostumersPerHour*(1+peakHourMultiplier):maxCostumersPerHour)) { return; }
             currentCustomerCountPerHour++;
-
-            Debug.WriteLine("customer spawn!");
+            restaurantState = RestaurantState.CustomerWaiting;
+            currentCustomer = new Customer(customerSpawnPosition, currentRestaurantMenu.GetRandomMenuItem());
         }
         private void GenerateNextCustomerWaitTime()
         {
@@ -95,13 +109,28 @@ namespace Fishing.Scripts.Restaurant
         public void Update(GameTime gameTime)
         {
             if (Game1.stateManager.GetActiveGameState().GetType() == typeof(RestaurantScene)&&isOpen) 
-            { 
-                customerTimer-=(float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(customerTimer<= 0)
+            {
+                if (restaurantState == RestaurantState.NoCustomer)
                 {
-                    customerTimer = 100;
-                    OnCustomerSpawnEvent?.Invoke(this, EventArgs.Empty);
+                    customerTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (customerTimer <= 0)
+                    {
+                        customerTimer = 100;
+                        OnCustomerSpawnEvent?.Invoke(this, EventArgs.Empty);
+                    }
+                }else
+                {
+                    currentCustomer.Update(gameTime);
                 }
+
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (restaurantState == RestaurantState.CustomerWaiting&& Game1.stateManager.GetActiveGameState().GetType() == typeof(RestaurantScene) && isOpen)
+            {
+                currentCustomer.Draw(spriteBatch);
             }
         }
 

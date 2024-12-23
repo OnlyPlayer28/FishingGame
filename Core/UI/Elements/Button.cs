@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Core.UI.Elements
 {
@@ -16,11 +17,11 @@ namespace Core.UI.Elements
     {
         public Button buttonRef;
     }
-    public class Button : ICLickable,IUIElement
+    public class Button : ICLickable, IUIElement
     {
-        public override bool isActive { get ; set ; }
-        public  string name { get ; set; }
-        public override Vector2 position 
+        public override bool isActive { get; set; }
+        public string name { get; set; }
+        public override Vector2 position
         {
             get;
             set;
@@ -43,8 +44,8 @@ namespace Core.UI.Elements
         private Color highlightColor { get; set; } = Color.LightGray;
         private string onClickSound { get; set; } = "";
         public bool ignoreMouseInput { get; set; }
-        public Button(  Vector2 position, Vector2 size, float layer,string name = "defaultButton",bool isActive = true,string onClickSound = "")
-            :base(position,size,isActive)
+        public Button(Vector2 position, Vector2 size, float layer, string name = "defaultButton", bool isActive = true, string onClickSound = "")
+            : base(position, size, isActive)
         {
             this.onClickSound = onClickSound;
             this.isActive = isActive;
@@ -54,35 +55,39 @@ namespace Core.UI.Elements
             this.layer = layer;
         }
 
-        public Button(Sprite sprite,bool isActive = true,string onClickSound = "")
-            :base(sprite.position,sprite.size,isActive)
+        public Button(Sprite sprite, bool isActive = true, string onClickSound = "")
+            : base(sprite.position, sprite.size, isActive)
         {
             this.onClickSound = onClickSound;
             this.buttonSprite = sprite;
             this.layer = buttonSprite.layer;
             this.name = buttonSprite.name;
 
-            //originalColor = buttonSprite.color;
+            originalColor = buttonSprite.color;
         }
         public Button SetOnButtonCLickAction(Action onButtonClickAction)
         {
             this.onButtonClickAction = onButtonClickAction;
             return this;
         }
-        public Button SetSimpleSprite(Color outline,Color fill)
+        public Button SetSimpleSprite(Color outline, Color fill)
         {
             buttonSpriteSimple = new Rect(position, size, outline, true, layer).SetFillColor(fill);
             //originalColor = buttonSpriteSimple.originalColor;
             return this;
         }
-        public Button SetButtonSprite(Sprite sprite,ContentManager content)
+        public Button SetButtonSprite(Sprite sprite, ContentManager content)
         {
-            this.buttonSprite=sprite;
+            this.buttonSprite = sprite;
             buttonSprite.LoadContent(content);
             //originalColor = buttonSprite.color;
             return this;
         }
-
+        public Button SetButtonName(string name)
+        {
+            this.name = name;
+            return this;
+        }
         public Button SetHighlightColor(Color color)
         {
             highlightColor = color;

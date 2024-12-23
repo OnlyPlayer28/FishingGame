@@ -53,7 +53,7 @@ namespace Fishing.Scripts.Scenes
             canvas.AddClickableElement(exitButton);
             canvas.AddTextElement(currentPageText);
             backdrop = new Rect(new Vector2(3,3), new Vector2(122, 122), Helper.HexToRgb("#542424"), true, Layer.UI).SetFillColor(Helper.HexToRgb("#6e3b34"));
-            outline = new Rect(new Vector2(9,9), new Vector2(111, 111), Helper.HexToRgb("#a06f51"),  layer: Layer.UI-.00000001f);
+            outline = new Rect(new Vector2(9,9), new Vector2(111, 114), Helper.HexToRgb("#a06f51"),  layer: Layer.UI-.00000001f);
             buttonsDevider = new Line(new Vector2(9, 23), new Vector2(111, 1), Helper.HexToRgb("#a06f51"), layer: Layer.UI - .00000001f);
 
             components.Add(backdrop);
@@ -73,10 +73,10 @@ namespace Fishing.Scripts.Scenes
             canvas.AddUIELement(new Image(new Sprite(new Vector2(39, 13), new Vector2(7, 7), new Vector2(19, 30), "Art/UI/UI", layer: Layer.UI - .01f),true));
             canvas.AddUIELement(new Image(new Sprite(new Vector2(52, 13), new Vector2(8, 7), new Vector2(26, 30), "Art/UI/UI", layer: Layer.UI - .01f), true));
 
-            pages[0] = new RestaurantSettingsMenu(new Vector2(10,24),new Vector2(100),Layer.UI-.0001f,canvas);
-            pages[1] = new RestaurantMenuSettings(new Vector2(10, 24), new Vector2(100), Layer.UI - .0001f, canvas);
-            pages[2] = new SettingsMenu(new Vector2(10, 24), new Vector2(100), Layer.UI - .0001f, canvas);
-            pages[3] = new ExitMenu(new Vector2(10, 24), new Vector2(100), Layer.UI - .0001f, canvas);
+            pages[0] = new RestaurantSettingsMenu(new Vector2(10,24),new Vector2(109),Layer.UI-.0001f,canvas);
+            pages[1] = new RestaurantMenuSettings(new Vector2(10, 24), new Vector2(109), Layer.UI - .0001f, canvas);
+            pages[2] = new SettingsMenu(new Vector2(10, 24), new Vector2(109), Layer.UI - .0001f, canvas);
+            pages[3] = new ExitMenu(new Vector2(10, 24), new Vector2(109), Layer.UI - .0001f, canvas);
 
             pages[0].SetActive(true);
 

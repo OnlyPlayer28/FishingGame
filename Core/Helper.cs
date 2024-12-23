@@ -105,7 +105,7 @@ namespace Core
             direction.Normalize();
             return (float)(position - positionToMoveTowards).Length() <.25f? positionToMoveTowards:position+ (direction)*speed;
         }
-
+        
         public static int HexToInt(string hex)
         {
             List<char> letters = hex.ToList();
@@ -184,5 +184,7 @@ namespace Core
                     color1.A / 255f * color2.A / 255f
                 );
         }
+
+        public static Color GetRandomColor() => new Color(ReferenceHolder.random.Next(0, 256), ReferenceHolder.random.Next(0, 256), ReferenceHolder.random.Next(0, 256));
     }
 }

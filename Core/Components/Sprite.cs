@@ -91,6 +91,7 @@ namespace Core.Components
             this.layer = sprite.layer;
             this.spriteRect = new Rectangle();
             this.tilemapLocationRect = sprite.tilemapLocationRect;
+            this.color = sprite.color;
 
         }
         /// <summary>
@@ -182,6 +183,11 @@ namespace Core.Components
         public Sprite setPosition(Vector2 position)
         {
             this.position = position-origin;
+            return this;
+        }
+        public Sprite SetSpriteEffects(SpriteEffects spriteEffects)
+        {
+            this.spriteEffects = spriteEffects;
             return this;
         }
         public  void LoadContent(ContentManager contentManager)

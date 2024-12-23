@@ -77,7 +77,7 @@ namespace Fishing
         /// <returns></returns>
         public static IAddableToInventory GetItem(int ID)
         {
-            return (IAddableToInventory)itemRegistry.Where(p=>p.ID == ID).FirstOrDefault().Clone();
+            return ID == -1?new IAddableToInventory(-1,default,new Sprite(),0):(IAddableToInventory)itemRegistry.Where(p=>p.ID == ID).FirstOrDefault().Clone();
         }
         public Game1()
         {
@@ -223,6 +223,7 @@ namespace Fishing
             //========== World rendering ==========
             _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointWrap,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:depthStencilState);
             stateManager.Draw(_spriteBatch);
+            player.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
             _spriteBatch.End();
             //========== On canvas UI rendering ==========
