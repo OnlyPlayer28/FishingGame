@@ -218,6 +218,7 @@ namespace Fishing.Scripts.UI
         }
         public void OnSelectButtonsClick(Object o,ButtonEventArgs  e)
         {
+            if (!isActive) { return; }
             cuttingRectangles =cuttingRectangles!=null&& cuttingRectangles.Count() != 0 ? cuttingRectangles = new Rect[] { } : cuttingRectangles;
             if (e.buttonRef.name == "-1")
             {

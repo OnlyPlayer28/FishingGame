@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.InventoryManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Fishing.Scripts.Restaurant
         public override string ToString() => $"{Game1.GetItem(ID).name}: {price}";
 
     }
-    internal class RestaurantMenu
+    public class RestaurantMenu
     {
         public List<MenuItem> menuItems { get; private set; }
 
@@ -32,7 +33,7 @@ namespace Fishing.Scripts.Restaurant
             if(menuItems.Any(item => item.ID == ID)) { return this; }
             else
             {
-                menuItems.Add(new MenuItem { ID = ID, price = price });
+                menuItems.Add(new MenuItem { ID = ID, price = price<0?((ISellable)Game1.GetItem(ID)).price:price });
                 return this;
             }
         }
@@ -46,7 +47,7 @@ namespace Fishing.Scripts.Restaurant
         public void PrintMenuToConsole()
         {
             string textToReturn=default;
-            menuItems.ForEach(p => textToReturn += p.ToString());
+            menuItems.ForEach(p => textToReturn += p.ToString()+"\n");
 
             System.Diagnostics.Debug.WriteLine(textToReturn);
         }

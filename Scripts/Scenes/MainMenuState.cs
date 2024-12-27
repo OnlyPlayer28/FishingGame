@@ -22,6 +22,7 @@ namespace Fishing.Scripts.Scenes
         {
             uiCanvas = new Canvas("canvas", true);
             playButton = new Button(new Vector2(128/2,128/2)-new Vector2(10,15), new Vector2(20, 10), Layer.UI, "playButton",onClickSound:"click").SetSimpleSprite(Helper.HexToRgb("#542424"), Helper.HexToRgb("#6e3b34")).SetHighlightColor(Color.Gray);
+            playButton.SetButtonText("Play", Color.White, Game1.Font_24);
             uiCanvas.AddClickableElement(playButton);
             playButton.OnButtonClickEvent += OnMouseClick;
             

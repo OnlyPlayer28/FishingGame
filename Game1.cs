@@ -71,6 +71,7 @@ namespace Fishing
 
         internal static EventHandler disableHUDGloballyEvent;
         internal static EventHandler enableHUDGloballyEvent;
+        internal static EventHandler exitGameEvent;
         /// <summary>
         /// Returns a new instance of an inventory item.
         /// </summary>
@@ -112,6 +113,8 @@ namespace Fishing
                 {"REMOVE_ITEM",Keys.I}
             });
 
+            exitGameEvent += ExitGame;
+
         }
 
         protected override void Initialize()
@@ -128,6 +131,10 @@ namespace Fishing
         {
             isFocused = false;
             testEffect.Play();
+        }
+        public  void ExitGame(Object o, EventArgs e)
+        {
+            base.Exit();
         }
         protected override void OnExiting(object sender, EventArgs args)
         {
@@ -195,8 +202,8 @@ namespace Fishing
             
             if (InputManager.AreKeysBeingPressedDown(false, Keys.L))
             {
-
-                player.inventory.AddItem(GetItem(1),1);
+                player.restaurantManager.currentRestaurantMenu.PrintMenuToConsole();
+                //player.inventory.AddItem(GetItem(1),1);
             }
             if (InputManager.AreKeysBeingPressedDown(false, Keys.I))
             {
@@ -206,7 +213,7 @@ namespace Fishing
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
             InputManager.Update(gameTime,isFocused);
-            debugText = player.restaurantManager.isOpen.ToString();
+           // debugText = player.restaurantManager.isOpen.ToString();
 
             base.Update(gameTime);
         }

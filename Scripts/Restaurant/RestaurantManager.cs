@@ -52,8 +52,8 @@ namespace Fishing.Scripts.Restaurant
         private float customerTimer { get; set; }
 
         private Customer currentCustomer { get; set; }
-
-        private RestaurantMenu currentRestaurantMenu { get; set; }
+        [JsonIgnore]
+        public RestaurantMenu currentRestaurantMenu { get;private set; }
         [JsonRequired]
         private int maxItemsPerMenu { get; set; } = 6;
         [JsonIgnore]

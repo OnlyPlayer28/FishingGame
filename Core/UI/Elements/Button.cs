@@ -149,10 +149,22 @@ namespace Core.UI.Elements
             OnButtonClickEvent?.Invoke(this, new ButtonEventArgs { buttonRef = this }) ;
         }
 
+        public  void SetPosition(Vector2 position)
+        {
+            this.position = position;
+            if(buttonSprite != null)
+            {
+                buttonSprite.position = position;
+            }
+            else
+            {
+                buttonSpriteSimple.position = position;
+            }
+        }
         public override void SetPositionAndBoundingBox()
         {
+            throw new NotImplementedException();
         }
-
         public override void OnMouseOver(object sender, EventArgs e)
         {
             if (buttonSprite == null) 
