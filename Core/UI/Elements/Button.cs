@@ -141,6 +141,7 @@ namespace Core.UI.Elements
         }
         public override void OnMouseClick()
         {
+            if(isActive == false) { return; }
             if(onClickSound != "")
             {
                 AudioManager.PlayCue(onClickSound);
@@ -167,6 +168,7 @@ namespace Core.UI.Elements
         }
         public override void OnMouseOver(object sender, EventArgs e)
         {
+            if(!isActive) { return; }
             if (buttonSprite == null) 
             {
 

@@ -52,7 +52,7 @@ namespace Fishing.Scripts.UI
             base.LoadContent(contentManager);
         }
 
-        public override IMenu SetActive(bool active)
+        public override IActive SetActive(bool active)
         {
             AudioManager.PlayCue("fridge_opening_and_closing");
             foreach (var item in itemAmountsText)

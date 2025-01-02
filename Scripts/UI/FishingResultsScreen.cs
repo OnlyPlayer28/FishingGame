@@ -85,7 +85,7 @@ namespace Fishing.Scripts.UI
         {
         }
 
-        public override IMenu SetActive(bool active)
+        public override IActive SetActive(bool active)
         {
             //Disable Text !!!!!!!
             if (active == false)

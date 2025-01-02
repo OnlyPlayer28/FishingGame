@@ -33,11 +33,11 @@ namespace Fishing.Scripts.UI.PauseScreenMenus
             arrowButtons.OnValueChangedEvent += OnOpeningHoursChanged;
             closingArrows.OnValueChangedEvent += OnOpeningHoursChanged;
         }
-        public override IMenu SetActive(bool active)
+        public override IActive SetActive(bool active)
         {
             restaurantOpeningHoursText.isActive = active;
-            arrowButtons.isActive = active;
-            closingArrows.isActive = active;
+            arrowButtons.SetActive(active);
+            closingArrows.SetActive(active);
             return base.SetActive(active);
         }
         public override void Draw(SpriteBatch spriteBatch)

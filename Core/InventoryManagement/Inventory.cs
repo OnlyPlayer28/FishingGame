@@ -14,7 +14,7 @@ namespace Core.InventoryManagement
         public int totalItemAmount;
         public IAddableToInventory item;
     }
-    public class Inventory :ITaggable
+    public class Inventory :INameable
     {
         public string name { get; set ; }
 

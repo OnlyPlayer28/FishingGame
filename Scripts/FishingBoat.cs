@@ -35,7 +35,7 @@ namespace Fishing.Scripts
         Ascending,
         Stopped
     }
-    internal class FishingBoat:IComponent,ITaggable
+    internal class FishingBoat:IComponent,INameable
     {
         public  Sprite boat { get; set; }
         public Sprite fishHookedWarningSprite { get; set; }

@@ -120,7 +120,7 @@ namespace Fishing.Scripts.UI
                 currentCuttingRectangle = -1;
             }
         }
-        public override IMenu SetActive(bool active)
+        public override IActive SetActive(bool active)
         {
             currentInventoryPage = 0;
             if (active) { SetButtonIcons(); }

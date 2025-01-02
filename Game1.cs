@@ -98,21 +98,14 @@ namespace Fishing
             CameraManager.AddCamera(new Camera(Vector2.Zero, 5, new Vector2(1600, 900), "mainCamera"));
             CameraManager.SetCurrentCamera("mainCamera");
 
-            
-            itemRegistry = FileWriter.ReadJson < List<IAddableToInventory>>(Content.RootDirectory+"/Data/Food/fish.json");
+            itemRegistry.AddRange(FileWriter.ReadJson<List<IAddableToInventory>>(Content.RootDirectory + "/Data/Food/fish.json"));
             itemRegistry.AddRange(FileWriter.ReadJson<List<IAddableToInventory>>(contentManager.RootDirectory + "/Data/Food/consumables.json"));
 
             itemRegistry.OrderBy(p => p.ID);
             dayNightSystem = new DayNightSystem(10);
             DayNightSystem.SetTime(6, 0);
 
-            ControlsManager.SetupInputKeys(new Dictionary<string, Keys>
-            {
-                {"PAUSE",Keys.Escape},
-                {"ADD_ITEM",Keys.L },
-                {"REMOVE_ITEM",Keys.I}
-            });
-
+            ControlsManager.SetupInputKeys(Content.RootDirectory + "/Data/Settings/controls.json");
             exitGameEvent += ExitGame;
 
         }
@@ -191,8 +184,6 @@ namespace Fishing
        
         protected override void Update(GameTime gameTime)
         {
-            /*if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();*/
 
             dayNightSystem.Update(gameTime);
             FPS = 1/(float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -213,32 +204,34 @@ namespace Fishing
             CameraManager.Update(gameTime);
             stateManager.Update(gameTime);
             InputManager.Update(gameTime,isFocused);
-           // debugText = player.restaurantManager.isOpen.ToString();
+            debugText = "";
 
             base.Update(gameTime);
         }
         DepthStencilState depthStencilState = new DepthStencilState
         {
-            DepthBufferEnable = true,         
-            DepthBufferWriteEnable = true,   
+            DepthBufferEnable = true,
+            DepthBufferWriteEnable = true,
             DepthBufferFunction = CompareFunction.LessEqual
+           
+
+
         };
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(/*ClearOptions.Target,*/ Color.CornflowerBlue/*, 1, 0*/);
-
             //========== World rendering ==========
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointWrap,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:depthStencilState);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, samplerState: SamplerState.PointWrap,transformMatrix: CameraManager.GetCurrentMatrix(),depthStencilState:depthStencilState/*, blendState: BlendState.AlphaBlend*/);
             stateManager.Draw(_spriteBatch);
             player.Draw(_spriteBatch);
             LineTool.Draw(_spriteBatch);
             _spriteBatch.End();
             //========== On canvas UI rendering ==========
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: depthStencilState);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().uiMatrix, samplerState: SamplerState.PointClamp, depthStencilState: depthStencilState/*, blendState: BlendState.AlphaBlend*/);
             stateManager.DrawUI(_spriteBatch);
             _spriteBatch.End();
             //========== Text rendering ==========
-            _spriteBatch.Begin(SpriteSortMode.BackToFront,transformMatrix:CameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState: depthStencilState);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: CameraManager.GetCurrentCamera().textMatrix, samplerState: SamplerState.PointClamp, depthStencilState:depthStencilState);
             stateManager.DrawText(_spriteBatch);
             _spriteBatch.DrawString(Font_24, debugText, new Vector2(2, 2), Color.Black);
             _spriteBatch.End();

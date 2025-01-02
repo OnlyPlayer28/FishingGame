@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.Cameras
 {
-    public class Camera:ITaggable
+    public class Camera:INameable
     {
         public Vector2 position { get; set; }
         public string name { get; set; } = "camera";

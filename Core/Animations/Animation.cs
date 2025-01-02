@@ -14,7 +14,7 @@ namespace Core.Animations
         Stopped,
         Paused
     }
-    public class Animation:ITaggable
+    public class Animation:INameable
     {
         public int FPS { get; private set; }
 

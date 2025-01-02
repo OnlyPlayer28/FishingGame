@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
+using Core.Components;
 namespace Fishing.Scripts.UI
 {
     internal class FrierScreen : IMenu
@@ -16,7 +15,7 @@ namespace Fishing.Scripts.UI
 
         }
 
-        public override IMenu SetActive(bool active)
+        public override IActive SetActive(bool active)
         {
             return base.SetActive(active);
         }

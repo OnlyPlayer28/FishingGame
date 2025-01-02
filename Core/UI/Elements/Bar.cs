@@ -37,6 +37,12 @@ namespace Fishing.Core.UI.Elements
             this.layer = layer;
             this.displayProgressOnMouseOver = displayProgressOnMouseOver;
         }
+        public IActive SetActive(bool active)
+        {
+            this.isActive = active;
+           
+            return this;
+        }
         public Bar SetMaxAndMinValues(float min, float max)
         {
             this.minValue = min;

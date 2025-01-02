@@ -45,9 +45,12 @@ namespace Fishing.Scripts.Scenes
         private float waveScrollX = 0;
         private Texture2D scrollingWaves;
 
+        private InputField inputField;
+
         public FishingScene(string name, bool isActive = false, bool isDrawing = false)
             : base(name, isActive, isDrawing)
         {
+
             uiCanvas = new Canvas("fishingSceneCanvas", true);
             hud = new HUD(Vector2.Zero, Vector2.Zero, Layer.UI, uiCanvas).SetActive(true);
             backgroundSprite = new Sprite(Vector2.Zero, new Vector2(128), Vector2.Zero, "Art/Backdrops/Ocean", "oceanBackground", layer: Layer.Backdrop);
@@ -66,6 +69,9 @@ namespace Fishing.Scripts.Scenes
 
             Game1.disableHUDGloballyEvent += OnHUDDisable;
             Game1.enableHUDGloballyEvent+= OnHUDEnable;
+
+            inputField = new InputField(Vector2.One, new Vector2(25, 10), 0, uiCanvas, true,Game1.Font_24);
+            uiCanvas.AddClickableElement(inputField);
         }
         public override IScene SetActive(bool active)
         {

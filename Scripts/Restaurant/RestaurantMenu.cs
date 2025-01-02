@@ -15,6 +15,18 @@ namespace Fishing.Scripts.Restaurant
 
         public override string ToString() => $"{Game1.GetItem(ID).name}: {price}";
 
+        public MenuItem(int ID, int price)
+        {
+            this.ID = ID ;
+            this.price = price ;
+        }
+        public MenuItem(int ID)
+        {
+            this.ID = ID;
+            
+            this.price = this.ID >=0?((ISellable)Game1.GetItem(this.ID)).price:0;
+        }
+
     }
     public class RestaurantMenu
     {
@@ -37,7 +49,14 @@ namespace Fishing.Scripts.Restaurant
                 return this;
             }
         }
-
+        public RestaurantMenu RemoveMenuItem(int ID)
+        {
+            foreach (var item in menuItems.ToArray())
+            {
+                if(item.ID == ID) { menuItems.Remove(item); }
+            }
+            return this;
+        }
         public void ModifyItemPrice(int ID,int newPrice)
         {
             MenuItem @object = menuItems.Where(p => p.ID == ID).FirstOrDefault();

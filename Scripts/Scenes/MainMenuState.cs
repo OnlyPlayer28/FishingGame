@@ -29,6 +29,7 @@ namespace Fishing.Scripts.Scenes
         }
         public void OnMouseClick(Object o,ButtonEventArgs e)
         {
+            if (!isActive) { return; }
             if (e.buttonRef.name == "playButton")
             {
                 Game1.stateManager.SetActive(true, "fishingScene");

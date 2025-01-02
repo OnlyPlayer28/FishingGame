@@ -43,6 +43,7 @@ namespace Core
         public static EventHandler<KeyboardInputEventArgs> OnKeyboardPressEvent;
         public static EventHandler<MouseInputEventArgs> OnMouseClickEvent;
         public static EventHandler<MouseInputEventArgs> OnMouseDownEvent;
+        public static EventHandler<KeyboardInputEventArgs> OnKeyboardDownEvent;
 
         public static GameInputState inputState { get; set; }
 
@@ -67,6 +68,9 @@ namespace Core
                 if (Keyboard.GetState().GetPressedKeyCount() > 0 && previousKeyobardState.GetPressedKeyCount() == 0)
                 {
                     OnKeyboardPressEvent?.Invoke(null, new KeyboardInputEventArgs { inputState = inputState, keys = Keyboard.GetState().GetPressedKeys() });
+                }else  if(Keyboard.GetState().GetPressedKeyCount() > 0 && previousKeyobardState.GetPressedKeyCount() > 0)
+                {
+                    OnKeyboardDownEvent?.Invoke(null, new KeyboardInputEventArgs { inputState = inputState, keys = Keyboard.GetState().GetPressedKeys() });
                 }
             }
             previousMouseState = Mouse.GetState();

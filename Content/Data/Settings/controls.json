@@ -1,0 +1,6 @@
+{
+  "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[Microsoft.Xna.Framework.Input.Keys, MonoGame.Framework]], System.Private.CoreLib",
+  "PAUSE": "Escape",
+  "ADD_ITEM": "L",
+  "REMOVE_ITEM": "P"
+}

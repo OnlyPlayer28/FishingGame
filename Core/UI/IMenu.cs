@@ -1,4 +1,5 @@
-﻿using Core.UI;
+﻿using Core.Components;
+using Core.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -50,12 +51,12 @@ namespace Core.UI
             canvas.textElements.Remove(element);
             return this;
         }
-        public virtual IMenu SetActive(bool active)
+
+        public virtual IActive SetActive(bool active)
         {
             this.isActive = active;
             return this;
         }
-
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (isActive)

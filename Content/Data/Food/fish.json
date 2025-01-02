@@ -4,7 +4,6 @@
     {
       "$type": "Fishing.Scripts.Food.Fish, Fishing",
       "price": 15,
-      "rarity": 55.0,
       "minAndMaxDepth": "0, 1",
       "difficulty": 0.1,
       "species": 1,
@@ -30,16 +29,24 @@
           "R": 255,
           "A": 255
         },
-		"texturePath":"Art/Food/fish",
+        "texturePath": "Art/Food/fish",
+        "transparency": 1.0,
         "rotation": 0.0,
         "layer": 0.0,
-        "tilemapPosition": "0, 0"
-      }
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0,
+        "animations": {
+          "$type": "System.Collections.Generic.List`1[[Core.Animations.Animation, Fishing]], System.Private.CoreLib",
+          "$values": []
+        },
+        "posOffset": "0, 0"
+      },
+      "rarity": 55.0,
+      "tags": "AddableToMenu"
     },
     {
       "$type": "Fishing.Scripts.Food.Fish, Fishing",
       "price": 26,
-      "rarity": 45.0,
       "minAndMaxDepth": "1, 1",
       "difficulty": 0.35,
       "species": 2,
@@ -65,16 +72,24 @@
           "R": 255,
           "A": 255
         },
-		"texturePath":"Art/Food/fish",
+        "texturePath": "Art/Food/fish",
+        "transparency": 1.0,
         "rotation": 0.0,
         "layer": 0.0,
-        "tilemapPosition": "0, 0"
-      }
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0,
+        "animations": {
+          "$type": "System.Collections.Generic.List`1[[Core.Animations.Animation, Fishing]], System.Private.CoreLib",
+          "$values": []
+        },
+        "posOffset": "0, 0"
+      },
+      "rarity": 45.0,
+      "tags": "None"
     },
     {
       "$type": "Fishing.Scripts.Food.Fish, Fishing",
       "price": 15,
-      "rarity": 40.0,
       "minAndMaxDepth": "2, 2",
       "difficulty": 0.6,
       "species": 0,
@@ -100,16 +115,24 @@
           "R": 255,
           "A": 255
         },
-		"texturePath":"Art/Food/fish",
+        "texturePath": "Art/Food/fish",
+        "transparency": 1.0,
         "rotation": 0.0,
         "layer": 0.0,
-        "tilemapPosition": "0, 0"
-      }
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0,
+        "animations": {
+          "$type": "System.Collections.Generic.List`1[[Core.Animations.Animation, Fishing]], System.Private.CoreLib",
+          "$values": []
+        },
+        "posOffset": "0, 0"
+      },
+      "rarity": 40.0,
+      "tags": "None"
     },
     {
       "$type": "Fishing.Scripts.Food.Fish, Fishing",
       "price": 30,
-      "rarity": 30.0,
       "minAndMaxDepth": "2, 2",
       "difficulty": 1.0,
       "species": 0,
@@ -135,11 +158,20 @@
           "R": 255,
           "A": 255
         },
-		"texturePath":"Art/Food/fish",
+        "texturePath": "Art/Food/fish",
+        "transparency": 1.0,
         "rotation": 0.0,
         "layer": 0.0,
-        "tilemapPosition": "0, 0"
-      }
+        "tilemapPosition": "0, 0",
+        "spriteEffects": 0,
+        "animations": {
+          "$type": "System.Collections.Generic.List`1[[Core.Animations.Animation, Fishing]], System.Private.CoreLib",
+          "$values": []
+        },
+        "posOffset": "0, 0"
+      },
+      "rarity": 30.0,
+      "tags": "None"
     }
   ]
 }

@@ -24,7 +24,11 @@ namespace Core.Components
             this.size = size;
             this.isActive = isActive;
         }
-
+        public virtual IActive SetActive(bool active)
+        {
+            this.isActive = active;
+            return this;
+        }
         public abstract void OnMouseClick();
 
 

@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Components;
 using Core.UI;
 using Fishing.Core;
 using Microsoft.Xna.Framework;
@@ -25,7 +26,7 @@ namespace Fishing.Scripts.UI.PauseScreenMenus
             canvas.AddTextElement(controls);
         }
 
-        public override IMenu SetActive(bool active)
+        public override IActive SetActive(bool active)
         {
             controls.isActive = active;
             return base.SetActive(active);

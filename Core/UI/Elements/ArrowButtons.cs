@@ -51,6 +51,7 @@ namespace Core.UI.Elements
             this.name = name;
             this.color = color;
         }
+        
         public ArrowButtons SetMinAndMaxValues (float min, float max)
         {
             minAndMaxValues = new Vector2 (min,max);
@@ -61,7 +62,13 @@ namespace Core.UI.Elements
             this.value = value;
             return this;
         }
-         
+        public IActive SetActive(bool active)
+        {
+            this.isActive = active;
+            arrows[0].isActive = active;
+            arrows[1].isActive = active;
+            return this;
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             if(!isActive) return;
@@ -95,8 +102,8 @@ namespace Core.UI.Elements
 
         public override void Update(GameTime gameTime)
         {
-            if(!isActive && arrows[0].isActive) { arrows[0].isActive = false; arrows[1].isActive = false; }
-            else  if(isActive&& !arrows[0].isActive) { arrows[0].isActive = true; arrows[1].isActive = true; }
+            /*if(!isActive && arrows[0].isActive) { arrows[0].isActive = false; arrows[1].isActive = false; }
+            else  if(isActive&& !arrows[0].isActive) { arrows[0].isActive = true; arrows[1].isActive = true; }*/
             if(!isActive){return;}
             arrows[0].Update(gameTime);
             arrows[1].Update(gameTime);

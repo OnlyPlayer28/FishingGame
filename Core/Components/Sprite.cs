@@ -69,6 +69,19 @@ namespace Core.Components
             tilemapLocationRect = new Rectangle((int)tilemapPosition.X, (int)tilemapPosition.Y, (int)this.size.X, (int)this.size.Y);
         }
         [JsonConstructor]
+        public Sprite(Vector2 position, Rectangle tilemapLocationRect, string texturePath, string name = "", List<Animation> animations = default, float layer = 0)
+        {
+            this.name = name;
+            this.position = position;
+            this.tilemapLocationRect = tilemapLocationRect;
+            this.texturePath = texturePath;
+            this.layer = layer;
+            this.size = new Vector2(this.tilemapLocationRect.Width, this.tilemapLocationRect.Height);
+            if (animations != null)
+                this.animations = animations.ToList();
+            else
+                this.animations = new List<Animation>();
+        }
         public Sprite(Vector2 position, Rectangle tilemapLocationRect, string texturePath, string name="", float layer=0, params Animation[] animations)
         {
             this.name = name;

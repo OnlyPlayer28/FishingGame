@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Core.Components;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -25,7 +26,11 @@ namespace Core.UI
             this.name = name;
             this.layer = layer;
         }
-
+        public IActive SetActive(bool active)
+        {
+            this.isActive = active;
+            return this;
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
         }

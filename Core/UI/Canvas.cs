@@ -1,4 +1,5 @@
-﻿using Core.Components;
+﻿using Core.Audio;
+using Core.Components;
 using Core.UI;
 using Core.UI.Elements;
 using Microsoft.Xna.Framework;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Core.UI
 {
-    public class Canvas:ITaggable,IComponent,IActive
+    public class Canvas:INameable,IComponent,IActive
     {
         public List<IUIElement> elements { get; set; }
         public List<ICLickable> clickableUI { get; set; }
@@ -31,16 +32,20 @@ namespace Core.UI
             this.name = name;
             this.isActive = isActive;
         }
-
+        public IActive SetActive(bool active)
+        {
+            this.isActive = active;
+            return this;
+        }
         public void OnMouseClick(Object sender,MouseInputEventArgs e)
         {
 
-            if (InputManager.inputState == GameInputState.Gameplay||!isActive) { return; }
+            if (InputManager.inputState == GameInputState.Gameplay||!isActive) {  return; }
             foreach (var item in clickableUI)
             {
-                if(InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position,item.size)))
+                if(item.isActive&&InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position,item.size)))
                 {
-                    if(elements.Any(p=>!p.ignoreMouseInput&&p!=item&&p.isActive&&p.layer < item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
+                    if(elements.Any(p=>p.isActive&& !p.ignoreMouseInput&&p!=item&&p.layer < item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
                     {
                         break;
                     }
@@ -72,6 +77,8 @@ namespace Core.UI
             clickableUI.Add(clickable);
            clickableUI =  clickableUI.OrderBy(p => p.layer).ToList();
         }
+
+
         public void Update(GameTime gameTime)
         {
             if(isActive)
@@ -80,15 +87,23 @@ namespace Core.UI
                 //So that should be implemented
                 foreach (var item in elements)
                 {
-                    item.Update(gameTime);
+                    if (item.isActive)
+                    {
+                        item.Update(gameTime);
+                    }
                 }
                 foreach (var item in clickableUI)
                 {
-                    item.Update(gameTime);
+                    if (item.isActive)
+                    {
+                        item.Update(gameTime);
+                    }
+
                     if (item.isActive &&InputManager.GetMouseRect().Intersects(Helper.GetRectFromVector2(item.position, item.size)))
                     {
                         if (clickableUI.Any(p => p!= item&&p.isActive && p.layer < item.layer && Helper.GetRectFromVector2(p.position, p.size).Intersects(InputManager.GetMouseRect())))
                         {
+
                             break;
                         }
                         else
@@ -135,8 +150,14 @@ namespace Core.UI
         {
             if (isActive||isDrawing)
             {
-                elements.ForEach(p => p.Draw(spriteBatch));
-                clickableUI.ForEach(p => p.Draw(spriteBatch));
+                foreach (var item in elements)
+                {
+                    if (item.isActive) { item.Draw(spriteBatch); }
+                }
+                foreach (var item in clickableUI)
+                {
+                    if (item.isActive) { item.Draw(spriteBatch); }
+                }
             }
         }
     }

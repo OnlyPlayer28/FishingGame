@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Components;
 using Core.UI;
 using Core.UI.Elements;
 using Microsoft.Xna.Framework;
@@ -26,7 +27,7 @@ namespace Fishing.Scripts.UI.PauseScreenMenus
            
         }
 
-        public override IMenu SetActive(bool active)
+        public override IActive SetActive(bool active)
         {
             exitButton.isActive = active;
             return base.SetActive(active);

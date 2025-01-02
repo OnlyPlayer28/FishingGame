@@ -12,7 +12,7 @@ using Core.Cameras;
 
 namespace Core.UI
 {
-    public class Text : IComponent, ITaggable,IActive
+    public class Text : IComponent, INameable,IActive
     {
         public string name { get; set; }
 
@@ -38,7 +38,11 @@ namespace Core.UI
             this.isActive = isActive;
             LoadContent(Game1.contentManager);
         }
-
+        public IActive SetActive(bool active)
+        {
+            this.isActive = active;
+            return this;
+        }
         public Text setPosition(Vector2 position)
         {
             this.position = position*CameraManager.GetCurrentCamera().zoom;

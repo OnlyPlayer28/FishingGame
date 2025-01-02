@@ -49,7 +49,11 @@ namespace Core.UI.Elements
             debugShape = image;
             drawDebugShape = true;
         }
-
+        public IActive SetActive(bool active)
+        {
+            this.isActive = active;
+            return this;
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             if (isActive)
